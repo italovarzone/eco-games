@@ -36,7 +36,7 @@ function hidePlayerInfo() {
 }
 
 function goToPerfil() {
-    window.location.href = '../telas/perfil/index.html'; 
+    window.location.href = '../perfil/index.html'; 
 }
 
 function loadGame(game) {

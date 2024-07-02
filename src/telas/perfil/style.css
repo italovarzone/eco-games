@@ -14,9 +14,9 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: var(--cor-secundaria);
     font-family: var(--fonte-gamer);
-    color: var(--cor-texto);    
+    color: var(--cor-texto);   
+    height: 100vh; 
   }
   
   .perfil-container {

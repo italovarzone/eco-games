@@ -3,11 +3,17 @@ function editProfile() {
   }
   
   function goToMenu() {
-    window.location.href = '../index.html'; 
+    window.location.href = '../home/index.html'; 
   }
   
   function goToRanking() {
     alert('Navegar para o ranking.');
+  }
+
+  function exitPerfil() {
+    //TODO
+    //Realizar a destruição do auth do usuário
+    window.location.href = '../login/index.html'; 
   }
   
   // Exemplo de carregamento de dados do usuário
