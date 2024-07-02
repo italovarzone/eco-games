@@ -1,0 +1,242 @@
+@import url("https://fonts.googleapis.com/css2?family=Secular+One&display=swap");
+
+:root {
+    --cor-primaria: #22543d;
+    --cor-secundaria: #a5a5a5;
+    --cor-fundo: #f2f2f2;
+    --cor-texto: #333;
+    --cor-botao: #4caf50;
+    --fonte-gamer: "Secular One", sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    font-family: var(--fonte-gamer);
+}
+
+body {
+    display: flex;
+    height: 100vh;
+    background-color: var(--cor-fundo);
+}
+
+.botoes {
+    padding: 10px;
+    margin: 5px 0;
+    background-color: var(--cor-secundaria);
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.botoes:hover {
+    background-color: var(--cor-botao);
+}
+
+.container {
+    display: flex;
+    width: 100%;
+    overflow: hidden; /* Para esconder o conteúdo que vazar da largura */
+}
+
+.sidebar {
+    width: 200px;
+    min-width: 0; /* Garante que a largura mínima seja 0 para que o jogo expanda corretamente */
+    background-color: var(--cor-primaria);
+    color: white;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, width 0.3s ease;
+    transform: translateX(0);
+}
+
+.sidebar.closed {
+    transform: translateX(-100%);
+    width: 40px; /* Largura mínima da sidebar fechada */
+}
+
+.sidebar.closed::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 100%;
+    width: 200px;
+    height: 100%;
+    background-color: var(--cor-primaria);
+    z-index: -1;
+}
+
+.sidebar.closed .sidebar-list {
+    pointer-events: none;
+}
+
+.sidebar.closed {
+    display: none;
+}
+
+.sidebar h2 {
+    margin: 20px 0 20px 0;
+    text-align: center;
+}
+
+.sidebar ul {
+    list-style: none;
+}
+
+.sidebar ul li {
+    padding: 10px;
+    margin: 10px 0;
+    background-color: var(--cor-secundaria);
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s;
+}
+
+.sidebar ul li:hover {
+    background-color: var(--cor-botao);
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+}
+
+.content h1 {
+    margin-bottom: 20px;
+}
+
+#game-container {
+    width: calc(100% - 200px); /* Largura total menos a largura da sidebar */
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#player-info-container {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1000;
+}
+
+.player-info-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    background-color: var(--cor-botao);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-info-btn i {
+    font-size: 20px;
+}
+
+.close-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.close-btn:hover {
+    background-color: #ccc;
+}
+
+.close-btn i {
+    margin-right: 5px;
+}
+
+/* Classe para desabilitar a lista da sidebar quando fechada */
+.sidebar-list.disabled {
+    pointer-events: none;
+}
+
+.toggle-sidebar-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: 30px;
+    height: 20px;
+}
+
+.toggle-sidebar-btn .bar {
+    width: 100%;
+    height: 3px;
+    background-color: #4caf50;
+    transition: all 0.3s ease;
+}
+
+.toggle-sidebar-btn .bar:nth-child(2) {
+    width: 75%;
+}
+
+.toggle-sidebar-btn .bar:nth-child(3) {
+    width: 50%;
+}
+
+.toggle-sidebar-btn.open .bar {
+    transform: rotate(-45deg);
+    transition: transform 0.3s ease;
+}
+
+.toggle-sidebar-btn.open .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.toggle-sidebar-btn.open .bar:nth-child(3) {
+    transform: rotate(45deg);
+    transition: transform 0.3s ease;
+}
+
+.footer {
+    color: white;
+    bottom: 0;
+    margin-top: auto;
+    width: 100%;
+    opacity: 0.4;
+}
+
+.footer p {
+    margin: 2px 0;
+}
+
+.user-greeting {
+    padding-top: 36px;
+}

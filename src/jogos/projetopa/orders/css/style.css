@@ -1,0 +1,142 @@
+@import url("https://fonts.googleapis.com/css2?family=Secular+One&display=swap");
+
+:root {
+  --cor-primaria: #22543d; /* verde escuro */
+  --cor-secundaria: #a5a5a5; /* cinza claro */
+  --cor-fundo: #f2f2f2; /* cinza claro */
+  --cor-texto: #333; /* preto */
+  --cor-botao: #6ab04c; /* verde claro */
+  --fonte-gamer: "Secular One", sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  border-radius: 15px;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--cor-primaria);
+  font-family: var(--fonte-gamer);
+  margin: 0;
+  padding: 0;
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto);
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+  max-width: 450px;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding-bottom: 20px;
+}
+
+h1 {
+  font-family: var(--fonte-gamer);
+  text-align: center;
+  color: #333;
+}
+
+form {
+  width: 300px;
+  text-align: center;
+}
+
+.card {
+  width: 300px;
+  text-align: center;
+}
+
+label {
+  font-family: var(--fonte-gamer);
+  text-align: left;
+  display: block;
+  margin-bottom: 5px;
+  color: #666;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #f2f2f2;
+  color: #333;
+  font-size: 16px;
+}
+
+input[type="submit"] {
+  font-family: var(--fonte-gamer);
+  /*display: block;*/
+  width: 40%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #4caf50;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-right: solid #3e8e41 6px;
+  border-bottom: solid #3e8e41 4px;
+}
+
+input[type="button"] {
+  font-family: var(--fonte-gamer);
+  /*display: block;*/
+  width: 40%;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  background-color: #af4c4c;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  border-right: solid #743131 6px;
+  border-bottom: solid #743131 4px;
+}
+
+input[type="submit"]:active {
+  color: #3e8e41;
+  transition: 0.1s;
+}
+
+input[type="button"]:active {
+  color: #743131;
+  transition: 0.1s;
+}
+
+input[type="submit"]:hover {
+  color: #3e8e41;
+  transition: 0.1s;
+}
+
+input[type="button"]:hover {
+  color: #743131;
+  transition: 0.1s;
+}
+
+#mensagem {
+  display: block;
+  margin-top: 10px;
+  color: red;
+  font-size: 14px;
+}
+
+@media screen and (max-width: 480px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="submit"] {
+    font-size: 14px;
+  }
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Acerte a palavra</title>
+        <link rel="stylesheet" href="./style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-12E5W46D78"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'G-12E5W46D78');
+        </script>
+    </head>
+    <body>
+        <div id="blur-overlay"></div>
+        <div id="help-dialog">
+          <p>Bem-vindo ao Hangame!</p>
+          <p>Adivinhe palavras ligadas à sustentabilidade, enriquecendo o vocabulário relembrando o clássico jogo da forca!</p>
+          <button id="close-help" onclick="closeHelp()">Fechar</button>
+        </div>
+        
+        <div class="container">
+            <div class="container-button-help">
+               <button id="help-button" onclick="showHelp()">Como jogar?</button>
+            </div>
+
+            <h1>Hangame</h1>
+            <div class="content">
+                <input type="text" class="typing-input" maxlength="1">
+                <div class="container-inputs">
+                    <div class="inputs"></div>
+                </div>
+                <div class="details">
+                    <p class="hint">Dica: <span></span></p>
+                    <p class="guess-left">Tentativas restantes: <span></span></p>
+                    <p class="wrong-letter">Letras erradas: <span></span></p>
+                </div>
+                <div class="button-container">
+                    <button class="reset-btn">Reiniciar o jogo</button>
+                </div>
+            </div>
+                
+
+        <script src="./word.js"></script>
+        <script src="./script.js"></script>
+
+    </body>
+    
+</html>

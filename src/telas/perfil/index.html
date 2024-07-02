@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>Perfil do Usuário</title>
+</head>
+<body>
+  <div class="perfil-container">
+    <h1>Perfil</h1>
+    <div class="perfil-card">
+      <img src="..\assets\img\avatar-teste.webp" alt="Avatar do Usuário" class="perfil-avatar">
+      <div class="perfil-info">
+        <h2>Ítalo</h2>
+        <p>Nível: 10</p>
+        <p>Experiência: 1500 XP</p>
+        <button class="btn-edit" onclick="editProfile()">Editar Perfil</button>
+      </div>
+      <div class="perfil-stats">
+        <h2>Estatísticas</h2>
+        <ul>
+          <li>Jogos Completos: 25</li>
+          <li>Desafios Vencidos: 10</li>
+          <li>Pontuação Total: 2000</li>
+        </ul>
+      </div>
+      <div class="perfil-actions">
+        <button class="btn-action" onclick="goToMenu()">Voltar ao Menu</button>
+        <button class="btn-action" onclick="goToRanking()">Acessar Ranking</button>
+      </div>
+    </div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,16 @@
+.login__input {
+  font-family: var(--fonte-gamer);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.tel__input {
+  font-family: var(--fonte-gamer);
+  border-radius: 5px;
+  padding: 5px;
+}
+
+.login__button {
+  border-radius: 3px;
+  padding: 5px;
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Plataforma de Jogos</title>
+</head>
+<body>
+  <div class="container">
+    <button onclick="toggleSidebar()" class="toggle-sidebar-btn">
+      <span class="bar"></span>
+      <span class="bar"></span>
+      <span class="bar"></span>
+    </button>
+    <aside class="sidebar">
+      <h2 class="user-greeting">Olá, Ítalo!</h2>
+      <ul>
+        <li onclick="goToPerfil()">Perfil</li>
+        <li onclick="">Ranking</li>
+        <li onclick="">Avaliar a Plataforma</li>
+      </ul>
+      <h2>Jogos</h2>
+      <ul>
+        <li onclick="loadGame('cacapalavras')">Caça Palavras</li>
+        <li onclick="loadGame('quiz')">Quiz ODS</li>
+        <li onclick="loadGame('hangame')">Hangame</li>
+      </ul>
+      <footer class="footer">
+        <p>v1.0.0 - Todos os direitos reservados &copy; 2024</p>
+      </footer>
+    </aside>
+    <main class="content">
+      <h1>Ecogames</h1>
+      <div id="game-container">
+        <h2>Bem-vindo ao Ecogames</h2>
+      </div>
+    </main>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
