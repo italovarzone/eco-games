@@ -225,7 +225,7 @@ a {
   top: 0;
 }
 
-.start {
+#start {
   font-family: var(--fonte-gamer);
   padding: 10px 20px;
   font-size: 16px;
