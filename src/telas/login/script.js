@@ -5,7 +5,7 @@ document
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
 
-    fetch("http://localhost:5000/api/auth/login", {
+    fetch("http://localhost:3000/api/users/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -14,11 +14,12 @@ document
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.authToken) {
-          localStorage.setItem("authToken", data.authToken);
-          window.location.href = "/home/index.html";
+        console.log(data)
+        if (data.booleanAuth) {
+          localStorage.setItem("email", email);
+          window.location.href = "/src/telas/home/index.html?";
         } else {
-          alert("Credenciais inválidas. Por favor, tente novamente.");
+          console.log("Credenciais inválidas. Por favor, tente novamente.");
         }
       })
       .catch((error) => {
