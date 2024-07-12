@@ -12,13 +12,6 @@
 </head>
 
 <body>
-  <div id="gameStart">
-    <div class="mensagem">
-      <p>Ecopuzzle</p>
-      <button id="start" onclick="startGame()">Start Game</button>
-    </div>
-  </div>
-
   <div class="game-container">
 
     <div id="blur-overlay"></div>
@@ -32,26 +25,24 @@
       <button id="help-button" onclick="showHelp()">Como jogar?</button>
     </div>
 
-
     <div id="gameBoard"></div>
 
     <div class="record-container">
       <div class="tempo">
         <div>Time: </div>
-          <div id="time">00:00</div>
-        </div>
-        <p>Record: </p>
-          <div id="recorde">00:00</div>
+        <div id="time">00:00</div>
       </div>
+      <p>Record: </p>
+      <div id="recorde">00:00</div>
     </div>
+  </div>
 
-
-    <div id="gameOver">
-      <div class="mensagem">
-        <p id="resultado"></p>
-        <button class="btn btn-primary" onclick="location.href='../php/game.php'">Menu</button>
-      </div> 
-    </div>
+  <div id="gameOver">
+    <div class="mensagem">
+      <p id="resultado"></p>
+      <button class="btn btn-primary" onclick="location.href='../php/game.php'">Menu</button>
+    </div> 
+  </div>
 
   <!-- Sons do jogo !-->
   <audio src="./sound/card-start.mp3" preload="auto" id="card-start"></audio>

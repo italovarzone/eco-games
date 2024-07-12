@@ -13,11 +13,13 @@ const form = document.querySelector(".login-form");
 
 var iduser;
 
+document.addEventListener("DOMContentLoaded", () => {
+  startGame();
+});
+
 function startGame(userid) {
   iduser = userid;
   recuperarTimeScoreUser();
-  let gameStartLayer = document.getElementById("gameStart");
-  gameStartLayer.style.display = "none";
   cardStart.play();
   stopTime();
   startTime();
