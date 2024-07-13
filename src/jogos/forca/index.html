@@ -1,34 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-    <head>
-        <meta charset="utf-8">
-        <title>Acerte a palavra</title>
-        <link rel="stylesheet" href="./style.css">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Google tag (gtag.js) -->
-        <script async src="https://www.googletagmanager.com/gtag/js?id=G-12E5W46D78"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
+<head>
+    <meta charset="utf-8">
+    <title>Acerte a palavra</title>
+    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-12E5W46D78"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
 
-          gtag('config', 'G-12E5W46D78');
-        </script>
-    </head>
-    <body>
-        <div id="blur-overlay"></div>
-        <div id="help-dialog">
-          <p>Bem-vindo ao Hangame!</p>
-          <p>Adivinhe palavras ligadas à sustentabilidade, enriquecendo o vocabulário relembrando o clássico jogo da forca!</p>
-          <button id="close-help" onclick="closeHelp()">Fechar</button>
+        gtag('config', 'G-12E5W46D78');
+    </script>
+</head>
+<body>
+    <div id="blur-overlay"></div>
+    <div id="help-dialog">
+        <p>Bem-vindo ao Hangame!</p>
+        <p>Adivinhe palavras ligadas à sustentabilidade, enriquecendo o vocabulário relembrando o clássico jogo da forca!</p>
+        <button id="close-help" onclick="closeHelp()">Fechar</button>
+    </div>
+    
+    <div class="container" id="game-content">
+        <div class="container-button-help" id="help-container">
+           <button id="help-button" onclick="showHelp()">Como jogar?</button>
         </div>
-        
-        <div class="container">
-            <div class="container-button-help">
-               <button id="help-button" onclick="showHelp()">Como jogar?</button>
-            </div>
 
-            <h1>Hangame</h1>
+        <h1 id="game-title">Hangame</h1>
+        <div id="game-container">
+            <div class="record-container">
+                <div class="tempo">
+                    <div>Time: </div>
+                    <div id="time">00:00</div>
+                </div>
+            </div>
             <div class="content">
                 <input type="text" class="typing-input" maxlength="1">
                 <div class="container-inputs">
@@ -43,11 +50,20 @@
                     <button class="reset-btn">Reiniciar o jogo</button>
                 </div>
             </div>
-                
+        </div>
+    </div>
+        
+    <div id="result-container" style="display: none;">
+        <h2>Resultados</h2>
+        <div class="result">
+            <p>Total de erros: <span id="total-errors"></span></p>
+            <p>Tempo: <span id="total-time"></span></p>
+        </div>
+        <button class="reset-btn">Jogar Novamente</button>
+    </div>
 
-        <script src="./word.js"></script>
-        <script src="./script.js"></script>
+    <script src="./word.js"></script>
+    <script src="./script.js"></script>
 
-    </body>
-    
+</body>
 </html>

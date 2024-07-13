@@ -33,7 +33,6 @@ body {
   justify-content: center;
   align-items: center;
   padding: 16px;
-  
 }
 
 #help-button { 
@@ -106,15 +105,42 @@ body {
   font-size: 2em;
   text-align: center;
   font-weight: bold;
-  
   padding: 20px 0px 0px 0px; 
   font-family: var(--fonte-gamer);
   color: var(--cor-texto);
 }
 
+#game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.record-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 0;
+}
+
+.record-container .tempo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-family: var(--fonte-gamer);
+  color: var(--cor-texto);
+}
+
+.record-container #time {
+  font-size: 18px;
+  font-family: var(--fonte-gamer);
+  color: var(--cor-texto);
+  margin-left: 5px;
+}
+
 .container .content {
   padding: 16px;
-  /* margin: 25px 25px 35px; */
   display: flex;
   flex-direction: column;
 }
@@ -210,13 +236,55 @@ body {
   transition: 0.1s;
 }
 
-.popup .overlay {
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  width: 100vw;
-  height: 100vh;
-  background: rgb(0, 0, 0, 0.7);
-  z-index: 1;
-  display: none;
+#result-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  width: 300px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  margin: 0 auto;
+}
+
+#result-container h2 {
+  font-size: 24px;
+  font-family: var(--fonte-gamer);
+  color: var(--cor-texto);
+}
+
+#result-container p {
+  font-size: 18px;
+  font-family: var(--fonte-gamer);
+  color: var(--cor-texto);
+}
+
+#result-container .result {
+  display: flex;
+  padding: 16px;
+  flex-direction: column;
+  align-items: baseline;
+}
+
+#result-container .reset-btn {
+  font-family: var(--fonte-gamer);
+  padding-top: 10px;
+  border: none;
+  align-self: center;
+  border-radius: 3px;
+  background-color: var(--cor-botao);
+  color: #fff;
+  font-size: 16px;
+  width: 100px;
+  cursor: pointer;
+  border-right: solid #3e8e41 6px;
+  border-bottom: solid #3e8e41 4px;
+}
+
+#result-container .reset-btn:hover {
+  color: #3e8e41;
+  transition: 0.1s;
 }

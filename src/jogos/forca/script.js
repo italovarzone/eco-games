@@ -1,30 +1,40 @@
 const inputs = document.querySelector(".inputs"),
-  resetBtn = document.querySelector(".reset-btn"),
+  resetBtns = document.querySelectorAll(".reset-btn"),
   hint = document.querySelector(".hint span"),
   guessLeft = document.querySelector(".guess-left span"),
   wrongLetter = document.querySelector(".wrong-letter span"),
-  typingInput = document.querySelector(".typing-input");
+  typingInput = document.querySelector(".typing-input"),
+  gameContainer = document.getElementById("game-container"),
+  resultContainer = document.getElementById("result-container"),
+  totalErrors = document.getElementById("total-errors"),
+  totalTime = document.getElementById("total-time"),
+  helpContainer = document.getElementById("help-container"),
+  gameTitle = document.getElementById("game-title"),
+  gameContent = document.getElementById("game-content");
 
 var word,
   maxGuesses,
   corrects = [],
   incorrects = [],
   score;
-var seconds = 00;
-var tens = 00;
+var seconds = 0;
+var minutes = 0;
 var Interval;
 
 const startTimer = () => {
   function runTimer() {
-    tens++;
-    if (tens > 99) {
-      seconds++;
-      tens = 0;
+    seconds++;
+    if (seconds > 59) {
+      minutes++;
+      seconds = 0;
     }
+    document.getElementById("time").innerText = `${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
   }
 
   clearInterval(Interval);
-  Interval = setInterval(runTimer, 10);
+  Interval = setInterval(runTimer, 1000);
 };
 
 const stopTimer = () => {
@@ -33,15 +43,15 @@ const stopTimer = () => {
 
 const resetTimer = () => {
   clearInterval(Interval);
-  tens = "00";
-  seconds = "00";
+  minutes = 0;
+  seconds = 0;
+  document.getElementById("time").innerText = `00:00`;
 };
 
 function randomWord() {
   startTimer();
-  // Pega um objeto aleatório da nossa lista de palavras
   let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
-  word = ranObj.word; // Pega uma palavra de um objeto aleatório
+  word = ranObj.word;
   maxGuesses = 5;
   corrects = [];
   incorrects = [];
@@ -67,70 +77,56 @@ function initGame(e) {
     !corrects.includes(key)
   ) {
     if (word.includes(key)) {
-      //Se a letra inserida é encontrada na palavra
       for (let i = 0; i < word.length; i++) {
-        //mostrando a letra correta no valor inserido
         if (word[i] == key) {
           corrects.push(key);
           inputs.querySelectorAll("input")[i].value = key;
         }
       }
     } else {
-      maxGuesses--; // diminui o número de tentativas
+      maxGuesses--;
       incorrects.push(` ${key}`);
     }
     guessLeft.innerText = maxGuesses;
     wrongLetter.innerText = incorrects;
-    switch (maxGuesses) {
-      case 5:
-        score = 10;
-        break;
-      case 4:
-        score = 8;
-        break;
-      case 3:
-        score = 6;
-        break;
-      case 2:
-        score = 4;
-        break;
-      case 1:
-        score = 2;
-        break;
-    }
   }
   typingInput.value = "";
 
   setTimeout(() => {
     if (corrects.length === word.length) {
       stopTimer();
-      alert(
-        `Parabéns! Você acertou a palavra ${word.toUpperCase()} e seu score é ${score}, com ${seconds} segundos!`
-      );
-      resetTimer();
-      randomWord(); //Chama a função de palavra aleatória, assim um novo jogo começa
+      showResult();
     } else if (maxGuesses < 1) {
-      //se o jogador não conseguir achar todas as letras
-      alert("Game over! Você não tem mais tentativas.");
+      stopTimer();
+      showResult();
       for (let i = 0; i < word.length; i++) {
-        resetTimer();
-        //mostrando todas as letras no game over
         inputs.querySelectorAll("input")[i].value = word[i];
       }
     }
   });
 }
 
-function togglePopup() {
-  document.getElementById("popup-1").classList.toggle("active");
+function showResult() {
+  gameContent.style.display = "none";
+  resultContainer.style.display = "flex";
+  totalErrors.innerText = 5 - maxGuesses;
+  totalTime.innerText = `${minutes.toString().padStart(2, "0")}:${seconds
+    .toString()
+    .padStart(2, "0")}`;
 }
 
-resetBtn.addEventListener("click", (e) => {
-  e.preventDefault();
-
+function resetGame() {
+  resultContainer.style.display = "none";
+  gameContent.style.display = "block";
   resetTimer();
   randomWord();
-});
+}
+
+resetBtns.forEach(btn => btn.addEventListener("click", (e) => {
+  e.preventDefault();
+  resetGame();
+}));
+
 typingInput.addEventListener("input", initGame);
 inputs.addEventListener("click", () => typingInput.focus());
 document.addEventListener("keydown", () => typingInput.focus());
@@ -141,7 +137,6 @@ function showHelp() {
 
   blurOverlay.style.display = 'block';
   helpDialog.style.display = 'flex';
-
 }
 
 function closeHelp() {
