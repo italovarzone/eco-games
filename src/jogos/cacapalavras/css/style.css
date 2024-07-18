@@ -39,6 +39,7 @@ body {
   border-radius: 10px;
   cursor: pointer;
   transition: background-color 0.3s;
+  margin-bottom: 10px; 
 }
 
 #help-button:hover {
@@ -179,7 +180,7 @@ body {
   }
 
   #timer {
-    font-size: 13px;
+    font-size: 16px;
     font-weight: bold;
   }
 

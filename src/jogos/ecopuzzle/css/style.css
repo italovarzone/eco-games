@@ -184,22 +184,29 @@ a {
 }
 .record-container {
   padding: 12px;
-  font-size: 14px;
   display: flex;
   align-items: center;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .record-container > div {
   margin-right: 20px;
+  font-size: 16px;
+  font-weight: bold;
 }
 
 .tempo > div {
   display: inline-block;
+  font-size: 16px;
+  font-weight: bold;
 }
 
-#recorde {
+/*#recorde {
   display: inline-block;
-}
+  font-size: 16px;
+  font-weight: bold;
+}*/
 
 .record-label {
   margin-right: 10px;
