@@ -3,6 +3,7 @@ function startGame() {
   const quizContainerWrapper = document.getElementById('quiz-wrapper');
   const resultContainer = document.getElementById('result-container');
   const quizContainerQuestions = document.getElementById('quiz-container-questions');
+  const headerQuizContainer = document.getElementById('header-quiz');
 
   // Resetting variables for a new game
   currentQuestion = 0;
@@ -14,6 +15,8 @@ function startGame() {
   quizContainerWrapper.style.display = 'flex';
   quizContainerQuestions.style.display = 'flex';
   quizContainer.style.display = 'flex';
+  headerQuizContainer.style.display = 'flex'; // Show header again if it was hidden
+  document.getElementById('next-button').style.display = 'none'; // Hide next button
 
   loadQuestion();
 }
@@ -309,11 +312,10 @@ function showFinalResult() {
   const totalTimeElement = document.getElementById('total-time');
   const totalTimeSpent = questionTimes.reduce((total, time) => total + time, 0);
 
-  quizContainerQuestions.innerHTML = '';
-  resultContainer.style.display = 'flex';
   quizContainerQuestions.style.display = 'none'; // Oculta o container de perguntas
   headerQuizContainer.style.display = 'none';
   quizContainerWrapper.style.display = 'none';
+  resultContainer.style.display = 'flex';
   correctAnswersElement.textContent = score;
   incorrectAnswersElement.textContent = selectedQuestions.length - score;
   percentageElement.textContent = ((score / selectedQuestions.length) * 100).toFixed(2) + '%';
