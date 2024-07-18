@@ -276,14 +276,14 @@ body {
     padding: 12px;
   }
 
-  #menu-button {
+  #play-again-button {
     font-family: var(--fonte-gamer);
     padding-top: 10px;
     border: none;
     align-self: center;
     border-radius: 3px;
     background-color: var(--cor-botao);
-    color: #fff;
+    color: #ffffff;
     font-size: 16px;
     width: 100px;
     cursor: pointer;
@@ -291,7 +291,8 @@ body {
     border-bottom: solid #3e8e41 4px;
   }
   
-  #menu-button:hover {
+  #play-again-button:hover{
     color: #3e8e41;
     transition: 0.1s;
   }
+  
