@@ -106,8 +106,10 @@ if (isMouseDown && event.target.classList.contains("cell") && !event.target.clas
 }
 
 function handleCellSelection(cell) {
-cell.classList.toggle("selected");
-toggleWordStrike(cell.dataset.word);
+  if (!cell.classList.contains("correct")) {
+    cell.classList.toggle("selected");
+    toggleWordStrike(cell.dataset.word);
+  }
 }
 
 function resetSelectedCells() {
