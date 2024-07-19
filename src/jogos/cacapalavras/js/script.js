@@ -16,6 +16,7 @@ for (let row = 0; row < 15; row++) {
     cell.dataset.row = row;
     cell.dataset.col = col;
     cell.addEventListener("mousedown", () => handleCellMouseDown(cell));
+    cell.addEventListener("touchstart", () => handleCellMouseDown(cell));
     crossword.appendChild(cell);
   }
 }
@@ -83,19 +84,25 @@ function isSafePlacement(word, startRow, startCol, direction) {
 function handleCellMouseDown(cell) {
   isMouseDown = true;
   handleCellSelection(cell);
-  document.addEventListener("mouseover", handleCellMouseOver);
+  document.addEventListener("mousemove", handleCellMouseOver);
+  document.addEventListener("touchmove", handleCellMouseOver);
   document.addEventListener("mouseup", handleMouseUp);
+  document.addEventListener("touchend", handleMouseUp);
 
   function handleMouseUp() {
     isMouseDown = false;
-    document.removeEventListener("mouseover", handleCellMouseOver);
+    document.removeEventListener("mousemove", handleCellMouseOver);
+    document.removeEventListener("touchmove", handleCellMouseOver);
     document.removeEventListener("mouseup", handleMouseUp);
+    document.removeEventListener("touchend", handleMouseUp);
     resetSelectedCells();
   }
 }
 
 function handleCellMouseOver(event) {
-  if (isMouseDown && event.target.classList.contains("cell") && !event.target.classList.contains("correct")) {
+  const targetCell = event.type.includes("touch") ? document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY) : event.target;
+
+  if (isMouseDown && targetCell.classList.contains("cell") && !targetCell.classList.contains("correct")) {
     const selectedCells = document.querySelectorAll('.cell.selected');
     const maxSelectedCells = maxLetters;
 
@@ -103,7 +110,7 @@ function handleCellMouseOver(event) {
       resetSelectedCells();
     }
 
-    handleCellSelection(event.target);
+    handleCellSelection(targetCell);
   }
 }
 

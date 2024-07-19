@@ -296,3 +296,56 @@ body {
     transition: 0.1s;
   }
   
+  @media (max-width: 768px) {
+    body {
+      background-color: white;
+      height: auto;
+    }
+
+    .crossword-container {
+      box-shadow: none;
+      border-radius: 0px;
+      padding: 16px 0px 0px 0px;
+    }
+    .crossword {
+        padding: 16px 0px 0px 0px;
+        grid-template-columns: repeat(15, 1fr);
+        grid-template-rows: repeat(15, 1fr);
+    }
+
+    .word-list {
+      font-size: 8px;
+      max-width: 300px;
+    }
+
+    .crossword .cell {
+      width: 20px;
+      height: 20px;
+      font-size: 10px;
+    }
+
+    .game {
+        width: 100%;
+    }
+
+    #help-button, #close-help, #play-again-button {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    #fullscreen-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    #game-result-container {
+        width: 90%;
+    }
+
+    #timer {
+      padding-top: 16px;
+      font-size: 12px;
+      font-weight: bold;
+    }
+}
