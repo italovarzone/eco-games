@@ -260,3 +260,39 @@ body {
     color: #3e8e41;
     transition: 0.1s;
   }
+
+  #fullscreen-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background-color: var(--cor-botao);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+  }
+  
+  #fullscreen-btn:hover {
+    background-color: var(--cor-botao);
+  }
+  
+  #fullscreen-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  #fullscreen-btn.fullscreen {
+    background-color: var(--cor-botao);
+  }
+  
+  #fullscreen-btn.fullscreen:hover {
+    background-color: var(--cor-botao);
+  }
+  

@@ -243,3 +243,26 @@ function closeHelp() {
   blurOverlay.style.display = 'none';
   helpDialog.style.display = 'none';
 }
+
+function toggleFullScreen() {
+  const fullscreenIcon = document.getElementById('fullscreen-icon');
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+  if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+      fullscreenIcon.classList.remove('fa-expand');
+      fullscreenIcon.classList.add('fa-compress');
+      fullscreenBtn.classList.add('fullscreen');
+  } else {
+      if (document.exitFullscreen) {
+          document.exitFullscreen();
+          fullscreenIcon.classList.remove('fa-compress');
+          fullscreenIcon.classList.add('fa-expand');
+          fullscreenBtn.classList.remove('fullscreen');
+      }
+  }
+}
+
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+fullscreenBtn.addEventListener('click', toggleFullScreen);
+
