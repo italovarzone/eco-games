@@ -13,6 +13,7 @@
     margin: 0;
     padding: 0;
     font-family: var(--fonte-gamer);
+    box-sizing: border-box;
 }
 
 body {
@@ -21,30 +22,15 @@ body {
     background-color: var(--cor-fundo);
 }
 
-.botoes {
-    padding: 10px;
-    margin: 5px 0;
-    background-color: var(--cor-secundaria);
-    border-radius: 5px;
-    cursor: pointer;
-    text-align: center;
-    transition: background-color 0.3s;
-}
-
-.botoes:hover {
-    background-color: var(--cor-botao);
-}
-
 .container {
     display: flex;
     width: 100%;
-    overflow: hidden; /* Para esconder o conteúdo que vazar da largura */
+    overflow: hidden;
 }
 
 .sidebar {
     width: 200px;
-    min-width: 0; /* Garante que a largura mínima seja 0 para que o jogo expanda corretamente */
-    background-color: var(--cor-primaria);
+    background-color: var(--cor-fundo);
     color: white;
     padding: 20px;
     display: flex;
@@ -55,31 +41,13 @@ body {
 
 .sidebar.closed {
     transform: translateX(-100%);
-    width: 40px; /* Largura mínima da sidebar fechada */
-}
-
-.sidebar.closed::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 100%;
-    width: 200px;
-    height: 100%;
-    background-color: var(--cor-primaria);
-    z-index: -1;
-}
-
-.sidebar.closed .sidebar-list {
-    pointer-events: none;
-}
-
-.sidebar.closed {
-    display: none;
+    width: 40px;
 }
 
 .sidebar h2 {
-    margin: 20px 0 20px 0;
+    margin: 20px 0;
     text-align: center;
+    color: var(--cor-primaria);
 }
 
 .sidebar ul {
@@ -89,7 +57,7 @@ body {
 .sidebar ul li {
     padding: 10px;
     margin: 10px 0;
-    background-color: var(--cor-secundaria);
+    background-color: var(--cor-primaria);
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -100,85 +68,15 @@ body {
     background-color: var(--cor-botao);
 }
 
-.content {
-    flex-grow: 1;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 28px;
-}
-
-.content h1 {
-    margin-bottom: 20px;
-}
-
 #game-container {
-    width: calc(100% - 200px); /* Largura total menos a largura da sidebar */
-    height: 100%;
+    flex-grow: 1;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: white;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-#player-info-container {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    background-color: #fff;
-    padding: 10px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    display: none;
-    z-index: 1000;
-}
-
-.player-info-btn {
-    position: fixed;
-    top: 10px;
-    right: 10px;
-    padding: 10px;
-    background-color: var(--cor-botao);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.player-info-btn i {
-    font-size: 20px;
-}
-
-.close-btn {
-    margin-top: 10px;
-    padding: 8px 16px;
-    background-color: #ddd;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.close-btn:hover {
-    background-color: #ccc;
-}
-
-.close-btn i {
-    margin-right: 5px;
-}
-
-/* Classe para desabilitar a lista da sidebar quando fechada */
-.sidebar-list.disabled {
-    pointer-events: none;
+    padding: 20px;
 }
 
 .toggle-sidebar-btn {
@@ -227,10 +125,10 @@ body {
 
 .footer {
     color: white;
-    bottom: 0;
     margin-top: auto;
     width: 100%;
     opacity: 0.4;
+    text-align: center;
 }
 
 .footer p {
