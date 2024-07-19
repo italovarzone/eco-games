@@ -37,7 +37,7 @@ body {
 }
 
 .nav-bar .logout-btn {
-    background-color: var(--cor-botao);
+    background-color: var(--cor-primaria);
     border: none;
     color: white;
     padding: 10px 20px;
@@ -47,7 +47,7 @@ body {
 }
 
 .nav-bar .logout-btn:hover {
-    background-color: darken(var(--cor-botao), 10%);
+    background-color: var(--cor-botao);
 }
 
 .container {
