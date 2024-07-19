@@ -13,25 +13,55 @@
     margin: 0;
     padding: 0;
     font-family: var(--fonte-gamer);
-    box-sizing: border-box;
 }
 
 body {
     display: flex;
+    flex-direction: column;
     height: 100vh;
-    background-color: var(--cor-fundo);
+    background-color: white;
+}
+
+.nav-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background-color: #f2f2f2;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.nav-bar .platform-name {
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.nav-bar .logout-btn {
+    background-color: var(--cor-botao);
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.nav-bar .logout-btn:hover {
+    background-color: darken(var(--cor-botao), 10%);
 }
 
 .container {
     display: flex;
     width: 100%;
-    overflow: hidden;
+    overflow: hidden; /* Para esconder o conteúdo que vazar da largura */
+    flex-grow: 1; /* Permite que o container principal ocupe o restante da altura */
 }
 
 .sidebar {
     width: 200px;
-    background-color: var(--cor-fundo);
-    color: white;
+    min-width: 0; /* Garante que a largura mínima seja 0 para que o jogo expanda corretamente */
+    background-color: #f2f2f2;
+    color: var(--cor-primaria);
     padding: 20px;
     display: flex;
     flex-direction: column;
@@ -41,13 +71,31 @@ body {
 
 .sidebar.closed {
     transform: translateX(-100%);
-    width: 40px;
+    width: 40px; /* Largura mínima da sidebar fechada */
+}
+
+.sidebar.closed::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 100%;
+    width: 200px;
+    height: 100%;
+    background-color: var(--cor-primaria);
+    z-index: -1;
+}
+
+.sidebar.closed .sidebar-list {
+    pointer-events: none;
+}
+
+.sidebar.closed {
+    display: none;
 }
 
 .sidebar h2 {
-    margin: 20px 0;
+    margin: 20px 0 20px 0;
     text-align: center;
-    color: var(--cor-primaria);
 }
 
 .sidebar ul {
@@ -58,6 +106,7 @@ body {
     padding: 10px;
     margin: 10px 0;
     background-color: var(--cor-primaria);
+    color: white;
     border-radius: 5px;
     cursor: pointer;
     text-align: center;
@@ -68,8 +117,19 @@ body {
     background-color: var(--cor-botao);
 }
 
-#game-container {
+.content {
     flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.content h1 {
+    margin-bottom: 20px;
+}
+
+#game-container {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,14 +138,66 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.toggle-sidebar-btn {
+#player-info-container {
     position: fixed;
-    top: 20px;
-    left: 20px;
+    top: 10px;
+    right: 10px;
+    background-color: #fff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 1000;
+}
+
+.player-info-btn {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    padding: 10px;
+    background-color: var(--cor-botao);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.player-info-btn i {
+    font-size: 20px;
+}
+
+.close-btn {
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #ddd;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.close-btn:hover {
+    background-color: #ccc;
+}
+
+.close-btn i {
+    margin-right: 5px;
+}
+
+/* Classe para desabilitar a lista da sidebar quando fechada */
+.sidebar-list.disabled {
+    pointer-events: none;
+}
+
+.toggle-sidebar-btn {
     background: none;
     border: none;
     cursor: pointer;
-    z-index: 1000;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -124,13 +236,14 @@ body {
 
 .footer {
     color: white;
+    bottom: 0;
     margin-top: auto;
     width: 100%;
     opacity: 0.4;
-    text-align: center;
 }
 
 .footer p {
+    color: var(--cor-primaria);
     margin: 2px 0;
 }
 

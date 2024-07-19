@@ -9,10 +9,8 @@ toggleSidebarBtn.addEventListener('click', function() {
     content.classList.toggle('closed');
 
     if (sidebar.classList.contains('closed')) {
-        gameContainer.style.width = '100%';
         sidebarList.classList.add('disabled');
     } else {
-        gameContainer.style.width = 'calc(100% - 200px)';
         sidebarList.classList.remove('disabled');
     }
 });

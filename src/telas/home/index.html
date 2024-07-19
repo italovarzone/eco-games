@@ -7,12 +7,17 @@
   <title>Plataforma de Jogos</title>
 </head>
 <body>
-  <div class="container">
+  <nav class="nav-bar">
     <button onclick="toggleSidebar()" class="toggle-sidebar-btn">
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
     </button>
+    <span class="platform-name">Plataforma de Jogos</span>
+    <button onclick="logout()" class="logout-btn">Logout</button>
+  </nav>
+  <hr>
+  <div class="container">
     <aside class="sidebar">
       <h2 class="user-greeting">Olá, Ítalo!</h2>
       <ul>
@@ -31,9 +36,11 @@
         <p>v1.0.0-beta1 - Todos os direitos reservados &copy; 2024</p>
       </footer>
     </aside>
-    <div id="game-container">
-      <h2>Bem-vindo ao Ecogames</h2>
-    </div>
+    <main class="content">
+      <div id="game-container">
+        <h2>Bem-vindo ao Ecogames</h2>
+      </div>
+    </main>
   </div>
   <script src="script.js"></script>
 </body>
