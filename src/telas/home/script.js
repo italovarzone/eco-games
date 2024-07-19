@@ -1,19 +1,11 @@
-const toggleSidebarBtn = document.querySelector('.toggle-sidebar-btn');
-const sidebar = document.querySelector('.sidebar');
-const content = document.querySelector('.content');
-const gameContainer = document.getElementById('game-container');
-const sidebarList = document.querySelector('.sidebar ul');
+function toggleSidebar() {
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.toggle('open');
+}
 
-toggleSidebarBtn.addEventListener('click', function() {
-    sidebar.classList.toggle('closed');
-    content.classList.toggle('closed');
-
-    if (sidebar.classList.contains('closed')) {
-        sidebarList.classList.add('disabled');
-    } else {
-        sidebarList.classList.remove('disabled');
-    }
-});
+function logout() {
+    window.location.href = 'logout.html'; // Redireciona para a página de logout
+}
 
 function showPlayerInfo() {
     const playerInfoContainer = document.getElementById('player-info-container');
@@ -57,13 +49,6 @@ function loadGame(game) {
         default:
             gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
     }
-
-    if (sidebar.classList.contains('closed')) {
-        sidebar.classList.remove('closed');
-        content.classList.remove('closed');
-        gameContainer.style.width = 'calc(100% - 200px)';
-        sidebarList.classList.remove('disabled');
-    }
 }
 
 function loadCacaPalavras() {
@@ -94,6 +79,19 @@ function loadQuizODS() {
     `;
 }
 
+function handleMobileMenuChange(event) {
+    const value = event.target.value;
+    if (value === 'perfil') {
+        goToPerfil();
+    } else if (value === 'ranking') {
+        // Lógica para ranking
+    } else if (value === 'avaliar') {
+        // Lógica para avaliar
+    } else {
+        loadGame(value);
+    }
+}
+
 function finishCrossWorld() {
     const gameContainer = document.getElementById('game-container');
     const iframe = document.getElementById('game-iframe');
@@ -103,10 +101,4 @@ function finishCrossWorld() {
     }
 
     gameContainer.innerHTML = '<h2>Bem-vindo à Plataforma de Jogos</h2>'; // Mensagem padrão após retornar ao menu
-
-    // Mostra o conteúdo principal da plataforma
-    content.classList.remove('closed');
-    sidebar.classList.remove('closed');
-    gameContainer.style.width = 'calc(100% - 200px)';
-    sidebarList.classList.remove('disabled');
 }

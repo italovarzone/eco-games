@@ -16,27 +16,32 @@
     <span class="platform-name">Ecogames</span>
     <button onclick="logout()" class="logout-btn">Logout</button>
   </nav>
-  <hr>
   <div class="container">
     <aside class="sidebar">
-      <h2 class="user-greeting">Olá, Ítalo!</h2>
-      <ul>
-        <li onclick="goToPerfil()">Perfil</li>
-        <li onclick="">Ranking</li>
-        <li onclick="">Avaliar a Plataforma</li>
-      </ul>
-      <h2>Jogos</h2>
-      <ul>
-        <li onclick="loadGame('cacapalavras')">CrossWorld</li>
-        <li onclick="loadGame('quiz')">GreenGenius</li>
-        <li onclick="loadGame('hangame')">Hangame</li>
-        <li onclick="loadGame('ecopuzzle')">Ecopuzzle</li>
-      </ul>
-      <footer class="footer">
+      <div class="content-sidebar">
+        <img src="../../../assets/img/avatar-teste.webp" alt="Foto de Perfil" class="profile-pic">
+        <h2 class="user-greeting">Olá, Ítalo!</h2>
+        <ul>
+          <li onclick="goToPerfil()">Perfil</li>
+          <li onclick="">Ranking</li>
+          <li onclick="">Avaliar a Plataforma</li>
+        </ul>
+        <h2>Jogos</h2>
+        <ul>
+          <li onclick="loadGame('cacapalavras')">CrossWorld</li>
+          <li onclick="loadGame('quiz')">GreenGenius</li>
+          <li onclick="loadGame('hangame')">Hangame</li>
+          <li onclick="loadGame('ecopuzzle')">Ecopuzzle</li>
+        </ul>
+      </div>
+      <!-- 
+      TODO
+      VERIFICAR FOOTER 
+      -->
+      <!-- <footer class="footer">
         <p>v1.0.0-beta1 - Todos os direitos reservados &copy; 2024</p>
-      </footer>
+      </footer> -->
     </aside>
-    <div class="divider-y"></div>
     <main class="content">
       <div id="game-container">
         <h2>Bem-vindo ao Ecogames</h2>

@@ -5,7 +5,6 @@ const wordList = document.getElementById("wordList");
 const timerElement = document.getElementById("timer");
 const gameContainer = document.getElementById("game-container");
 const congratulationsContainer = document.getElementById("congratulations-container");
-const dialogOverlay = document.getElementById("dialog-overlay");
 let isMouseDown = false;
 let timerInterval;
 let seconds = 0;
@@ -26,8 +25,8 @@ words.forEach((word, index) => {
   let startRow, startCol;
 
   do {
-    startRow = direction === 'horizontal' ? Math.floor(Math.random() * 15) : Math.floor(Math.random() * 15);
-    startCol = direction === 'vertical' ? Math.floor(Math.random() * 15) : Math.floor(Math.random() * 15);
+    startRow = Math.floor(Math.random() * (15 - (direction === 'horizontal' ? 1 : word.length)));
+    startCol = Math.floor(Math.random() * (15 - (direction === 'vertical' ? 1 : word.length)));
   } while (!isSafePlacement(word, startRow, startCol, direction));
 
   for (let i = 0; i < word.length; i++) {
@@ -70,39 +69,42 @@ function isSafePlacement(word, startRow, startCol, direction) {
   }
 
   for (let i = 0; i < word.length; i++) {
-    const cell = crossword.querySelector(`[data-row="${direction === 'horizontal' ? startRow : startRow + i}"][data-col="${direction === 'vertical' ? startCol : startCol + i}"]`);
+    const row = direction === 'horizontal' ? startRow : startRow + i;
+    const col = direction === 'vertical' ? startCol : startCol + i;
+    const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+
     if (cell.textContent && cell.textContent !== word[i]) {
-      return false; 
+      return false;
     }
   }
   return true;
 }
 
 function handleCellMouseDown(cell) {
-isMouseDown = true;
-handleCellSelection(cell);
-document.addEventListener("mouseover", handleCellMouseOver);
-document.addEventListener("mouseup", handleMouseUp);
+  isMouseDown = true;
+  handleCellSelection(cell);
+  document.addEventListener("mouseover", handleCellMouseOver);
+  document.addEventListener("mouseup", handleMouseUp);
 
-function handleMouseUp() {
-  isMouseDown = false;
-  document.removeEventListener("mouseover", handleCellMouseOver);
-  document.removeEventListener("mouseup", handleMouseUp);
-  resetSelectedCells();
-}
+  function handleMouseUp() {
+    isMouseDown = false;
+    document.removeEventListener("mouseover", handleCellMouseOver);
+    document.removeEventListener("mouseup", handleMouseUp);
+    resetSelectedCells();
+  }
 }
 
 function handleCellMouseOver(event) {
-if (isMouseDown && event.target.classList.contains("cell") && !event.target.classList.contains("correct")) {
-  const selectedCells = document.querySelectorAll('.cell.selected');
-  const maxSelectedCells = maxLetters;
+  if (isMouseDown && event.target.classList.contains("cell") && !event.target.classList.contains("correct")) {
+    const selectedCells = document.querySelectorAll('.cell.selected');
+    const maxSelectedCells = maxLetters;
 
-  if (selectedCells.length >= maxSelectedCells) {
-    resetSelectedCells();
+    if (selectedCells.length >= maxSelectedCells) {
+      resetSelectedCells();
+    }
+
+    handleCellSelection(event.target);
   }
-
-  handleCellSelection(event.target);
-}
 }
 
 function handleCellSelection(cell) {
@@ -113,11 +115,11 @@ function handleCellSelection(cell) {
 }
 
 function resetSelectedCells() {
-const selectedCells = document.querySelectorAll('.cell.selected');
-selectedCells.forEach(selectedCell => {
-  selectedCell.classList.remove('selected');
-  toggleWordStrike(selectedCell.dataset.word);
-});
+  const selectedCells = document.querySelectorAll('.cell.selected');
+  selectedCells.forEach(selectedCell => {
+    selectedCell.classList.remove('selected');
+    toggleWordStrike(selectedCell.dataset.word);
+  });
 }
 
 function toggleWordStrike(word) {
@@ -174,7 +176,7 @@ function showDialog() {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   totalTimeElement.textContent = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  
+
   gameContainer.style.display = "none";
   gameResultContainer.style.display = "block";
 }
@@ -185,7 +187,6 @@ function showHelp() {
 
   blurOverlay.style.display = 'block';
   helpDialog.style.display = 'flex';
-
 }
 
 function closeHelp() {
@@ -200,31 +201,28 @@ function goToMenu() {
   window.location.href = '../index.html';
 }
 
-// Função para alternar entre tela cheia e modo normal
 function toggleFullScreen() {
-    const fullscreenIcon = document.getElementById('fullscreen-icon');
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-  
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      fullscreenIcon.classList.remove('fa-expand');
-      fullscreenIcon.classList.add('fa-compress');
-      fullscreenBtn.classList.add('fullscreen');
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-        fullscreenIcon.classList.remove('fa-compress');
-        fullscreenIcon.classList.add('fa-expand');
-        fullscreenBtn.classList.remove('fullscreen');
-      }
+  const fullscreenIcon = document.getElementById('fullscreen-icon');
+  const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen();
+    fullscreenIcon.classList.remove('fa-expand');
+    fullscreenIcon.classList.add('fa-compress');
+    fullscreenBtn.classList.add('fullscreen');
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      fullscreenIcon.classList.remove('fa-compress');
+      fullscreenIcon.classList.add('fa-expand');
+      fullscreenBtn.classList.remove('fullscreen');
     }
   }
-  
-  // Associando a função ao botão
-  const fullscreenBtn = document.getElementById('fullscreen-btn');
-  fullscreenBtn.addEventListener('click', toggleFullScreen);
+}
 
-  document.getElementById('return-to-menu-btn').addEventListener('click', function() {
-    // Chama a função para destruir o iframe e retornar ao menu
-    parent.finishCrossWorld();
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+fullscreenBtn.addEventListener('click', toggleFullScreen);
+
+document.getElementById('return-to-menu-btn').addEventListener('click', function() {
+  parent.finishCrossWorld();
 });
