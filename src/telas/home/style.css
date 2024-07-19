@@ -22,6 +22,10 @@ body {
     background-color: white;
 }
 
+hr {
+    opacity: 40%;
+}
+
 .nav-bar {
     display: flex;
     align-items: center;
@@ -55,6 +59,13 @@ body {
     width: 100%;
     overflow: hidden; /* Para esconder o conteúdo que vazar da largura */
     flex-grow: 1; /* Permite que o container principal ocupe o restante da altura */
+}
+
+.divider-y {
+    width: 1px;
+    opacity: 40%;
+    height: 100%;
+    background-color: var(--cor-secundaria); /* Você pode ajustar a cor conforme necessário */
 }
 
 .sidebar {
@@ -134,7 +145,6 @@ body {
     align-items: center;
     justify-content: center;
     background-color: white;
-    border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
