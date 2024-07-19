@@ -1,10 +1,26 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const sidebar = document.querySelector('.sidebar');
+    handleSidebarVisibility(); // Inicialmente, verificar o tamanho da tela e ajustar a sidebar
+
+    window.addEventListener('resize', handleSidebarVisibility); // Adicionar listener para redimensionamento da tela
+});
+
+function handleSidebarVisibility() {
+    const sidebar = document.querySelector('.sidebar');
+    if (window.innerWidth < 1000) {
+        sidebar.classList.remove('open');
+    } else {
+        sidebar.classList.add('open');
+    }
+}
+
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.toggle('open');
 }
 
 function logout() {
-    window.location.href = 'logout.html'; // Redireciona para a página de logout
+    window.location.href = 'logout.html';
 }
 
 function showPlayerInfo() {
@@ -49,6 +65,10 @@ function loadGame(game) {
         default:
             gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
     }
+
+    // Fechar a sidebar após a seleção do jogo
+    const sidebar = document.querySelector('.sidebar');
+    sidebar.classList.remove('open');
 }
 
 function loadCacaPalavras() {
@@ -90,15 +110,4 @@ function handleMobileMenuChange(event) {
     } else {
         loadGame(value);
     }
-}
-
-function finishCrossWorld() {
-    const gameContainer = document.getElementById('game-container');
-    const iframe = document.getElementById('game-iframe');
-
-    if (iframe) {
-        iframe.remove();
-    }
-
-    gameContainer.innerHTML = '<h2>Bem-vindo à Plataforma de Jogos</h2>'; // Mensagem padrão após retornar ao menu
 }

@@ -353,7 +353,18 @@ a {
   }
 }
 
-@media (max-width: 800px) {
+@media (max-width: 768px) {
+  .game-container {
+    border-radius: 0;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  .card {
+    width: 110px !important;
+    height: 110px !important;
+}
+
   #gameBoard {
     grid-template: 1fr 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
     gap: 15px;
@@ -368,7 +379,7 @@ a {
   }
 }
 
-@media (max-width: 600px) {
+/* @media (max-width: 600px) {
   #gameBoard {
     gap: 10px;
   }
@@ -380,7 +391,7 @@ a {
     width: 43px;
     height: 43px;
   }
-}
+} */
 
 #fullscreen-btn {
   position: fixed;
