@@ -6,6 +6,7 @@ const timerElement = document.getElementById("timer");
 const gameContainer = document.getElementById("game-container");
 const congratulationsContainer = document.getElementById("congratulations-container");
 let isMouseDown = false;
+let selectedCells = [];
 let timerInterval;
 let seconds = 0;
 
@@ -15,8 +16,8 @@ for (let row = 0; row < 15; row++) {
     cell.classList.add("cell");
     cell.dataset.row = row;
     cell.dataset.col = col;
-    cell.addEventListener("mousedown", () => handleCellMouseDown(cell));
-    cell.addEventListener("touchstart", () => handleCellMouseDown(cell));
+    cell.addEventListener("mousedown", (e) => handleCellMouseDown(e, cell));
+    cell.addEventListener("touchstart", (e) => handleCellMouseDown(e, cell));
     crossword.appendChild(cell);
   }
 }
@@ -45,7 +46,7 @@ words.forEach(word => {
   wordList.appendChild(wordItem);
 });
 
-for (let row = 0; row < 15; row++) {
+for (let row = 0;  row < 15; row++) {
   for (let col = 0; col < 15; col++) {
     const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     if (!cell.textContent) {
@@ -81,72 +82,85 @@ function isSafePlacement(word, startRow, startCol, direction) {
   return true;
 }
 
-function handleCellMouseDown(cell) {
+function handleCellMouseDown(e, cell) {
+  e.preventDefault();
   isMouseDown = true;
+  selectedCells = [cell];
   handleCellSelection(cell);
   document.addEventListener("mousemove", handleCellMouseOver);
   document.addEventListener("touchmove", handleCellMouseOver);
   document.addEventListener("mouseup", handleMouseUp);
   document.addEventListener("touchend", handleMouseUp);
-
-  function handleMouseUp() {
-    isMouseDown = false;
-    document.removeEventListener("mousemove", handleCellMouseOver);
-    document.removeEventListener("touchmove", handleCellMouseOver);
-    document.removeEventListener("mouseup", handleMouseUp);
-    document.removeEventListener("touchend", handleMouseUp);
-    resetSelectedCells();
-  }
 }
 
 function handleCellMouseOver(event) {
-  const targetCell = event.type.includes("touch") ? document.elementFromPoint(event.touches[0].clientX, event.touches[0].clientY) : event.target;
-
-  if (isMouseDown && targetCell.classList.contains("cell") && !targetCell.classList.contains("correct")) {
-    const selectedCells = document.querySelectorAll('.cell.selected');
-    const maxSelectedCells = maxLetters;
-
-    if (selectedCells.length >= maxSelectedCells) {
-      resetSelectedCells();
-    }
-
-    handleCellSelection(targetCell);
+  let targetCell;
+  if (event.type.includes("touch")) {
+    const touch = event.touches[0];
+    targetCell = document.elementFromPoint(touch.clientX, touch.clientY);
+  } else {
+    targetCell = event.target;
   }
+
+  if (isMouseDown && targetCell.classList.contains("cell") && !targetCell.classList.contains("correct") && !selectedCells.includes(targetCell)) {
+    handleCellSelection(targetCell);
+    selectedCells.push(targetCell);
+  }
+}
+
+function handleMouseUp() {
+  isMouseDown = false;
+  document.removeEventListener("mousemove", handleCellMouseOver);
+  document.removeEventListener("touchmove", handleCellMouseOver);
+  document.removeEventListener("mouseup", handleMouseUp);
+  document.removeEventListener("touchend", handleMouseUp);
+  markSelectedWord();
 }
 
 function handleCellSelection(cell) {
   if (!cell.classList.contains("correct")) {
-    cell.classList.toggle("selected");
-    toggleWordStrike(cell.dataset.word);
+    cell.classList.add("selected");
   }
 }
 
-function resetSelectedCells() {
-  const selectedCells = document.querySelectorAll('.cell.selected');
-  selectedCells.forEach(selectedCell => {
-    selectedCell.classList.remove('selected');
-    toggleWordStrike(selectedCell.dataset.word);
-  });
+function markSelectedWord() {
+  const selectedWord = selectedCells.map(cell => cell.textContent).join('');
+  const wordObj = words.find(word => word === selectedWord);
+
+  if (wordObj) {
+    selectedCells.forEach(cell => {
+      cell.classList.remove('selected');
+      cell.classList.add('correct');
+    });
+    const wordItem = Array.from(document.querySelectorAll('.word-item')).find(item => item.textContent === selectedWord);
+    if (wordItem) {
+      wordItem.classList.add("strikethrough");
+    }
+  } else {
+    selectedCells.forEach(cell => {
+      cell.classList.remove('selected');
+    });
+  }
+
+  selectedCells = [];
+  updateWordList();
 }
 
 function toggleWordStrike(word) {
-  const wordItems = document.querySelectorAll(".word-item");
+  const wordItem = Array.from(document.querySelectorAll('.word-item')).find(item => item.textContent === word);
   const cells = document.querySelectorAll(".cell");
 
-  wordItems.forEach(item => {
-    if (item.textContent === word) {
-      const selectedWordCells = Array.from(cells).filter(cell => cell.classList.contains("selected") && cell.dataset.word === word);
-      if (selectedWordCells.length === word.length) {
-        item.classList.add("strikethrough");
-        selectedWordCells.forEach(cell => {
-          cell.classList.remove("selected");
-          cell.classList.add("correct");
-        });
-      } else {
-        item.classList.remove("strikethrough");
-      }
-    }
-  });
+  if (wordItem && wordItem.classList.contains("strikethrough")) {
+    wordItem.classList.remove("strikethrough");
+    Array.from(cells).filter(cell => cell.dataset.word === word).forEach(cell => {
+      cell.classList.remove("correct");
+    });
+  } else {
+    wordItem.classList.add("strikethrough");
+    Array.from(cells).filter(cell => cell.dataset.word === word).forEach(cell => {
+      cell.classList.add("correct");
+    });
+  }
   updateWordList();
 }
 
