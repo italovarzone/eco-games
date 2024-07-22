@@ -312,9 +312,11 @@ body {
       padding: 16px 0px 0px 0px;
     }
     .crossword {
-        padding: 16px 0px 0px 0px;
-        grid-template-columns: repeat(15, 1fr);
-        grid-template-rows: repeat(15, 1fr);
+      width: 350px;
+      height: 400px;
+      padding: 16px 0px 0px 0px;
+      grid-template-columns: repeat(15, 1fr);
+      grid-template-rows: repeat(15, 1fr);
     }
 
     .word-list {
@@ -325,6 +327,7 @@ body {
     .crossword .cell {
       width: 20px;
       height: 20px;
+      
       font-size: 10px;
     }
 
