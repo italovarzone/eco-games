@@ -42,11 +42,10 @@ words.forEach(word => {
   const wordItem = document.createElement("div");
   wordItem.classList.add("word-item");
   wordItem.textContent = word;
-  wordItem.addEventListener("click", () => toggleWordStrike(word));
   wordList.appendChild(wordItem);
 });
 
-for (let row = 0;  row < 15; row++) {
+for (let row = 0; row < 15; row++) {
   for (let col = 0; col < 15; col++) {
     const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
     if (!cell.textContent) {
@@ -143,24 +142,6 @@ function markSelectedWord() {
   }
 
   selectedCells = [];
-  updateWordList();
-}
-
-function toggleWordStrike(word) {
-  const wordItem = Array.from(document.querySelectorAll('.word-item')).find(item => item.textContent === word);
-  const cells = document.querySelectorAll(".cell");
-
-  if (wordItem && wordItem.classList.contains("strikethrough")) {
-    wordItem.classList.remove("strikethrough");
-    Array.from(cells).filter(cell => cell.dataset.word === word).forEach(cell => {
-      cell.classList.remove("correct");
-    });
-  } else {
-    wordItem.classList.add("strikethrough");
-    Array.from(cells).filter(cell => cell.dataset.word === word).forEach(cell => {
-      cell.classList.add("correct");
-    });
-  }
   updateWordList();
 }
 

@@ -25,6 +25,10 @@ body {
     background-color: var(--cor-primaria);
 }
 
+#reveal-word-container {
+  padding: 8px;
+}
+
 .game {
     width: 700px;
     background-color: white;
