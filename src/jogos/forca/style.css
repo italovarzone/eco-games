@@ -4,7 +4,7 @@
   --cor-secundaria: #a5a5a5; /* cinza claro */
   --cor-fundo: #f2f2f2; /* cinza claro */
   --cor-texto: #333; /* preto */
-  --cor-botao: #6ab04c; /* verde claro */
+  --cor-botao: #4caf50;
   --fonte-gamer: "Secular One", sans-serif;
 }
 
@@ -228,6 +228,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 12px;
 }
 
 .container .interrogation-btn:hover {
@@ -321,4 +322,97 @@ body {
 
 #fullscreen-btn.fullscreen:hover {
   background-color: var(--cor-botao);
+}
+
+.keyboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.keyboard-container button {
+  width: 35px;
+  height: 35px;
+  margin: 2px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--cor-botao);
+  color: #fff;
+  cursor: pointer;
+}
+
+.keyboard-container button:hover {
+  background-color: var(--cor-primaria);
+}
+
+.keyboard-container button:disabled {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+.keyboard-container .disabled-button {
+  background-color: #ccc;
+  color: #666;
+  cursor: not-allowed;
+}
+
+#toggle-keyboard-btn {
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  background-color: var(--cor-botao);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+#toggle-keyboard-btn:hover {
+  background-color: var(--cor-botao);
+}
+
+#keyboard-icon {
+  transition: transform 0.3s ease;
+}
+
+#toggle-keyboard-btn.active {
+  background-color: var(--cor-botao);
+}
+
+#toggle-keyboard-btn.active:hover {
+  background-color: var(--cor-botao);
+}
+
+
+@media (max-width: 768px) {
+  body {
+    display: flex;
+    align-items: baseline;
+    background-color: white;
+  }
+
+  .content .reset-btn {
+    width: 100%;
+    font-size: 16px;
+  }
+
+  #result-container {
+    box-shadow: none;
+  }
+
+  .reset-btn {
+    width: 100% !important;
+  }
 }

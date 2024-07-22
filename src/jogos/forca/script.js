@@ -48,10 +48,80 @@ const resetTimer = () => {
   document.getElementById("time").innerText = `00:00`;
 };
 
+function createKeyboard() {
+  const keyboardContainer = document.getElementById('keyboard');
+  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+  
+  keyboardContainer.innerHTML = ''; // Limpa o conteúdo anterior
+  
+  alphabet.forEach(letter => {
+    const button = document.createElement('button');
+    button.innerText = letter;
+    button.addEventListener('click', () => handleKeyboardInput(letter, button));
+    keyboardContainer.appendChild(button);
+  });
+}
+
+// Função para lidar com a entrada do teclado virtual
+function handleKeyboardInput(letter, button) {
+  if (!incorrects.includes(` ${letter}`) && !corrects.includes(letter)) {
+    if (word.includes(letter)) {
+      for (let i = 0; i < word.length; i++) {
+        if (word[i] == letter) {
+          corrects.push(letter);
+          inputs.querySelectorAll("input")[i].value = letter;
+        }
+      }
+    } else {
+      maxGuesses--;
+      incorrects.push(` ${letter}`);
+    }
+    guessLeft.innerText = maxGuesses;
+    wrongLetter.innerText = incorrects;
+  }
+  
+  // Desabilitar e marcar o botão após ser clicado
+  if (button) {
+    button.disabled = true;
+    button.classList.add('disabled-button');
+  }
+
+  setTimeout(() => {
+    if (corrects.length === word.length) {
+      stopTimer();
+      showResult();
+    } else if (maxGuesses < 1) {
+      stopTimer();
+      showResult();
+      for (let i = 0; i < word.length; i++) {
+        inputs.querySelectorAll("input")[i].value = word[i];
+      }
+    }
+  });
+}
+
+// Função para alternar a visibilidade do teclado virtual
+function toggleKeyboard() {
+  const keyboardContainer = document.getElementById('keyboard');
+  const toggleButton = document.getElementById('toggle-keyboard-btn');
+  
+  if (keyboardContainer.style.display === 'none') {
+    keyboardContainer.style.display = 'flex';
+  } else {
+    keyboardContainer.style.display = 'none';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  createKeyboard();
+  const toggleButton = document.getElementById('toggle-keyboard-btn');
+  toggleButton.addEventListener('click', toggleKeyboard);
+});
+
 function randomWord() {
   startTimer();
   let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
-  word = ranObj.word;
+  word = ranObj.word.toUpperCase();  
   maxGuesses = 5;
   corrects = [];
   incorrects = [];
@@ -70,7 +140,7 @@ function randomWord() {
 randomWord();
 
 function initGame(e) {
-  let key = e.target.value.toLowerCase();
+  let key = e.target.value.toUpperCase();  
   if (
     key.match(/^[A-Za-z]+$/) &&
     !incorrects.includes(` ${key}`) &&
@@ -120,6 +190,7 @@ function resetGame() {
   gameContent.style.display = "block";
   resetTimer();
   randomWord();
+  createKeyboard(); // Recria o teclado
 }
 
 resetBtns.forEach(btn => btn.addEventListener("click", (e) => {
