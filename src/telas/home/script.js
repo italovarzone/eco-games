@@ -14,6 +14,11 @@ function handleSidebarVisibility() {
     }
 }
 
+function loadHome() {
+    const gameContainer = document.getElementById('game-container');
+    gameContainer.innerHTML = '<h2>Bem-vindo ao Ecogames</h2>';
+}
+
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.toggle('open');

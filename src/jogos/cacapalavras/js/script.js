@@ -1,4 +1,4 @@
-const words = ["VERDE", "MAR", "AGUA", "POBRE", "FOME", "EDUCACAO", "AQUATICO", "NATUREZA"];
+const words = ["VERDE", "MAR", "AGUA", "POBRE", "FOME", "EDUCACAO", "AQUATICO", "NATUREZA", "PLANETA", "TERRA", "SUSTENTAVEL"];
 const maxLetters = getMaxLetters(words);
 const crossword = document.getElementById("crossword");
 const wordList = document.getElementById("wordList");
@@ -34,7 +34,11 @@ words.forEach((word, index) => {
   for (let i = 0; i < word.length; i++) {
     const cell = crossword.querySelector(`[data-row="${direction === 'horizontal' ? startRow : startRow + i}"][data-col="${direction === 'vertical' ? startCol : startCol + i}"]`);
     cell.textContent = word[i];
-    cell.dataset.word = word;
+    if (cell.dataset.words) {
+      cell.dataset.words += `,${word}`;
+    } else {
+      cell.dataset.words = word;
+    }
   }
 });
 
@@ -74,7 +78,7 @@ function isSafePlacement(word, startRow, startCol, direction) {
     const col = direction === 'vertical' ? startCol : startCol + i;
     const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
 
-    if (cell.textContent && cell.textContent !== word[i]) {
+    if (cell.textContent && cell.textContent !== word[i] && !cell.dataset.words?.includes(word)) {
       return false;
     }
   }
@@ -101,7 +105,7 @@ function handleCellMouseOver(event) {
     targetCell = event.target;
   }
 
-  if (isMouseDown && targetCell.classList.contains("cell") && !targetCell.classList.contains("correct") && !selectedCells.includes(targetCell)) {
+  if (isMouseDown && targetCell.classList.contains("cell") && !selectedCells.includes(targetCell)) {
     handleCellSelection(targetCell);
     selectedCells.push(targetCell);
   }
@@ -124,14 +128,14 @@ function handleCellSelection(cell) {
 
 function markSelectedWord() {
   const selectedWord = selectedCells.map(cell => cell.textContent).join('');
-  const wordObj = words.find(word => word === selectedWord);
-
+  const wordObj = words.find(word => selectedCells.every(cell => cell.dataset.words?.includes(word) && selectedWord.includes(word)));
+  
   if (wordObj) {
     selectedCells.forEach(cell => {
       cell.classList.remove('selected');
       cell.classList.add('correct');
     });
-    const wordItem = Array.from(document.querySelectorAll('.word-item')).find(item => item.textContent === selectedWord);
+    const wordItem = Array.from(document.querySelectorAll('.word-item')).find(item => item.textContent === wordObj);
     if (wordItem) {
       wordItem.classList.add("strikethrough");
     }
