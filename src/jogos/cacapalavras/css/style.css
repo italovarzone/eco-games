@@ -222,11 +222,6 @@ body {
     gap: 8px;
   }
 
-  .btn-menu-container #play-again-button {
-    font-size: 16px;
-    padding: 0;
-  }
-
   .btn-menu-container button {
     width: 120px;
   }
@@ -278,17 +273,17 @@ body {
 
   #game-result-container {
     display: none;
-    width: 400px; /* Tamanho fixo do contêiner */
+    width: 400px; 
     height: auto;
-    background-color: #f2f2f2; /* Cor de fundo */
+    background-color: #f2f2f2; 
     border-radius: 10px;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: absolute; /* Posicionamento absoluto para centralizar */
-    top: 50%; /* Centralizar verticalmente */
-    left: 50%; /* Centralizar horizontalmente */
-    transform: translate(-50%, -50%); /* Centralizar completamente */
-    text-align: center; /* Alinhar o conteúdo ao centro */
+    position: absolute; 
+    top: 50%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center; 
   }
 
   #game-result-container p {
@@ -296,21 +291,6 @@ body {
   }
 
   #play-again-button {
-    font-family: var(--fonte-gamer);
-    padding-top: 10px;
-    border: none;
-    align-self: center;
-    border-radius: 3px;
-    background-color: var(--cor-botao);
-    color: #ffffff;
-    font-size: 16px;
-    width: 100px;
-    cursor: pointer;
-    border-right: solid #3e8e41 6px;
-    border-bottom: solid #3e8e41 4px;
-  }
-
-  .btn-primary {
     font-family: var(--fonte-gamer);
     padding: 10px 20px;
     border: none;
@@ -324,12 +304,7 @@ body {
     border-bottom: solid #3e8e41 4px;
   }
   
-  .btn-primary:hover {
-    color: #3e8e41;
-    transition: 0.1s;
-  }
-  
-  #play-again-button:hover{
+  #play-again-button:hover {
     color: #3e8e41;
     transition: 0.1s;
   }
@@ -375,10 +350,6 @@ body {
         margin-bottom: 16px;
     }
 
-    #play-again-button {
-      width: 200px;
-    }
-
     #game-result-container {
         width: 100%;
         box-shadow: none;
@@ -389,11 +360,6 @@ body {
       padding-top: 16px;
       font-size: 12px;
       font-weight: bold;
-    }
-
-    .btn-menu-container #play-again-button {
-      font-size: 16px;
-      padding: 0;
     }
   
     .btn-menu-container button {
