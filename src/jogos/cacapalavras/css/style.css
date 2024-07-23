@@ -360,7 +360,7 @@ body {
 
     .crossword .cell {
       width: 20px;
-      height: 20px;
+      height: 24px;
       
       font-size: 10px;
     }
