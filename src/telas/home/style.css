@@ -66,7 +66,62 @@ hr {
     width: 100%;
     overflow: hidden;
     flex-grow: 1;
+    width: 100%;
+    height: calc(100vh - 60px); /* Ajusta para incluir a altura da navbar */
 }
+  
+.sidebar {
+    z-index: 1000; /* Garante que a sidebar fique acima do carrossel */
+  }
+  
+  .carousel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+  
+  .carousel-inner {
+    display: flex;
+    height: 100%;
+    transition: transform 0.5s ease;
+  }
+  
+  .carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+    height: 100%;
+  }
+  
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .carousel-controls {
+    position: absolute;
+    bottom: 20px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .carousel-indicator {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .carousel-indicator.active,
+  .carousel-indicator:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+  }
+  
 
 .profile-pic {
     width: 50px;

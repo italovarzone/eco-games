@@ -34,17 +34,27 @@
           <li onclick="loadGame('ecopuzzle')">Ecopuzzle</li>
         </ul>
       </div>
-      <!-- 
-      TODO
-      VERIFICAR FOOTER 
-      -->
-      <!-- <footer class="footer">
-        <p>v1.0.0-beta1 - Todos os direitos reservados &copy; 2024</p>
-      </footer> -->
     </aside>
     <main class="content">
       <div id="game-container">
-        <h2>Bem-vindo ao Ecogames</h2>
+        <div class="carousel">
+          <div class="carousel-inner">
+            <div class="carousel-item active">
+              <img src="../../../assets/img/ods1.png" alt="Jogo 1">
+            </div>
+            <div class="carousel-item">
+              <img src="../../../assets/img/ods2.png" alt="Jogo 2">
+            </div>
+            <div class="carousel-item">
+              <img src="../../../assets/img/ods3.png" alt="Jogo 3">
+            </div>
+          </div>
+          <div class="carousel-controls">
+            <span class="carousel-indicator" onclick="currentSlide(0)"></span>
+            <span class="carousel-indicator" onclick="currentSlide(1)"></span>
+            <span class="carousel-indicator" onclick="currentSlide(2)"></span>
+          </div>
+        </div>
       </div>
     </main>
   </div>
