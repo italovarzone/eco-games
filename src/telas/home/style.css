@@ -306,6 +306,10 @@ hr {
 
 /* Responsividade */
 @media (max-width: 768px) {
+    .carousel-item img {
+        object-fit: contain;
+      }
+    
     .nav-bar {
         display: flex;
     }

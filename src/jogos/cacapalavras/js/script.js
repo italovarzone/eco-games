@@ -1,65 +1,103 @@
-const words = ["ENERGIA"/*, "INOVACAO", "EMPREGO", "SUSTENTAVEL", "PARCERIA", "TECNOLOGIA", "CRESCIMENTO", "COLABORACAO"*/];
+const words = ["ENERGIA"];
 const maxLetters = getMaxLetters(words);
 const crossword = document.getElementById("crossword");
 const wordList = document.getElementById("wordList");
 const timerElement = document.getElementById("timer");
 const gameContainer = document.getElementById("game-container");
-const congratulationsContainer = document.getElementById("congratulations-container");
+const congratulationsContainer = document.getElementById("game-result-container");
 let isMouseDown = false;
 let selectedCells = [];
 let timerInterval;
 let seconds = 0;
 
-for (let row = 0; row < 15; row++) {
-  for (let col = 0; col < 15; col++) {
-    const cell = document.createElement("div");
-    cell.classList.add("cell");
-    cell.dataset.row = row;
-    cell.dataset.col = col;
-    cell.addEventListener("mousedown", (e) => handleCellMouseDown(e, cell));
-    cell.addEventListener("touchstart", (e) => handleCellMouseDown(e, cell));
-    crossword.appendChild(cell);
-  }
-}
-
-words.forEach((word, index) => {
-  const direction = index % 2 === 0 ? "horizontal" : "vertical";
-  let startRow, startCol;
-
-  do {
-    startRow = Math.floor(Math.random() * (15 - (direction === 'horizontal' ? 1 : word.length)));
-    startCol = Math.floor(Math.random() * (15 - (direction === 'vertical' ? 1 : word.length)));
-  } while (!isSafePlacement(word, startRow, startCol, direction));
-
-  for (let i = 0; i < word.length; i++) {
-    const cell = crossword.querySelector(`[data-row="${direction === 'horizontal' ? startRow : startRow + i}"][data-col="${direction === 'vertical' ? startCol : startCol + i}"]`);
-    cell.textContent = word[i];
-    if (cell.dataset.words) {
-      cell.dataset.words += `,${word}`;
-    } else {
-      cell.dataset.words = word;
-    }
-  }
+document.addEventListener("DOMContentLoaded", () => {
+  startGame();
 });
 
-words.forEach(word => {
-  const wordItem = document.createElement("div");
-  wordItem.classList.add("word-item");
-  wordItem.textContent = word;
-  wordList.appendChild(wordItem);
-});
+function startGame() {
+  // Limpar o conteúdo existente
+  clearGame();
 
-for (let row = 0; row < 15; row++) {
-  for (let col = 0; col < 15; col++) {
-    const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
-    if (!cell.textContent) {
-      const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
-      cell.textContent = randomLetter;
+  // Criar o grid de células
+  for (let row = 0; row < 15; row++) {
+    for (let col = 0; col < 15; col++) {
+      let cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+      if (!cell) {
+        cell = document.createElement("div");
+        cell.classList.add("cell");
+        cell.dataset.row = row;
+        cell.dataset.col = col;
+        cell.addEventListener("mousedown", (e) => handleCellMouseDown(e, cell));
+        cell.addEventListener("touchstart", (e) => handleCellMouseDown(e, cell));
+        crossword.appendChild(cell);
+      }
     }
   }
+
+  // Posicionar as palavras
+  words.forEach((word, index) => {
+    const direction = index % 2 === 0 ? "horizontal" : "vertical";
+    let startRow, startCol;
+
+    do {
+      startRow = Math.floor(Math.random() * (15 - (direction === 'horizontal' ? 1 : word.length)));
+      startCol = Math.floor(Math.random() * (15 - (direction === 'vertical' ? 1 : word.length)));
+    } while (!isSafePlacement(word, startRow, startCol, direction));
+
+    for (let i = 0; i < word.length; i++) {
+      const cell = crossword.querySelector(`[data-row="${direction === 'horizontal' ? startRow : startRow + i}"][data-col="${direction === 'vertical' ? startCol : startCol + i}"]`);
+      cell.textContent = word[i];
+      if (cell.dataset.words) {
+        cell.dataset.words += `,${word}`;
+      } else {
+        cell.dataset.words = word;
+      }
+    }
+  });
+
+  // Adicionar a lista de palavras
+  words.forEach(word => {
+    const wordItem = document.createElement("div");
+    wordItem.classList.add("word-item");
+    wordItem.textContent = word;
+    wordList.appendChild(wordItem);
+  });
+
+  // Preencher células vazias com letras aleatórias
+  for (let row = 0; row < 15; row++) {
+    for (let col = 0; col < 15; col++) {
+      const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
+      if (!cell.textContent) {
+        const randomLetter = String.fromCharCode(65 + Math.floor(Math.random() * 26));
+        cell.textContent = randomLetter;
+      }
+    }
+  }
+
+  // Iniciar o timer
+  timerInterval = setInterval(updateTimer, 1000);
 }
 
-timerInterval = setInterval(updateTimer, 1000);
+function clearGame() {
+  const cells = crossword.querySelectorAll(".cell");
+  cells.forEach(cell => {
+    cell.textContent = "";
+    cell.classList.remove("selected", "correct");
+    cell.removeAttribute("data-words");
+  });
+  wordList.innerHTML = "";
+  clearInterval(timerInterval);
+  seconds = 0;
+  timerElement.textContent = "Tempo: 00:00";
+}
+
+function resetGame() {
+  clearGame();
+  const gameResultContainer = document.getElementById("game-result-container");
+  gameResultContainer.style.display = "none";
+  gameContainer.style.display = "flex";
+  startGame();
+}
 
 function getMaxLetters(words) {
   return Math.max(...words.map(word => word.length));
