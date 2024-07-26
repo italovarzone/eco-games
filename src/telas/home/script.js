@@ -1,49 +1,8 @@
-let currentSlide = 0;
-let slideInterval;
-
 document.addEventListener("DOMContentLoaded", () => {
-  showSlide(currentSlide);
-  startSlideShow();
-});
+    const sidebar = document.querySelector('.sidebar');
+    handleSidebarVisibility(); // Inicialmente, verificar o tamanho da tela e ajustar a sidebar
 
-function showSlide(index) {
-  const slides = document.querySelectorAll('.carousel-item');
-  if (index >= slides.length) currentSlide = 0;
-  if (index < 0) currentSlide = slides.length - 1;
-  for (let slide of slides) {
-    slide.classList.remove('active');
-  }
-  slides[currentSlide].classList.add('active');
-  const carouselInner = document.querySelector('.carousel-inner');
-  carouselInner.style.transform = `translateX(-${currentSlide * 100}%)`;
-}
-
-function nextSlide() {
-  currentSlide++;
-  showSlide(currentSlide);
-}
-
-function prevSlide() {
-  currentSlide--;
-  showSlide(currentSlide);
-}
-
-function startSlideShow() {
-  slideInterval = setInterval(nextSlide, 3000); // Muda de slide a cada 3 segundos
-}
-
-function stopSlideShow() {
-  clearInterval(slideInterval);
-}
-
-const carousel = document.querySelector('.carousel');
-carousel.addEventListener('mouseenter', stopSlideShow);
-carousel.addEventListener('mouseleave', startSlideShow);
-
-document.addEventListener("DOMContentLoaded", () => {
-    handleSidebarVisibility();
-
-    window.addEventListener('resize', handleSidebarVisibility);
+    window.addEventListener('resize', handleSidebarVisibility); // Adicionar listener para redimensionamento da tela
 });
 
 function handleSidebarVisibility() {
