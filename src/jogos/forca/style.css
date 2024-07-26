@@ -271,14 +271,13 @@ body {
 
 #result-container .reset-btn {
   font-family: var(--fonte-gamer);
-  padding-top: 10px;
+  padding: 10px 20px;
   border: none;
-  align-self: center;
   border-radius: 3px;
-  background-color: var(--cor-botao);
-  color: #fff;
+  background-color: #4caf50;
+  width: 200px;
+  color: #ffffff;
   font-size: 16px;
-  width: 100px;
   cursor: pointer;
   border-right: solid #3e8e41 6px;
   border-bottom: solid #3e8e41 4px;
