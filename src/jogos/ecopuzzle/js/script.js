@@ -11,7 +11,8 @@ const cardStart = document.querySelector("#card-start");
 const button = document.querySelector(".login__button");
 const form = document.querySelector(".login-form");
 
-var iduser;
+let clickBlocked = true;
+let iduser;
 
 document.addEventListener("DOMContentLoaded", () => {
   startGame();
@@ -24,6 +25,11 @@ function startGame(userid) {
   stopTime();
   startTime();
   initializeCards(game.createCardsFromTechs());
+
+  // Desbloquear cliques após 3 segundos
+  setTimeout(() => {
+    clickBlocked = false;
+  }, 3000);
 
   if (game.checkMatch()) {
     game.clearCards();
@@ -88,6 +94,8 @@ function createCardFace(face, card, element) {
 }
 
 function flipCard() {
+  if (clickBlocked) return; // Bloquear cliques enquanto clickBlocked for true
+
   if (game.setCard(this.id)) {
     this.classList.add("flip");
     cardClick.play();
@@ -175,9 +183,7 @@ function recuperarTimeScoreUser() {
     .then((response) => response.json()) // Analisa a resposta como um objeto JSON
     .then((data) => {
       // Usa o objeto JSON retornado para exibir o tempo de gravação do usuário
-      // console.log(data.time_record);
       recorde.textContent = data.time_record;
-      // console.log(`O tempo de gravação do usuário é: ${data.time_record}`);
     })
     .catch((error) => console.error(error)); // Lida com erros da requisição HTTP
 
@@ -188,9 +194,6 @@ function compararTime(time) {
   let recorde = document.getElementById("recorde");
   let timeNovo = calculateTime(time);
   let timeRecordUser = recuperarTimeScoreUser();
-
-  console.log(timeNovo);
-  console.log(timeRecordUser);
 
   if (timeNovo < timeRecordUser) {
     fetch("http://localhost/projetopa/api/alteratempouser.php", {
@@ -233,7 +236,6 @@ function showHelp() {
 
   blurOverlay.style.display = 'block';
   helpDialog.style.display = 'flex';
-
 }
 
 function closeHelp() {
@@ -265,4 +267,3 @@ function toggleFullScreen() {
 
 const fullscreenBtn = document.getElementById('fullscreen-btn');
 fullscreenBtn.addEventListener('click', toggleFullScreen);
-
