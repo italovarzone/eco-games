@@ -2,12 +2,12 @@ const inputs = document.querySelector(".inputs"),
   resetBtns = document.querySelectorAll(".reset-btn"),
   hint = document.querySelector(".hint span"),
   guessLeft = document.querySelector(".guess-left span"),
-  wrongLetter = document.querySelector(".wrong-letter span"),
   typingInput = document.querySelector(".typing-input"),
   gameContainer = document.getElementById("game-container"),
   resultContainer = document.getElementById("result-container"),
   totalErrors = document.getElementById("total-errors"),
   totalTime = document.getElementById("total-time"),
+  resultMessage = document.getElementById("result-message"),
   helpContainer = document.getElementById("help-container"),
   gameTitle = document.getElementById("game-title"),
   gameContent = document.getElementById("game-content");
@@ -16,7 +16,7 @@ var word,
   maxGuesses,
   corrects = [],
   incorrects = [],
-  score;
+  gameOver = false;
 var seconds = 0;
 var minutes = 0;
 var Interval;
@@ -57,29 +57,31 @@ function createKeyboard() {
   alphabet.forEach(letter => {
     const button = document.createElement('button');
     button.innerText = letter;
-    button.addEventListener('click', () => handleKeyboardInput(letter, button));
+    button.addEventListener('click', () => handleInput(letter, button));
     keyboardContainer.appendChild(button);
   });
 }
 
-// Função para lidar com a entrada do teclado virtual
-function handleKeyboardInput(letter, button) {
-  if (!incorrects.includes(` ${letter}`) && !corrects.includes(letter)) {
-    if (word.includes(letter)) {
+// Função para lidar com a entrada do teclado virtual e físico
+function handleInput(key, button) {
+  if (gameOver) return; // Não permitir entradas após o término do jogo
+  
+  key = key.toUpperCase();
+  if (!corrects.includes(key) && /^[A-Z]+$/.test(key)) {
+    if (word.includes(key)) {
       for (let i = 0; i < word.length; i++) {
-        if (word[i] == letter) {
-          corrects.push(letter);
-          inputs.querySelectorAll("input")[i].value = letter;
+        if (word[i] === key) {
+          corrects.push(key);
+          inputs.querySelectorAll("input")[i].value = key;
         }
       }
-    } else {
+    } else if (!incorrects.includes(key)) {
+      incorrects.push(key);
       maxGuesses--;
-      incorrects.push(` ${letter}`);
     }
     guessLeft.innerText = maxGuesses;
-    wrongLetter.innerText = incorrects;
   }
-  
+
   // Desabilitar e marcar o botão após ser clicado
   if (button) {
     button.disabled = true;
@@ -89,10 +91,10 @@ function handleKeyboardInput(letter, button) {
   setTimeout(() => {
     if (corrects.length === word.length) {
       stopTimer();
-      showResult();
+      showResult(true); 
     } else if (maxGuesses < 1) {
       stopTimer();
-      showResult();
+      showResult(false); 
       for (let i = 0; i < word.length; i++) {
         inputs.querySelectorAll("input")[i].value = word[i];
       }
@@ -100,25 +102,20 @@ function handleKeyboardInput(letter, button) {
   });
 }
 
-// Função para alternar a visibilidade do teclado virtual
-function toggleKeyboard() {
-  const keyboardContainer = document.getElementById('keyboard');
-  const toggleButton = document.getElementById('toggle-keyboard-btn');
-  
-  if (keyboardContainer.style.display === 'none') {
-    keyboardContainer.style.display = 'flex';
-  } else {
-    keyboardContainer.style.display = 'none';
-  }
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   createKeyboard();
-  const toggleButton = document.getElementById('toggle-keyboard-btn');
-  toggleButton.addEventListener('click', toggleKeyboard);
+  typingInput.addEventListener("input", (e) => handleInput(e.target.value));
+  document.addEventListener("keydown", (e) => {
+    const key = e.key.toUpperCase();
+    const button = Array.from(document.querySelectorAll('.keyboard-container button'))
+      .find(btn => btn.innerText === key);
+    handleInput(key, button);
+  });
+  typingInput.focus(); // Definir o foco automaticamente ao carregar a página
 });
 
 function randomWord() {
+  gameOver = false; // Reiniciar o estado de jogo
   startTimer();
   let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
   word = ranObj.word.toUpperCase();  
@@ -128,7 +125,6 @@ function randomWord() {
 
   hint.innerText = ranObj.hint;
   guessLeft.innerText = maxGuesses;
-  wrongLetter.innerText = incorrects;
 
   let html = "";
   for (let i = 0; i < word.length; i++) {
@@ -139,50 +135,20 @@ function randomWord() {
 
 randomWord();
 
-function initGame(e) {
-  let key = e.target.value.toUpperCase();  
-  if (
-    key.match(/^[A-Za-z]+$/) &&
-    !incorrects.includes(` ${key}`) &&
-    !corrects.includes(key)
-  ) {
-    if (word.includes(key)) {
-      for (let i = 0; i < word.length; i++) {
-        if (word[i] == key) {
-          corrects.push(key);
-          inputs.querySelectorAll("input")[i].value = key;
-        }
-      }
-    } else {
-      maxGuesses--;
-      incorrects.push(` ${key}`);
-    }
-    guessLeft.innerText = maxGuesses;
-    wrongLetter.innerText = incorrects;
-  }
-  typingInput.value = "";
-
-  setTimeout(() => {
-    if (corrects.length === word.length) {
-      stopTimer();
-      showResult();
-    } else if (maxGuesses < 1) {
-      stopTimer();
-      showResult();
-      for (let i = 0; i < word.length; i++) {
-        inputs.querySelectorAll("input")[i].value = word[i];
-      }
-    }
-  });
-}
-
-function showResult() {
+function showResult(won) { 
+  gameOver = true; // Marcar o jogo como terminado
   gameContent.style.display = "none";
   resultContainer.style.display = "flex";
-  totalErrors.innerText = 5 - maxGuesses;
+  totalErrors.innerText = incorrects.length;
   totalTime.innerText = `${minutes.toString().padStart(2, "0")}:${seconds
     .toString()
     .padStart(2, "0")}`;
+
+  if (won) {
+    resultMessage.innerText = "Parabéns! Você ganhou!";
+  } else {
+    resultMessage.innerText = "Que pena! Você perdeu. Tente novamente!";
+  }
 }
 
 function resetGame() {
@@ -191,6 +157,7 @@ function resetGame() {
   resetTimer();
   randomWord();
   createKeyboard(); // Recria o teclado
+  typingInput.focus(); // Definir o foco automaticamente ao resetar o jogo
 }
 
 resetBtns.forEach(btn => btn.addEventListener("click", (e) => {
@@ -198,7 +165,6 @@ resetBtns.forEach(btn => btn.addEventListener("click", (e) => {
   resetGame();
 }));
 
-typingInput.addEventListener("input", initGame);
 inputs.addEventListener("click", () => typingInput.focus());
 document.addEventListener("keydown", () => typingInput.focus());
 

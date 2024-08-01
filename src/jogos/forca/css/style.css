@@ -359,42 +359,6 @@ body {
   cursor: not-allowed;
 }
 
-#toggle-keyboard-btn {
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  background-color: var(--cor-botao);
-  color: #fff;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 20px;
-  cursor: pointer;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-}
-
-#toggle-keyboard-btn:hover {
-  background-color: var(--cor-botao);
-}
-
-#keyboard-icon {
-  transition: transform 0.3s ease;
-}
-
-#toggle-keyboard-btn.active {
-  background-color: var(--cor-botao);
-}
-
-#toggle-keyboard-btn.active:hover {
-  background-color: var(--cor-botao);
-}
-
-
 @media (max-width: 768px) {
   body {
     display: flex;

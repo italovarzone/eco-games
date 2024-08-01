@@ -44,9 +44,8 @@
                 <div class="details">
                     <p class="hint">Dica: <span></span></p>
                     <p class="guess-left">Tentativas restantes: <span></span></p>
-                    <p class="wrong-letter">Letras erradas: <span></span></p>
                 </div>
-                <div id="keyboard" class="keyboard-container" style="display: none;"></div>
+                <div id="keyboard" class="keyboard-container"></div>
                 <div class="button-container">
                     <button class="reset-btn">Reiniciar o jogo</button>
                 </div>
@@ -56,6 +55,7 @@
         
     <div id="result-container" style="display: none;">
         <h2>Resultados</h2>
+        <p id="result-message"></p>
         <div class="result">
             <p>Total de erros: <span id="total-errors"></span></p>
             <p>Tempo: <span id="total-time"></span></p>
@@ -64,7 +64,6 @@
     </div>
 
     <button id="fullscreen-btn"><i id="fullscreen-icon" class="fas fa-expand"></i></button>
-    <button id="toggle-keyboard-btn"><i id="keyboard-icon" class="fas fa-keyboard"></i></button>
     
     <script src="./js/word.js"></script>
     <script src="./js/script.js"></script>
