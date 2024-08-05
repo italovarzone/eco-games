@@ -69,59 +69,10 @@ hr {
     width: 100%;
     height: calc(100vh - 60px); /* Ajusta para incluir a altura da navbar */
 }
-  
+
 .sidebar {
-    z-index: 1000; /* Garante que a sidebar fique acima do carrossel */
-  }
-  
-  .carousel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-  }
-  
-  .carousel-inner {
-    display: flex;
-    height: 100%;
-    transition: transform 0.5s ease;
-  }
-  
-  .carousel-item {
-    min-width: 100%;
-    box-sizing: border-box;
-    height: 100%;
-  }
-  
-  .carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  
-  .carousel-controls {
-    position: absolute;
-    bottom: 20px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-  }
-  
-  .carousel-indicator {
-    width: 10px;
-    height: 10px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .carousel-indicator.active,
-  .carousel-indicator:hover {
-    background-color: rgba(0, 0, 0, 0.8);
-  }
-  
+    z-index: 1000; /* Garante que a sidebar fique acima do conteúdo */
+}
 
 .profile-pic {
     width: 50px;
@@ -304,36 +255,71 @@ hr {
     color: var(--cor-primaria);
 }
 
-/* Responsividade */
-@media (max-width: 768px) {
+.carousel-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+  }
+  
+  .carousel {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .carousel-item {
+    min-width: 100%;
+    box-sizing: border-box;
+  }
+  
+  .carousel-item img {
+    width: 100%;
+    display: block;
+  }
+  
+  .desktop-carousel {
+    display: none;
+  }
+  
+  .mobile-carousel {
+    display: none;
+  }
+  
+  @media (min-width: 1000px) {
+    .desktop-carousel {
+      display: flex;
+    }
     .carousel-item img {
-        object-fit: contain;
-      }
-    
-    .nav-bar {
-        display: flex;
+      height: 100vh;
+      object-fit: cover;
     }
-
-    .nav-bar .platform-name {
-        margin: 10px 0;
+  }
+  
+  @media (max-width: 999px) {
+    .mobile-carousel {
+      display: flex;
     }
-
-    #game-container {
-        width: 100%;
-    }
-}
-
-@media (max-width: 480px) {
-    .nav-bar {
-        padding: 5px 10px;
-    }
-
-    .nav-bar .platform-name {
-        font-size: 1.2em;
-    }
-
-    .nav-bar .logout-btn {
-        padding: 5px 10px;
-        font-size: 0.8em;
-    }
-}
+  }
+  
+  .carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .indicator {
+    width: 10px;
+    height: 10px;
+    background-color: rgba(255, 255, 255, 0.7);
+    margin: 0 5px;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .indicator.active {
+    background-color: rgba(255, 255, 255, 1);
+  }

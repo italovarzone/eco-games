@@ -14,11 +14,6 @@ function handleSidebarVisibility() {
     }
 }
 
-function loadHome() {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.innerHTML = '<h2>Bem-vindo ao Ecogames</h2>';
-}
-
 function toggleSidebar() {
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.toggle('open');
@@ -26,24 +21,6 @@ function toggleSidebar() {
 
 function logout() {
     window.location.href = 'logout.html';
-}
-
-function showPlayerInfo() {
-    const playerInfoContainer = document.getElementById('player-info-container');
-    if (playerInfoContainer) {
-        playerInfoContainer.style.display = 'block';
-    } else {
-        console.error('Elemento #player-info-container não encontrado.');
-    }
-}
-
-function hidePlayerInfo() {
-    const playerInfoContainer = document.getElementById('player-info-container');
-    if (playerInfoContainer) {
-        playerInfoContainer.style.display = 'none';
-    } else {
-        console.error('Elemento #player-info-container não encontrado.');
-    }
 }
 
 function goToPerfil() {
@@ -104,15 +81,98 @@ function loadQuizODS() {
     `;
 }
 
-function handleMobileMenuChange(event) {
-    const value = event.target.value;
-    if (value === 'perfil') {
-        goToPerfil();
-    } else if (value === 'ranking') {
-        // Lógica para ranking
-    } else if (value === 'avaliar') {
-        // Lógica para avaliar
-    } else {
-        loadGame(value);
+let currentSlide = 0;
+let startX;
+let isDragging = false;
+let slideInterval;
+
+function showSlide(slideIndex, carousel) {
+  const slides = document.querySelectorAll(carousel + ' .carousel-item');
+  const indicators = document.querySelectorAll('.carousel-indicators .indicator');
+
+  if (slideIndex >= slides.length) {
+    currentSlide = 0;
+  } else if (slideIndex < 0) {
+    currentSlide = slides.length - 1;
+  } else {
+    currentSlide = slideIndex;
+  }
+  
+  slides.forEach((slide, index) => {
+    slide.style.transform = `translateX(${-currentSlide * 100}%)`;
+  });
+
+  indicators.forEach((indicator, index) => {
+    indicator.classList.remove('active');
+    if (index === currentSlide) {
+      indicator.classList.add('active');
     }
+  });
 }
+
+function nextSlide() {
+  const carousel = window.innerWidth >= 1000 ? '.desktop-carousel' : '.mobile-carousel';
+  showSlide(currentSlide + 1, carousel);
+}
+
+function goToSlide(slideIndex) {
+  const carousel = window.innerWidth >= 1000 ? '.desktop-carousel' : '.mobile-carousel';
+  showSlide(slideIndex, carousel);
+}
+
+function startSlideShow() {
+  slideInterval = setInterval(nextSlide, 5000);
+}
+
+function stopSlideShow() {
+  clearInterval(slideInterval);
+}
+
+function handleTouchStart(event) {
+  startX = event.touches[0].clientX;
+  isDragging = true;
+  stopSlideShow();
+}
+
+function handleTouchMove(event) {
+  if (!isDragging) return;
+  const currentX = event.touches[0].clientX;
+  const diffX = startX - currentX;
+
+  const carousel = window.innerWidth >= 1000 ? '.desktop-carousel' : '.mobile-carousel';
+  if (diffX > 50) {
+    nextSlide();
+    isDragging = false;
+  } else if (diffX < -50) {
+    currentSlide--;
+    const slides = document.querySelectorAll(carousel + ' .carousel-item');
+    currentSlide = currentSlide < 0 ? slides.length - 1 : currentSlide;
+    showSlide(currentSlide, carousel);
+    isDragging = false;
+  }
+}
+
+function handleTouchEnd() {
+  isDragging = false;
+  startSlideShow();
+}
+
+// Inicializa o carrossel ao carregar a página
+window.addEventListener('load', () => {
+  const carousel = window.innerWidth >= 1000 ? '.desktop-carousel' : '.mobile-carousel';
+  showSlide(currentSlide, carousel);
+  startSlideShow();
+
+  const carousels = document.querySelectorAll('.carousel');
+  carousels.forEach(carousel => {
+    carousel.addEventListener('touchstart', handleTouchStart);
+    carousel.addEventListener('touchmove', handleTouchMove);
+    carousel.addEventListener('touchend', handleTouchEnd);
+  });
+});
+
+// Atualiza o carrossel ao redimensionar a janela
+window.addEventListener('resize', () => {
+  const carousel = window.innerWidth >= 1000 ? '.desktop-carousel' : '.mobile-carousel';
+  showSlide(currentSlide, carousel);
+});
