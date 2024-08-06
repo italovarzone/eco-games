@@ -1,14 +1,16 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>Plataforma de Jogos</title>
 </head>
+
 <body>
   <div class="container">
-    <button onclick="toggleSidebar()" class="toggle-sidebar-btn">
+    <button id="btnToggleSidebar" onclick="toggleSidebar()" class="toggle-sidebar-btn">
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
@@ -16,16 +18,16 @@
     <aside class="sidebar">
       <h2 class="user-greeting">Olá, Ítalo!</h2>
       <ul>
-        <li onclick="goToPerfil()">Perfil</li>
+        <li id="liGoToPerfil" onclick="goToPerfil()">Perfil</li>
         <li onclick="">Ranking</li>
         <li onclick="">Avaliar a Plataforma</li>
       </ul>
       <h2>Jogos</h2>
       <ul>
-        <li onclick="loadGame('cacapalavras')">CrossWorld</li>
-        <li onclick="loadGame('quiz')">GreenGenius</li>
-        <li onclick="loadGame('hangame')">Hangame</li>
-        <li onclick="loadGame('ecopuzzle')">Ecopuzzle</li>
+        <li class="game-option" data-game="cacapalavras">CrossWorld</li>
+        <li class="game-option" data-game="quiz">GreenGenius</li>
+        <li class="game-option" data-game="hangame">Hangame</li>
+        <li class="game-option" data-game="ecopuzzle">Ecopuzzle</li>
       </ul>
       <footer class="footer">
         <p>v1.0.0-beta1 - Todos os direitos reservados &copy; 2024</p>
@@ -38,6 +40,7 @@
       </div>
     </main>
   </div>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
+
 </html>

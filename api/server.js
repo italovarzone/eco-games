@@ -8,7 +8,10 @@ require("dotenv").config();
 const cors = require('cors');
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: 'http://127.0.0.1:5500',
+  credentials: true
+}));
 
 const PORT = process.env.PORT || 3000;
 
@@ -28,7 +31,8 @@ app.use(
     // Should we resave our session variables if nothing has changes which we dont
     resave: false,
     // Save empty value if there is no vaue which we do not want to do
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: { secure: false }
   })
 );
 // Funtion inside passport which initializes passport
@@ -127,9 +131,10 @@ app.post(
     })(req, res, next);
   });
 
-app.get("/testefoi", isAuthenticated, (req, res) => {
+app.get("/api/isLogged", isAuthenticated, (req, res) => {
   console.log(req.user);
-  res.send(`Bem-vindo ao dashboard, ${req.user.name}`);
+  const{password, ...user} = req.user;
+  res.send(user);
 });
 
 
