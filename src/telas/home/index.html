@@ -10,7 +10,7 @@
 
 <body>
   <nav class="nav-bar">
-    <button onclick="toggleSidebar()" class="toggle-sidebar-btn">
+    <button id="btnToggleSidebar" class="toggle-sidebar-btn">
       <span class="bar"></span>
       <span class="bar"></span>
       <span class="bar"></span>
@@ -24,16 +24,16 @@
         <img src="../../../assets/img/avatar-teste.webp" alt="Foto de Perfil" class="profile-pic">
         <h2 class="user-greeting">Olá, Ítalo!</h2>
         <ul>
-          <li onclick="goToPerfil()">Perfil</li>
+          <li id="liGoToPerfil">Perfil</li>
           <li onclick="">Ranking</li>
           <li onclick="">Avaliar a Plataforma</li>
         </ul>
         <h2>Jogos</h2>
         <ul>
-          <li onclick="loadGame('cacapalavras')">CrossWorld</li>
-          <li onclick="loadGame('quiz')">GreenGenius</li>
-          <li onclick="loadGame('hangame')">Hangame</li>
-          <li onclick="loadGame('ecopuzzle')">Ecopuzzle</li>
+          <li class="game-option" data-game="cacapalavras">CrossWorld</li>
+          <li class="game-option" data-game="quiz">GreenGenius</li>
+          <li class="game-option" data-game="hangame">Hangame</li>
+          <li class="game-option" data-game="ecopuzzle">Ecopuzzle</li>
         </ul>
       </div>
     </aside>
@@ -59,7 +59,7 @@
       </div>
     </main>
   </div>
-  <script src="script.js"></script>
+<script type="module" src="script.js"></script>
 </body>
 
 </html>
