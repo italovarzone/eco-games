@@ -23,63 +23,74 @@ function logout() {
     window.location.href = 'logout.html';
 }
 
-function goToPerfil() {
-    window.location.href = '../perfil/index.html'; 
-}
+    liGoToPerfil.addEventListener('click', () => {
+        window.location.href = '../perfil/index.html';
+    });
 
-function loadGame(game) {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.innerHTML = '';
+    gameOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const game = option.getAttribute('data-game');
+            loadGame(game);
+        });
+    });
 
-    switch (game) {
-        case 'cacapalavras':
-            loadCacaPalavras();
-            break;
-        case 'hangame':
-            loadHangame();
-            break;
-        case 'ecopuzzle':
-            loadEcopuzzle();
-            break;
-        case 'quiz':
-            loadQuizODS();
-            break;
-        default:
-            gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
-    }
+    function loadGame(game) {
+        const gameContainer = document.getElementById('game-container');
+        const sidebar = document.querySelector('.sidebar');
+        const content = document.querySelector('.content'); 
+        const sidebarList = document.querySelector('.sidebar-list');
+
+        gameContainer.innerHTML = '';
+
+        switch (game) {
+            case 'cacapalavras':
+                loadCacaPalavras();
+                break;
+            case 'hangame':
+                loadHangame();
+                break;
+            case 'ecopuzzle':
+                loadEcopuzzle();
+                break;
+            case 'quiz':
+                loadQuizODS();
+                break;
+            default:
+                gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
+        }
 
     // Fechar a sidebar após a seleção do jogo
     const sidebar = document.querySelector('.sidebar');
     sidebar.classList.remove('open');
 }
 
-function loadCacaPalavras() {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.innerHTML = `
+    function loadCacaPalavras() {
+        const gameContainer = document.getElementById('game-container');
+        gameContainer.innerHTML = `
         <iframe id="game-iframe" src="../../jogos/cacapalavras/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
     `;
-}
+    }
 
-function loadHangame() {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.innerHTML = `
+    function loadHangame() {
+        const gameContainer = document.getElementById('game-container');
+        gameContainer.innerHTML = `
         <iframe id="game-iframe" src="../../jogos/forca/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
     `;
-}
+    }
 
-function loadEcopuzzle() {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.innerHTML = `
+    function loadEcopuzzle() {
+        const gameContainer = document.getElementById('game-container');
+        gameContainer.innerHTML = `
         <iframe id="game-iframe" src="../../jogos/ecopuzzle/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
     `;
-}
+    }
 
-function loadQuizODS() {
-    const gameContainer = document.getElementById('game-container');
-    gameContainer.innerHTML = `
+    function loadQuizODS() {
+        const gameContainer = document.getElementById('game-container');
+        gameContainer.innerHTML = `
         <iframe id="game-iframe" src="../../jogos/quiz/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
     `;
-}
+    }
 
 let currentSlide = 0;
 let startX;

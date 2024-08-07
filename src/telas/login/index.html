@@ -10,14 +10,16 @@
   <div id="auth-container">
     <h2>Login</h2>
     <form id="login-form">
+      <div class="spinner"></div>
       <label for="login-email">Email:</label>
       <input type="email" id="login-email" required>
       <label for="login-password">Senha:</label>
       <input type="password" id="login-password" required>
       <button type="submit">Entrar</button>
+      <div class="message"></div>
     </form>
     <p>Não tem uma conta? <a href="../registro/index.html">Registrar</a></p>
   </div>
-  <script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
