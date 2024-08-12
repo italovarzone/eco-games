@@ -1,3 +1,5 @@
+let user = null;
+
 export async function isAuthenticated() {
   try {
     const response = await fetch("http://localhost:3000/api/isLogged", {
@@ -11,12 +13,14 @@ export async function isAuthenticated() {
     if (!response.ok) {
       throw new Error("Usuário não autenticado");
     }
-
-    const data = await response.json();
-    console.log("sucesso", data);
+    user = await response.json();
     return true;
+    
   } catch (error) {
-    console.log("falha", error);
+    console.log(error);
+    user = null;
     return false;
   }
 }
+
+export const getUser = () => user;

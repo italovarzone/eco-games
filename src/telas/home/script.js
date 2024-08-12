@@ -1,6 +1,14 @@
 import { requireAuth } from '../../utils/middleware.js';
-document.addEventListener("DOMContentLoaded", () => {
-  requireAuth();
+import { getUser } from '../../utils/auth.js';
+document.addEventListener("DOMContentLoaded", async () => {
+  await requireAuth();
+  const user = getUser();
+  console.log(user)
+  if (user) {
+    updateUI(user);
+  }
+
+
   handleSidebarVisibility(); // Inicialmente, verificar o tamanho da tela e ajustar a sidebar
 
   const sidebar = document.querySelector('.sidebar');
@@ -30,7 +38,10 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
+const updateUI = (user) => {
+  document.getElementById('msgOla').innerText = `Olá, ${user.name}`;
+  // Adicione outras atualizações de interface conforme necessário
+};
 
 function handleSidebarVisibility() {
   const sidebar = document.querySelector('.sidebar');
