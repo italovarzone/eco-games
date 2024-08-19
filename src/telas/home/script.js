@@ -62,6 +62,10 @@ function logout() {
 }
 
 
+function goToRanking() {
+  window.location.href = '../ranking/index.html'; 
+}
+
 function loadGame(game) {
   const gameContainer = document.getElementById('game-container');
   gameContainer.innerHTML = '';

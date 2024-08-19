@@ -1,0 +1,187 @@
+@import url("https://fonts.googleapis.com/css2?family=Secular+One&display=swap");
+
+:root {
+    --cor-primaria: #22543d;
+    --cor-secundaria: #f2f2f2;;
+    --cor-fundo: #f2f2f2;
+    --cor-texto: #333;
+    --cor-botao: #4caf50;
+    --fonte-gamer: "Secular One", sans-serif;
+}
+
+body {
+    background-color: var(--cor-secundaria);
+    color: var(--cor-texto);
+    display: flex;
+    justify-content: center;
+    font-family: var(--fonte-gamer);
+    align-items: center;
+    margin: 0;
+}
+
+.tab-group {
+    margin-top: 25px;
+    width: 100%;
+    max-width: 600px;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.tab-header {
+    display: flex;
+    background: var(--cor-primaria);
+}
+
+.tab-header .tab {
+    flex-grow: 1;
+    text-align: center;
+    padding: 15px;
+    cursor: pointer;
+    color: white;
+    transition: background 0.3s;
+}
+
+.tab-header .tab:hover {
+    background: var(--cor-botao);
+}
+
+.tab-header .tab.active {
+    background: var(--cor-botao);
+}
+
+.tab-content .content {
+    display: none;
+    padding: 20px;
+}
+
+.tab-content .content.active {
+    display: flex;
+    flex-direction: column;
+}
+
+.ranking-container {
+    background-color: var(--cor-fundo);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 500px;
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+.score-user-actual {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    color: white;
+    background-color: var(--cor-primaria);
+}
+
+.score-user-actual h6 {
+    display: flex;
+    margin: 0;
+    flex-direction: column;
+    padding-bottom: 4px;
+}
+
+.score-user-actual .player {
+    display: flex;
+    gap: 16px;
+    flex-direction: row;
+}
+
+.score-user-actual .player p {
+    margin: 0;
+}
+
+.header {
+    background-color: var(--cor-primaria);
+    color: white;
+    text-align: center;
+    padding: 20px;
+    font-size: 24px;
+}
+
+.header .sub-title {
+    font-size: 14px;
+    color: var(--cor-secundaria);
+}
+
+.ranking-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.ranking-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: center;
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--cor-fundo);
+}
+
+.ranking-list li:nth-child(1) {
+    background-color: #ffeb3b;
+}
+
+.ranking-list li:nth-child(2) {
+    background-color: #03a9f4;
+}
+
+.ranking-list li:nth-child(3) {
+    background-color: #f44336;
+}
+
+.ranking-list li .position {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.ranking-list li .name {
+    flex-grow: 1;
+    font-size: 16px;
+}
+
+.ranking-list li .score {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+/* Adicione essas regras de estilo ao seu arquivo CSS existente */
+
+.ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.ranking-table th, .ranking-table td {
+    border: 1px solid var(--cor-fundo);
+    padding: 8px;
+    text-align: center;
+}
+
+.ranking-table th {
+    background-color: var(--cor-primaria);
+    color: white;
+}
+
+.ranking-table tbody tr:nth-child(odd) {
+    background-color: var(--cor-secundaria);
+}
+
+.ranking-table tbody tr.first {
+    background-color: #ffeb3b;
+}
+
+.ranking-table tbody tr.second {
+    background-color: #03a9f4;
+}
+
+.ranking-table tbody tr.third {
+    background-color: #f44336;
+}
