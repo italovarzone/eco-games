@@ -20,7 +20,9 @@
     <div id="blur-overlay"></div>
     <div id="help-dialog">
         <p>Bem-vindo ao Hangame!</p>
-        <p>Adivinhe palavras ligadas à sustentabilidade, enriquecendo o vocabulário relembrando o clássico jogo da forca!</p>
+        <p>
+            Você deve adivinhar palavras relacionadas à sustentabilidade! Use o teclado virtual ou físico para escolher letras e completar a palavra, cada erro remove um ícone de planeta, ao esgotar as tentativas, o jogo termina. A dica ajuda a guiar suas escolhas, e seu objetivo é completar a palavra antes que todos os planetas desapareçam.
+        </p>
         <button id="close-help" onclick="closeHelp()">Fechar</button>
     </div>
     
@@ -43,7 +45,7 @@
                 </div>
                 <div class="details">
                     <p class="hint">Dica: <span></span></p>
-                    <p class="guess-left">Tentativas restantes: <span></span></p>
+                    <p class="guess-left">Tentativas restantes: <span id="planet-icons"></span></p>
                 </div>
                 <div id="keyboard" class="keyboard-container"></div>
                 <div class="button-container">

@@ -18,11 +18,12 @@
     <span class="platform-name">Ecogames</span>
     <button onclick="logout()" class="logout-btn">Logout</button>
   </nav>
+  
   <div class="container">
     <aside class="sidebar">
       <div class="content-sidebar">
         <img src="../../../assets/img/avatar-teste.webp" alt="Foto de Perfil" class="profile-pic">
-        <h2 id="msgOla"class="user-greeting"></h2>
+        <h2 id="msgOla" class="user-greeting"></h2>
         <ul>
           <li id="liGoToPerfil">Perfil</li>
           <li id="liGotoRanking">Ranking</li>
@@ -37,6 +38,7 @@
         </ul>
       </div>
     </aside>
+    
     <main class="content">
       <div id="game-container">
         <div class="carousel-container">
@@ -59,7 +61,18 @@
       </div>
     </main>
   </div>
-<script type="module" src="script.js"></script>
+  <div id="game-alert-modal" class="modal">
+    <div class="modal-content">
+      <h2>Alerta</h2>
+      <p>Você está no meio de um jogo. Se sair agora, perderá todo o progresso. Deseja continuar?</p>
+      <div class="modal-buttons">
+        <button id="btnContinuePlaying">Continuar Jogando</button>
+        <button id="btnExitGame">Sair do Jogo</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="script.js"></script>
 </body>
 
 </html>

@@ -75,11 +75,27 @@ function handleInput(key, button) {
           inputs.querySelectorAll("input")[i].value = key;
         }
       }
+      // Mudar o fundo para verde escuro ao acertar
+      if (button) {
+        button.style.backgroundColor = '#22543d'; // verde escuro
+        button.style.color = '#fff'; // texto branco
+      }
     } else if (!incorrects.includes(key)) {
       incorrects.push(key);
       maxGuesses--;
+
+      // Mudar o fundo para vermelho ao errar
+      if (button) {
+        button.style.backgroundColor = '#ff4c4c'; // vermelho
+        button.style.color = '#fff'; // texto branco
+      }
+
+      // Remover um ícone de planeta
+      const planetIconsContainer = document.getElementById("planet-icons");
+      if (planetIconsContainer.children.length > 0) {
+        planetIconsContainer.removeChild(planetIconsContainer.lastChild);
+      }
     }
-    guessLeft.innerText = maxGuesses;
   }
 
   // Desabilitar e marcar o botão após ser clicado
@@ -124,7 +140,15 @@ function randomWord() {
   incorrects = [];
 
   hint.innerText = ranObj.hint;
-  guessLeft.innerText = maxGuesses;
+  
+  // Adicionar os ícones de planeta
+  const planetIconsContainer = document.getElementById("planet-icons");
+  planetIconsContainer.innerHTML = ''; // Limpa os ícones anteriores
+  for (let i = 0; i < maxGuesses; i++) {
+    const planetIcon = document.createElement('i');
+    planetIcon.className = 'fa-solid fa-earth-americas';
+    planetIconsContainer.appendChild(planetIcon);
+  }
 
   let html = "";
   for (let i = 0; i < word.length; i++) {

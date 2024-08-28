@@ -1,15 +1,15 @@
 import { requireAuth } from '../../utils/middleware.js';
 import { getUser } from '../../utils/auth.js';
+
 document.addEventListener("DOMContentLoaded", async () => {
   await requireAuth();
   const user = getUser();
-  console.log(user)
+  console.log(user);
   if (user) {
     updateUI(user);
   }
 
-
-  handleSidebarVisibility(); // Inicialmente, verificar o tamanho da tela e ajustar a sidebar
+  handleSidebarVisibility();
 
   const sidebar = document.querySelector('.sidebar');
   const liGoToPerfil = document.getElementById('liGoToPerfil');
@@ -34,14 +34,74 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
 
-  btnToggleSidebar.addEventListener('click', function () {;
-  console.log("troooos")
+  btnToggleSidebar.addEventListener('click', function () {
     if (sidebar.classList.contains('open')) {
-      sidebar.classList.remove('open'); 
+      sidebar.classList.remove('open');
     } else {
-      sidebar.classList.add('open')
+      sidebar.classList.add('open');
     }
   });
+
+  btnContinuePlaying.addEventListener('click', () => {
+    gameAlertModal.style.display = "none";
+  });
+
+  btnExitGame.addEventListener('click', () => {
+    gameAlertModal.style.display = "none";
+    isGameActive = false;
+    if (pendingNavigation) {
+      navigateToLink(pendingNavigation);
+      pendingNavigation = null;
+    }
+  });
+
+  // Fecha o modal ao clicar fora dele
+  window.addEventListener('click', (event) => {
+    if (event.target == gameAlertModal) {
+      gameAlertModal.style.display = "none";
+    }
+  });
+
+  function navigateToLink(link) {
+    const game = link.getAttribute('data-game');
+    if (game) {
+      loadGame(game);  // Carrega o jogo
+    } else {
+      const href = link.getAttribute('data-href');
+      if (href) {
+        window.location.href = href;  // Navega para o link
+      }
+    }
+  }
+
+  function loadGame(game) {
+    isGameActive = true;  // Agora o jogo está ativo
+    gameContainer.innerHTML = '';  // Limpa o container do jogo
+
+    let iframeSrc = '';
+    switch (game) {
+      case 'cacapalavras':
+        iframeSrc = "../../jogos/cacapalavras/index.html";
+        break;
+      case 'hangame':
+        iframeSrc = "../../jogos/forca/index.html";
+        break;
+      case 'ecopuzzle':
+        iframeSrc = "../../jogos/ecopuzzle/index.html";
+        break;
+      case 'quiz':
+        iframeSrc = "../../jogos/quiz/index.html";
+        break;
+      default:
+        gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
+        isGameActive = false;
+        return;
+    }
+
+    gameContainer.innerHTML = `
+      <iframe id="game-iframe" src="${iframeSrc}" style="width: 100%; height: 100%; border: none;"></iframe>
+    `;
+  }
 });
 
 const updateUI = (user) => {
@@ -58,18 +118,12 @@ function handleSidebarVisibility() {
   }
 }
 
-
-
-
-
-
 function logout() {
   window.location.href = 'logout.html';
 }
 
-
 function goToRanking() {
-  window.location.href = '../ranking/index.html'; 
+  window.location.href = '../ranking/index.html';
 }
 
 function loadGame(game) {
@@ -93,9 +147,8 @@ function loadGame(game) {
       gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
   }
 
-  // Fechar a sidebar após a seleção do jogo
   const sidebar = document.querySelector('.sidebar');
-  sidebar.classList.remove('open');
+  sidebar.classList.remove('open');  // Fecha a sidebar após seleção do jogo
 }
 
 function loadCacaPalavras() {

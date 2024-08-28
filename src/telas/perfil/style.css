@@ -1,110 +1,163 @@
-/* Variáveis de cor e tipografia */
+/* Continuamos com as mesmas variáveis e estilos básicos */
 :root {
-    --cor-primaria: #22543d;
-    --cor-secundaria: #a5a5a5;
-    --cor-fundo: #f2f2f2;
-    --cor-texto: #333;
-    --cor-botao: #4caf50;
-    --fonte-gamer: "Secular One", sans-serif;
-  }
-  
+  --cor-primaria: #22543d;
+  --cor-secundaria: #a5a5a5;
+  --cor-fundo: #f2f2f2;
+  --cor-texto: #333;
+  --cor-botao: #4caf50;
+  --fonte-gamer: "Secular One", sans-serif;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: var(--fonte-gamer);
+  color: var(--cor-texto);
+}
+
+.perfil-container {
+  background-color: var(--cor-fundo);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+  text-align: center;
+  width: 80%;
+  max-width: 800px;
+}
+
+.perfil-card {
+  background-color: var(--cor-primaria);
+  padding: 20px;
+  border-radius: 10px;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.perfil-avatar {
+  width: 150px;
+  height: 150px;
+  margin-bottom: 20px;
+  border: 3px solid var(--cor-secundaria);
+  border-radius: 50%;
+  background-image: url('../../../assets/img/avatar-teste.webp');
+  background-size: cover;
+  background-position: center;
+}
+
+
+.perfil-info {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.perfil-info h2 {
+  padding: 16px;
+  margin: 0;
+}
+
+.perfil-info p {
+  margin: 5px 0;
+}
+
+.perfil-actions {
+  display: flex;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.btn-primary {
+  font-family: var(--fonte-gamer);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 3px;
+  background-color: #4caf50;
+  width: 200px;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  border-right: solid #3e8e41 6px;
+  border-bottom: solid #3e8e41 4px;
+}
+
+.btn-primary:hover {
+  color: #3e8e41;
+  transition: 0.1s;
+}
+
+.dados {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  width: 450px;
+}
+
+
+@media screen and (max-width: 768px) {
+
   body {
-    margin: 0;
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
     font-family: var(--fonte-gamer);
-    color: var(--cor-texto);   
-    height: 100vh; 
-  }
-  
-  .perfil-container {
+    color: var(--cor-texto);
     background-color: var(--cor-fundo);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-    text-align: center;
-    width: 80%;
-    max-width: 800px;
-  }
-  
-  .perfil-card {
-    background-color: var(--cor-primaria);
-    padding: 20px;
-    border-radius: 10px;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .perfil-avatar {
-    border-radius: 50%;
-    width: 150px;
-    height: 150px;
-    margin-bottom: 20px;
-    border: 3px solid var(--cor-secundaria);
-  }
-  
-  .perfil-info {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  .perfil-info h2 {
     margin: 0;
   }
-  
-  .btn-edit {
-    background-color: var(--cor-botao);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-  }
-  
-  .btn-edit:hover {
-    background-color: #3e8e41;
-  }
-  
-  .perfil-stats {
-    background-color: var(--cor-primaria);
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
+
+  .perfil-container {
     width: 100%;
-  }
-  
-  .perfil-stats h2 {
-    border-bottom: 2px solid var(--cor-secundaria);
-    display: inline-block;
-    padding-bottom: 5px;
-    margin-bottom: 10px;
-  }
-  
-  .perfil-stats ul {
-    list-style: none;
     padding: 0;
   }
-  
-  .perfil-stats li {
-    margin: 10px 0;
+
+  .perfil-card {
+    width: 100%;
+    display: flex;
+    color: black;
+    background-color: var(--cor-fundo);
+    padding: 0;
   }
-  
-  .btn-action {
-    background-color: var(--cor-botao);
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    border-radius: 5px;
-    transition: background-color 0.3s;
+
+  .perfil-container {
+    box-shadow: none;
   }
-  
-  .btn-action:hover {
-    background-color: #3e8e41;
+
+  .perfil-avatar {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 15px;
   }
+
+  .perfil-info {
+    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 345px;
+  }
+
+  .perfil-info h2 {
+    font-size: 18px;
+    padding: 12px;
+  }
+
+  .dados {
+    width: 300px;
+    padding: 12px;
+  }
+
+  .perfil-actions {
+    display: flex;
+    width: 300px;
+    flex-direction: column;
+  }
+
+  .btn-primary {
+    width: 100%;
+    padding: 8px;
+  }
+}
