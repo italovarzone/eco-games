@@ -13,13 +13,19 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   const sidebar = document.querySelector('.sidebar');
   const liGoToPerfil = document.getElementById('liGoToPerfil');
+  const liGotoRanking = document.getElementById('liGotoRanking');
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
   const gameOptions = document.querySelectorAll('.game-option');
   
   window.addEventListener('resize', handleSidebarVisibility); // Adicionar listener para redimensionamento da tela
+  
   liGoToPerfil.addEventListener('click', () => {
     window.location.href = '../perfil/index.html';
   });  
+
+  liGotoRanking.addEventListener('click', () => {
+    window.location.href = '../ranking/index.html';
+  });
 
   gameOptions.forEach(option => {
     option.addEventListener('click', () => {

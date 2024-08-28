@@ -93,6 +93,25 @@ function createCardFace(face, card, element) {
   element.appendChild(cardElementFace);
 }
 
+async function saveRecord(time) {
+  try {
+    let res;
+    const response = await fetch("http://localhost:3000/api/record/ecopuzzle", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({"tempo_record": time}),
+      credentials: "include",
+    });
+
+    res = await response.json();
+    console.log(res)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function flipCard() {
   if (clickBlocked) return; // Bloquear cliques enquanto clickBlocked for true
 
@@ -115,7 +134,7 @@ function flipCard() {
           resultadoP.textContent = `Parabéns! Tempo de jogo: ${calculateTime(
             time
           )}`;
-
+          saveRecord(time);
           compararTime(time);
         }
       } else {

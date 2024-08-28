@@ -134,17 +134,36 @@ function randomWord() {
 }
 
 randomWord();
+async function saveRecord(time, incorrects) {
+  try {
+    let res;
+    const response = await fetch("http://localhost:3000/api/record/hangame", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({"tempo_record": time, "quantidade_erros": incorrects}),
+      credentials: "include",
+    });
 
+    res = await response.json();
+    console.log(res)
+  } catch (error) {
+    console.log(error);
+  }
+}
 function showResult(won) { 
   gameOver = true; // Marcar o jogo como terminado
   gameContent.style.display = "none";
   resultContainer.style.display = "flex";
   totalErrors.innerText = incorrects.length;
+  let time = seconds + 60 * minutes
   totalTime.innerText = `${minutes.toString().padStart(2, "0")}:${seconds
     .toString()
     .padStart(2, "0")}`;
 
   if (won) {
+    saveRecord(time, incorrects.length);
     resultMessage.innerText = "Parabéns! Você ganhou!";
   } else {
     resultMessage.innerText = "Que pena! Você perdeu. Tente novamente!";

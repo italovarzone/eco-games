@@ -212,6 +212,25 @@ function updateTimer() {
   timerElement.textContent = `Tempo: ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
+async function saveRecord(time) {
+  try {
+    let res;
+    const response = await fetch("http://localhost:3000/api/record/crossworld", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({"tempo_record": time}),
+      credentials: "include",
+    });
+
+    res = await response.json();
+    console.log(res)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 function showDialog() {
   clearInterval(timerInterval);
   const gameContainer = document.getElementById("game-container");
@@ -220,7 +239,7 @@ function showDialog() {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = seconds % 60;
   totalTimeElement.textContent = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-
+  saveRecord(seconds);
   gameContainer.style.display = "none";
   gameResultContainer.style.display = "block";
 }

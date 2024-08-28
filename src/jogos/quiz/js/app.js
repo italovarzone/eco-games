@@ -300,6 +300,25 @@ function nextQuestion() {
   }
 }
 
+async function saveRecord(time, incorrects) {
+    try {
+      let res;
+      const response = await fetch("http://localhost:3000/api/record/quiz", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({"tempo_record": time, "quantidade_erros": incorrects}),
+        credentials: "include",
+      });
+  
+      res = await response.json();
+      console.log(res)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
 function showFinalResult() {
   const quizContainerQuestions = document.getElementById('quiz-container-questions');
   const quizContainerWrapper = document.getElementById('quiz-container')
@@ -318,9 +337,11 @@ function showFinalResult() {
   resultContainer.style.display = 'flex';
   correctAnswersElement.textContent = score;
   incorrectAnswersElement.textContent = selectedQuestions.length - score;
+  let incorrect = selectedQuestions.length - score;    
   percentageElement.textContent = ((score / selectedQuestions.length) * 100).toFixed(2) + '%';
   totalScoreElement.textContent = `${score} / ${selectedQuestions.length}`;
   totalTimeElement.textContent = `${totalTimeSpent} s`; // Exibe o tempo total
+  saveRecord(totalTimeSpent, incorrect)
 }
 
 function showHelp() {

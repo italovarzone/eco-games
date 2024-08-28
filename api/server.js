@@ -12,7 +12,12 @@ app.use(cors({
   origin: 'http://127.0.0.1:5500',
   credentials: true
 }));
-
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); // Origem do front-end
+  res.header("Access-Control-Allow-Credentials", "true"); // Permite cookies
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 const PORT = process.env.PORT || 3000;
 
 const initializePassport = require("./passportConfig");
@@ -32,7 +37,11 @@ app.use(
     resave: false,
     // Save empty value if there is no vaue which we do not want to do
     saveUninitialized: false,
-    cookie: { secure: false }
+    cookie: { 
+      httpOnly: true, 
+      secure: false,
+      sameSite: 'none', 
+    }
   })
 );
 // Funtion inside passport which initializes passport
@@ -133,10 +142,96 @@ app.post(
 
 app.get("/api/isLogged", isAuthenticated, (req, res) => {
   console.log(req.user);
-  const{password, ...user} = req.user;
+  const { password, ...user } = req.user;
   res.send(user);
 });
 
+app.post("/api/record/crossworld", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  const { tempo_record } = req.body;
+  pool.query(
+    `INSERT INTO public."Crossworld" (id, id_usuario, tempo_record, created_at)
+      VALUES(nextval('"Crossworld_id_seq"'::regclass), $1, $2, CURRENT_TIMESTAMP);`,
+    [id, tempo_record],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      console.log(results.rows);
+      req.flash("success_msg", "You are now records");
+      res.status(200).json(
+        { "res": "done",
+          "game": "Crossworld"
+         });
+    }
+  );
+});
+
+app.post("/api/record/ecopuzzle", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  const { tempo_record } = req.body;
+  pool.query(
+    `INSERT INTO public."Ecopuzzle"
+     (id, id_usuario, tempo_record, created_at)
+     VALUES(nextval('"Ecopuzzle_id_seq"'::regclass), $1, $2, CURRENT_TIMESTAMP);`,
+    [id, tempo_record],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      console.log(results.rows);
+      req.flash("success_msg", "You are now records");
+      res.status(200).json(
+        { "res": "done",
+          "game": "Ecopuzzle"
+         });
+    }
+  );
+});
+
+app.post("/api/record/hangame", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  const { tempo_record, quantidade_erros } = req.body;
+  pool.query(
+    `INSERT INTO public."Hangame"
+     (id, id_usuario, tempo_record, quantidade_erros, created_at)
+     VALUES(nextval('"Hangame_id_seq"'::regclass), $1, $2, $3, CURRENT_TIMESTAMP);`,
+    [id, tempo_record, quantidade_erros],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      console.log(results.rows);
+      req.flash("success_msg", "You are now records");
+      res.status(200).json(
+        { "res": "done",
+          "game": "Hangame"
+         });
+    }
+  );
+});
+
+app.post("/api/record/quiz", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  const { tempo_record, quantidade_erros } = req.body;
+  pool.query(
+    `INSERT INTO public."Quiz"
+     (id, id_usuario, tempo_record, quantidade_erros, created_at)
+     VALUES(nextval('"Quiz_id_seq"'::regclass), $1, $2, $3, CURRENT_TIMESTAMP);`,
+    [id, tempo_record, quantidade_erros],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      console.log(results.rows);
+      req.flash("success_msg", "You are now records");
+      res.status(200).json(
+        { "res": "done",
+          "game": "Quiz"
+         });
+    }
+  );
+});
 
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
