@@ -1,37 +1,46 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css2?family=Secular+One&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
-  <title>Perfil do Usuário</title>
+  <title>Perfil do Jogador</title>
 </head>
+
 <body>
   <div class="perfil-container">
     <div class="perfil-card">
-      <img src="..\..\..\assets\img\avatar-teste.webp" alt="Avatar do Usuário" class="perfil-avatar">
+      <img src="../../../assets/img/avatar-teste.webp" class="perfil-avatar">
       <div class="perfil-info">
-        <h2>Ítalo</h2>
-        <p>Nível: 10</p>
-        <p>Experiência: 1500 XP</p>
-        <button class="btn-edit" onclick="editProfile()">Editar Perfil</button>
-        <button class="btn-edit" onclick="exitPerfil()">Sair</button>
-      </div>
-      <div class="perfil-stats">
-        <h2>Estatísticas</h2>
-        <ul>
-          <li>Jogos Completos: 25</li>
-          <li>Desafios Vencidos: 10</li>
-          <li>Pontuação Total: 2000</li>
-        </ul>
+        <h2>Nome do Jogador</h2>
+        <div class="dados">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Jogos Completos:</span>
+            <span>30</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Desafios Vencidos:</span>
+            <span>18</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Desafios Perdidos:</span>
+            <span>12</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <span>Tempo Total:</span>
+            <span>48 horas e 30 minutos</span>
+          </div>
+        </div>
       </div>
       <div class="perfil-actions">
-        <button class="btn-action" onclick="goToMenu()">Voltar ao Menu</button>
-        <button class="btn-action" onclick="goToRanking()">Acessar Ranking</button>
+        <button class="btn btn-primary" onclick="goToMenu()">Voltar ao Menu</button>
+        <button class="btn btn-primary" onclick="goToRanking()">Ranking</button>
       </div>
     </div>
   </div>
   <script src="script.js"></script>
 </body>
+
 </html>

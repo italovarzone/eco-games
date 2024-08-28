@@ -101,6 +101,12 @@ body {
   display: none;
 }
 
+#planet-icons i {
+  margin-right: 5px;
+  font-size: 24px;
+  color: #4caf50; /* Exemplo de cor */
+}
+
 .container h1 {
   font-size: 2em;
   text-align: center;
