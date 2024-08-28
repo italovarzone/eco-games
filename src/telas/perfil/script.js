@@ -1,36 +1,28 @@
-function editProfile() {
-    alert('Função de edição de perfil ainda não implementada.');
-  }
-  
-  function goToMenu() {
-    window.location.href = '../home/index.html'; 
-  }
-  
-  function goToRanking() {
-    alert('Navegar para o ranking.');
-  }
+window.onload = function() {
+  const userName = "Nome do Jogador";
+  const gamesCompleted = 30;
+  const challengesWon = 18;
+  const challengesLost = 12;
+  const totalPlayTime = "48 horas e 30 minutos";
 
-  function exitPerfil() {
-    //TODO
-    //Realizar a destruição do auth do usuário
-    window.location.href = '../login/index.html'; 
-  }
-  
-  // Exemplo de carregamento de dados do usuário
-  document.addEventListener('DOMContentLoaded', (event) => {
-    // Você pode substituir esses dados por uma chamada a uma API ou outra fonte de dados
-    const userName = "Ítalo";
-    const userLevel = 10;
-    const userExperience = 1500;
-    const gamesCompleted = 25;
-    const challengesWon = 10;
-    const totalScore = 2000;
-  
-    document.querySelector('.perfil-info h2').innerText = userName;
-    document.querySelector('.perfil-info p:nth-child(2)').innerText = `Nível: ${userLevel}`;
-    document.querySelector('.perfil-info p:nth-child(3)').innerText = `Experiência: ${userExperience} XP`;
-    document.querySelector('.perfil-stats li:nth-child(1)').innerText = `Jogos Completos: ${gamesCompleted}`;
-    document.querySelector('.perfil-stats li:nth-child(2)').innerText = `Desafios Vencidos: ${challengesWon}`;
-    document.querySelector('.perfil-stats li:nth-child(3)').innerText = `Pontuação Total: ${totalScore}`;
-  });
-  
+  console.log(document.querySelector('.games-completed')); // Verifica se o elemento existe
+  console.log(document.querySelector('.challenges-won'));
+  console.log(document.querySelector('.challenges-lost'));
+  console.log(document.querySelector('.total-play-time'));
+
+  document.querySelector('.perfil-info h2').innerText = userName;
+  document.querySelector('.games-completed').innerText = gamesCompleted;
+  document.querySelector('.challenges-won').innerText = challengesWon;
+  document.querySelector('.challenges-lost').innerText = challengesLost;
+  document.querySelector('.total-play-time').innerText = totalPlayTime;
+};
+
+
+
+function goToMenu() {
+  window.location.href = '../home/index.html'; 
+}
+
+function goToRanking() {
+  window.location.href = '../ranking/index.html'; 
+}
