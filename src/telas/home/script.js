@@ -17,83 +17,72 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
   const gameOptions = document.querySelectorAll('.game-option');
 
-  const sidebarLinks = sidebar.querySelectorAll('li');
-  const gameAlertModal = document.getElementById("game-alert-modal");
-  const btnContinuePlaying = document.getElementById("btnContinuePlaying");
-  const btnExitGame = document.getElementById("btnExitGame");
   const gameContainer = document.getElementById('game-container');
+  const exitGameModal = document.getElementById('exitGameModal');
+  const btnConfirmExit = document.getElementById('btnConfirmExit');
+  const btnCancelExit = document.getElementById('btnCancelExit');
 
   let isGameActive = false;
   let pendingNavigation = null;
 
   window.addEventListener('resize', handleSidebarVisibility);
-  sidebarLinks.forEach(link => {
-    link.addEventListener('click', (event) => {
-      if (isGameActive) {
-        event.preventDefault(); 
-        pendingNavigation = link; 
-        gameAlertModal.style.display = "block";
-      } else {
-        navigateToLink(link);
-      }
-    });
-  });
-  window.addEventListener('resize', handleSidebarVisibility); // Adicionar listener para redimensionamento da tela
-  
+
   liGoToPerfil.addEventListener('click', () => {
-    window.location.href = '../perfil/index.html';
-  });  
+    handleExitNavigation('../perfil/index.html');
+  });
 
   liGotoRanking.addEventListener('click', () => {
-    window.location.href = '../ranking/index.html';
+    handleExitNavigation('../ranking/index.html');
   });
 
   gameOptions.forEach(option => {
     option.addEventListener('click', () => {
       const game = option.getAttribute('data-game');
-      loadGame(game);
+      handleExitNavigation(game);
     });
   });
 
   btnToggleSidebar.addEventListener('click', function () {
-    if (sidebar.classList.contains('open')) {
-      sidebar.classList.remove('open');
+    sidebar.classList.toggle('open');
+  });
+
+  function handleExitNavigation(destination) {
+    if (isGameActive) {
+      pendingNavigation = destination;
+      showExitModal();
     } else {
-      sidebar.classList.add('open');
-    }
-  });
-
-  btnContinuePlaying.addEventListener('click', () => {
-    gameAlertModal.style.display = "none";
-  });
-
-  btnExitGame.addEventListener('click', () => {
-    gameAlertModal.style.display = "none";
-    isGameActive = false;
-    if (pendingNavigation) {
-      navigateToLink(pendingNavigation);
-      pendingNavigation = null;
-    }
-  });
-
-  // Fecha o modal ao clicar fora dele
-  window.addEventListener('click', (event) => {
-    if (event.target == gameAlertModal) {
-      gameAlertModal.style.display = "none";
-    }
-  });
-
-  function navigateToLink(link) {
-    const game = link.getAttribute('data-game');
-    if (game) {
-      loadGame(game);  // Carrega o jogo
-    } else {
-      const href = link.getAttribute('data-href');
-      if (href) {
-        window.location.href = href;  // Navega para o link
-      }
+      navigateTo(destination);
     }
   }
+
+  function navigateTo(destination) {
+    if (destination === '../perfil/index.html' || destination === '../ranking/index.html') {
+      window.location.href = destination;
+    } else {
+      loadGame(destination);
+    }
+
+    sidebar.classList.remove('open'); // Fecha a sidebar ao trocar de jogo ou página
+  }
+
+  function showExitModal() {
+    exitGameModal.style.display = 'block';
+  }
+
+  function closeExitModal() {
+    exitGameModal.style.display = 'none';
+  }
+
+  btnConfirmExit.addEventListener('click', () => {
+    closeExitModal();
+    isGameActive = false; // Reset estado do jogo
+    navigateTo(pendingNavigation); // Navegar para o destino pendente
+    pendingNavigation = null; // Limpar o destino pendente
+  });
+
+  btnCancelExit.addEventListener('click', () => {
+    closeExitModal(); // Apenas fecha o modal
+  });
 
   function loadGame(game) {
     isGameActive = true;  // Agora o jogo está ativo
@@ -127,7 +116,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 const updateUI = (user) => {
   document.getElementById('msgOla').innerText = `Olá, ${user.name}`;
-  // Adicione outras atualizações de interface conforme necessário
 };
 
 function handleSidebarVisibility() {
@@ -139,67 +127,7 @@ function handleSidebarVisibility() {
   }
 }
 
-function logout() {
-  window.location.href = 'logout.html';
-}
-
-function goToRanking() {
-  window.location.href = '../ranking/index.html';
-}
-
-function loadGame(game) {
-  const gameContainer = document.getElementById('game-container');
-  gameContainer.innerHTML = '';
-
-  switch (game) {
-    case 'cacapalavras':
-      loadCacaPalavras();
-      break;
-    case 'hangame':
-      loadHangame();
-      break;
-    case 'ecopuzzle':
-      loadEcopuzzle();
-      break;
-    case 'quiz':
-      loadQuizODS();
-      break;
-    default:
-      gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
-  }
-
-  const sidebar = document.querySelector('.sidebar');
-  sidebar.classList.remove('open');  // Fecha a sidebar após seleção do jogo
-}
-
-function loadCacaPalavras() {
-  const gameContainer = document.getElementById('game-container');
-  gameContainer.innerHTML = `
-      <iframe id="game-iframe" src="../../jogos/cacapalavras/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
-  `;
-}
-
-function loadHangame() {
-  const gameContainer = document.getElementById('game-container');
-  gameContainer.innerHTML = `
-      <iframe id="game-iframe" src="../../jogos/forca/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
-  `;
-}
-
-function loadEcopuzzle() {
-  const gameContainer = document.getElementById('game-container');
-  gameContainer.innerHTML = `
-      <iframe id="game-iframe" src="../../jogos/ecopuzzle/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
-  `;
-}
-
-function loadQuizODS() {
-  const gameContainer = document.getElementById('game-container');
-  gameContainer.innerHTML = `
-      <iframe id="game-iframe" src="../../jogos/quiz/index.html" style="width: 100%; height: 100%; border: none;"></iframe>
-  `;
-}
-
+// Carrossel
 let currentSlide = 0;
 let startX;
 let isDragging = false;
@@ -217,15 +145,12 @@ function showSlide(slideIndex, carousel) {
     currentSlide = slideIndex;
   }
 
-  slides.forEach((slide, index) => {
+  slides.forEach((slide) => {
     slide.style.transform = `translateX(${-currentSlide * 100}%)`;
   });
 
   indicators.forEach((indicator, index) => {
-    indicator.classList.remove('active');
-    if (index === currentSlide) {
-      indicator.classList.add('active');
-    }
+    indicator.classList.toggle('active', index === currentSlide);
   });
 }
 
