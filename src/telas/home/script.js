@@ -16,7 +16,28 @@ document.addEventListener("DOMContentLoaded", async () => {
   const liGotoRanking = document.getElementById('liGotoRanking');
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
   const gameOptions = document.querySelectorAll('.game-option');
-  
+
+  const sidebarLinks = sidebar.querySelectorAll('li');
+  const gameAlertModal = document.getElementById("game-alert-modal");
+  const btnContinuePlaying = document.getElementById("btnContinuePlaying");
+  const btnExitGame = document.getElementById("btnExitGame");
+  const gameContainer = document.getElementById('game-container');
+
+  let isGameActive = false;
+  let pendingNavigation = null;
+
+  window.addEventListener('resize', handleSidebarVisibility);
+  sidebarLinks.forEach(link => {
+    link.addEventListener('click', (event) => {
+      if (isGameActive) {
+        event.preventDefault(); 
+        pendingNavigation = link; 
+        gameAlertModal.style.display = "block";
+      } else {
+        navigateToLink(link);
+      }
+    });
+  });
   window.addEventListener('resize', handleSidebarVisibility); // Adicionar listener para redimensionamento da tela
   
   liGoToPerfil.addEventListener('click', () => {
