@@ -37,10 +37,10 @@ app.use(
     resave: false,
     // Save empty value if there is no vaue which we do not want to do
     saveUninitialized: false,
-    cookie: { 
-      httpOnly: true, 
+    cookie: {
+      httpOnly: true,
       secure: false,
-      sameSite: 'none', 
+      sameSite: 'none',
     }
   })
 );
@@ -160,9 +160,10 @@ app.post("/api/record/crossworld", isAuthenticated, (req, res) => {
       console.log(results.rows);
       req.flash("success_msg", "You are now records");
       res.status(200).json(
-        { "res": "done",
+        {
+          "res": "done",
           "game": "Crossworld"
-         });
+        });
     }
   );
 });
@@ -182,9 +183,10 @@ app.post("/api/record/ecopuzzle", isAuthenticated, (req, res) => {
       console.log(results.rows);
       req.flash("success_msg", "You are now records");
       res.status(200).json(
-        { "res": "done",
+        {
+          "res": "done",
           "game": "Ecopuzzle"
-         });
+        });
     }
   );
 });
@@ -204,9 +206,10 @@ app.post("/api/record/hangame", isAuthenticated, (req, res) => {
       console.log(results.rows);
       req.flash("success_msg", "You are now records");
       res.status(200).json(
-        { "res": "done",
+        {
+          "res": "done",
           "game": "Hangame"
-         });
+        });
     }
   );
 });
@@ -226,9 +229,64 @@ app.post("/api/record/quiz", isAuthenticated, (req, res) => {
       console.log(results.rows);
       req.flash("success_msg", "You are now records");
       res.status(200).json(
-        { "res": "done",
+        {
+          "res": "done",
           "game": "Quiz"
-         });
+        });
+    }
+  );
+});
+
+app.get("/api/perfil/info", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  pool.query(
+    `SELECT 
+    u.id AS usuario_id,
+    u.name AS usuario_nome,
+    
+    -- Jogos Completos: conta o número de vezes que o usuário jogou cada um dos quatro jogos
+    LEAST(
+        COALESCE(e.jogos_ecopuzzle, 0),
+        COALESCE(c.jogos_crossworld, 0),
+        COALESCE(q.jogos_quiz, 0),
+        COALESCE(h.jogos_hangame, 0)
+    ) AS jogos_completos,
+    
+    -- Desafios Vencidos: soma o número total de jogos jogados pelo usuário
+    COALESCE(e.jogos_ecopuzzle, 0) + COALESCE(c.jogos_crossworld, 0) + COALESCE(q.jogos_quiz, 0) + COALESCE(h.jogos_hangame, 0) AS desafios_vencidos,
+    
+    -- Tempo Total: soma o tempo total gasto em todos os jogos pelo usuário
+    COALESCE(e.tempo_total_ecopuzzle, 0) + COALESCE(c.tempo_total_crossworld, 0) + COALESCE(q.tempo_total_quiz, 0) + COALESCE(h.tempo_total_hangame, 0) AS tempo_total_jogos
+
+FROM "User" u
+LEFT JOIN (
+    SELECT id_usuario, COUNT(*) AS jogos_ecopuzzle, SUM(tempo_record) AS tempo_total_ecopuzzle
+    FROM "Ecopuzzle"
+    GROUP BY id_usuario
+) e ON u.id = e.id_usuario
+LEFT JOIN (
+    SELECT id_usuario, COUNT(*) AS jogos_crossworld, SUM(tempo_record) AS tempo_total_crossworld
+    FROM "Crossworld"
+    GROUP BY id_usuario
+) c ON u.id = c.id_usuario
+LEFT JOIN (
+    SELECT id_usuario, COUNT(*) AS jogos_quiz, SUM(tempo_record) AS tempo_total_quiz
+    FROM "Quiz"
+    GROUP BY id_usuario
+) q ON u.id = q.id_usuario
+LEFT JOIN (
+    SELECT id_usuario, COUNT(*) AS jogos_hangame, SUM(tempo_record) AS tempo_total_hangame
+    FROM "Hangame"
+    GROUP BY id_usuario
+) h ON u.id = h.id_usuario
+WHERE u.id = $1;`,
+    [id],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      req.flash("success_msg", "query completed");
+      res.status(200).json(results.rows[0]);
     }
   );
 });
