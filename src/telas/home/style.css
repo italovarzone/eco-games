@@ -106,8 +106,8 @@ hr {
     overflow-y: auto;
 }
 
-.sidebar h2 {
-    padding: 16px;
+.sidebar h4 {
+    padding: 4px;
     text-align: center;
 }
 
@@ -227,6 +227,8 @@ hr {
   text-align: center;
 }
 
+
+
 .modal-buttons {
   display: flex;
   justify-content: space-between;
@@ -343,6 +345,12 @@ hr {
     .mobile-carousel {
       display: flex;
     }
+
+    .sidebar h4 {
+      font-size: 21px;
+      padding: 4px;
+      text-align: center;
+  }
   }
   
   .carousel-indicators {
