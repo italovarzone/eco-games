@@ -87,17 +87,28 @@ function handleInput(key, button) {
     } else if (!incorrects.includes(key)) {
       incorrects.push(key);
       maxGuesses--;
-
-      // Mudar o fundo para vermelho ao errar
+    
+      // Mudar o fundo do botão para vermelho ao errar
       if (button) {
         button.style.backgroundColor = '#ff4c4c'; // vermelho
         button.style.color = '#fff'; // texto branco
       }
-
-      // Remover um ícone de planeta
+    
+      // Alterar a cor do ícone de planeta para vermelho na ordem
       const planetIconsContainer = document.getElementById("planet-icons");
-      if (planetIconsContainer.children.length > 0) {
-        planetIconsContainer.removeChild(planetIconsContainer.lastChild);
+      const remainingPlanets = planetIconsContainer.children;
+      if (remainingPlanets.length > incorrects.length - 1) {
+        const currentPlanet = remainingPlanets[incorrects.length - 1];
+        currentPlanet.style.color = '#ff4c4c'; // vermelho
+      }
+    
+      // Verifica se todas as tentativas se esgotaram
+      if (maxGuesses < 1) {
+        pauseTime();
+        showResult(false); // Mostra o resultado de perda
+        for (let i = 0; i < word.length; i++) {
+          inputs.querySelectorAll("input")[i].value = word[i];
+        }
       }
     }
   }
@@ -127,9 +138,11 @@ document.addEventListener('DOMContentLoaded', () => {
   typingInput.addEventListener("input", (e) => handleInput(e.target.value));
   document.addEventListener("keydown", (e) => {
     const key = e.key.toUpperCase();
-    const button = Array.from(document.querySelectorAll('.keyboard-container button'))
-      .find(btn => btn.innerText === key);
-    handleInput(key, button);
+    if (/^[A-Z]$/.test(key)) {
+      const button = Array.from(document.querySelectorAll('.keyboard-container button'))
+        .find(btn => btn.innerText === key);
+      handleInput(key, button);
+    }
   });
   typingInput.focus(); // Definir o foco automaticamente ao carregar a página
 });
@@ -151,6 +164,7 @@ function randomWord() {
   for (let i = 0; i < maxGuesses; i++) {
     const planetIcon = document.createElement('i');
     planetIcon.className = 'fa-solid fa-earth-americas';
+    planetIcon.style.color = '#4caf50'; // cor padrão verde
     planetIconsContainer.appendChild(planetIcon);
   }
 

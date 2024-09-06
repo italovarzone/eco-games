@@ -101,10 +101,16 @@ body {
   display: none;
 }
 
+#planet-icons {
+  display: flex;
+  justify-content: center; /* Centraliza os planetas */
+}
+
 #planet-icons i {
-  margin-right: 5px;
-  font-size: 24px;
-  color: #4caf50; /* Exemplo de cor */
+  margin: 0 5px; /* Espaçamento entre os planetas */
+  font-size: 30px; /* Tamanho dos ícones */
+  color: #4caf50; /* Verde como cor padrão */
+  transition: color 0.3s; /* Animação de transição suave */
 }
 
 .container h1 {
@@ -181,12 +187,16 @@ body {
 }
 
 .content .details {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   padding: 16px;
 }
 
 .details p {
   font-size: 18px;
-  margin-bottom: 10px;
+  margin: 10px;
   color: var(--cor-texto);
   font-family: var(--fonte-gamer);
   line-height: 1;
