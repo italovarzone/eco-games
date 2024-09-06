@@ -17,36 +17,40 @@ var word,
   corrects = [],
   incorrects = [],
   gameOver = false;
-var seconds = 0;
-var minutes = 0;
-var Interval;
 
-const startTimer = () => {
-  function runTimer() {
-    seconds++;
-    if (seconds > 59) {
-      minutes++;
-      seconds = 0;
-    }
-    document.getElementById("time").innerText = `${minutes
-      .toString()
-      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
-  }
+// Variáveis para controle de tempo
+let interval;
+let time = 0; // Tempo em milissegundos
 
-  clearInterval(Interval);
-  Interval = setInterval(runTimer, 1000);
-};
+// Temporizador - funções
+function startTime() {
+  let startTime = Date.now() - time;
+  interval = setInterval(() => {
+    time = Date.now() - startTime;
+    document.getElementById("time").innerText = calculateTime(time);
+  }, 1000);
+}
 
-const stopTimer = () => {
-  clearInterval(Interval);
-};
+function pauseTime() {
+  clearInterval(interval);
+  document.getElementById("time").innerText = calculateTime(time);
+}
 
-const resetTimer = () => {
-  clearInterval(Interval);
-  minutes = 0;
-  seconds = 0;
-  document.getElementById("time").innerText = `00:00`;
-};
+function stopTime() {
+  time = 0;
+  clearInterval(interval);
+  document.getElementById("time").innerText = "00:00";
+}
+
+function calculateTime(time) {
+  let totalSeconds = Math.floor(time / 1000);
+  let totalMinutes = Math.floor(totalSeconds / 60);
+
+  let displaySeconds = (totalSeconds % 60).toString().padStart(2, "0");
+  let displayMinutes = totalMinutes.toString().padStart(2, "0");
+
+  return `${displayMinutes}:${displaySeconds}`;
+}
 
 function createKeyboard() {
   const keyboardContainer = document.getElementById('keyboard');
@@ -106,10 +110,10 @@ function handleInput(key, button) {
 
   setTimeout(() => {
     if (corrects.length === word.length) {
-      stopTimer();
+      pauseTime();
       showResult(true); 
     } else if (maxGuesses < 1) {
-      stopTimer();
+      pauseTime();
       showResult(false); 
       for (let i = 0; i < word.length; i++) {
         inputs.querySelectorAll("input")[i].value = word[i];
@@ -132,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function randomWord() {
   gameOver = false; // Reiniciar o estado de jogo
-  startTimer();
+  startTime();
   let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
   word = ranObj.word.toUpperCase();  
   maxGuesses = 5;
@@ -158,6 +162,7 @@ function randomWord() {
 }
 
 randomWord();
+
 async function saveRecord(time, incorrects) {
   try {
     let res;
@@ -176,18 +181,16 @@ async function saveRecord(time, incorrects) {
     console.log(error);
   }
 }
+
 function showResult(won) { 
   gameOver = true; // Marcar o jogo como terminado
   gameContent.style.display = "none";
   resultContainer.style.display = "flex";
   totalErrors.innerText = incorrects.length;
-  let time = seconds + 60 * minutes
-  totalTime.innerText = `${minutes.toString().padStart(2, "0")}:${seconds
-    .toString()
-    .padStart(2, "0")}`;
+  totalTime.innerText = calculateTime(time);
 
   if (won) {
-    saveRecord(time, incorrects.length);
+    saveRecord(time, incorrects.length); // Enviando tempo em milissegundos
     resultMessage.innerText = "Parabéns! Você ganhou!";
   } else {
     resultMessage.innerText = "Que pena! Você perdeu. Tente novamente!";
@@ -197,7 +200,7 @@ function showResult(won) {
 function resetGame() {
   resultContainer.style.display = "none";
   gameContent.style.display = "block";
-  resetTimer();
+  stopTime();
   randomWord();
   createKeyboard(); // Recria o teclado
   typingInput.focus(); // Definir o foco automaticamente ao resetar o jogo

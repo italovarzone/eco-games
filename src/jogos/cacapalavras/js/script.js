@@ -5,10 +5,43 @@ const wordList = document.getElementById("wordList");
 const timerElement = document.getElementById("timer");
 const gameContainer = document.getElementById("game-container");
 const congratulationsContainer = document.getElementById("game-result-container");
+
 let isMouseDown = false;
 let selectedCells = [];
-let timerInterval;
-let seconds = 0;
+
+// Variáveis para controle de tempo
+let interval;
+let time = 0;
+
+// Temporizador - funções
+function startTime() {
+  let startTime = Date.now() - time;
+  interval = setInterval(() => {
+    time = Date.now() - startTime;
+    timerElement.textContent = `Tempo: ${calculateTime(time)}`;
+  }, 1000);
+}
+
+function pauseTime() {
+  clearInterval(interval);
+  timerElement.textContent = `Tempo: ${calculateTime(time)}`;
+}
+
+function stopTime() {
+  time = 0;
+  clearInterval(interval);
+  timerElement.textContent = "Tempo: 00:00";
+}
+
+function calculateTime(time) {
+  let totalSeconds = Math.floor(time / 1000);
+  let totalMinutes = Math.floor(totalSeconds / 60);
+
+  let displaySeconds = (totalSeconds % 60).toString().padStart(2, "0");
+  let displayMinutes = totalMinutes.toString().padStart(2, "0");
+
+  return `${displayMinutes}:${displaySeconds}`;
+}
 
 document.addEventListener("DOMContentLoaded", () => {
   startGame();
@@ -75,7 +108,7 @@ function startGame() {
   }
 
   // Iniciar o timer
-  timerInterval = setInterval(updateTimer, 1000);
+  startTime();
 }
 
 function clearGame() {
@@ -86,9 +119,7 @@ function clearGame() {
     cell.removeAttribute("data-words");
   });
   wordList.innerHTML = "";
-  clearInterval(timerInterval);
-  seconds = 0;
-  timerElement.textContent = "Tempo: 00:00";
+  stopTime();
 }
 
 function resetGame() {
@@ -200,16 +231,9 @@ function updateWordList() {
   });
 
   if (allWordsFound) {
-    clearInterval(timerInterval);
+    pauseTime();
     showDialog();
   }
-}
-
-function updateTimer() {
-  seconds++;
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  timerElement.textContent = `Tempo: ${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
 }
 
 async function saveRecord(time) {
@@ -232,14 +256,12 @@ async function saveRecord(time) {
 }
 
 function showDialog() {
-  clearInterval(timerInterval);
+  pauseTime();
   const gameContainer = document.getElementById("game-container");
   const gameResultContainer = document.getElementById("game-result-container");
   const totalTimeElement = document.getElementById("total-time");
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  totalTimeElement.textContent = `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
-  saveRecord(seconds);
+  totalTimeElement.textContent = calculateTime(time);
+  saveRecord(time);
   gameContainer.style.display = "none";
   gameResultContainer.style.display = "block";
 }

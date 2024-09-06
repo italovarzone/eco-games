@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function startGame(userid) {
   iduser = userid;
-  recuperarTimeScoreUser();
   cardStart.play();
   stopTime();
   startTime();
@@ -93,8 +92,9 @@ function createCardFace(face, card, element) {
   element.appendChild(cardElementFace);
 }
 
-async function saveRecord(time) {
+async function saveTime(time) {
   try {
+    console.log(time);
     let res;
     const response = await fetch("http://localhost:3000/api/record/ecopuzzle", {
       method: "POST",
@@ -134,8 +134,7 @@ function flipCard() {
           resultadoP.textContent = `Parabéns! Tempo de jogo: ${calculateTime(
             time
           )}`;
-          saveRecord(time);
-          compararTime(time);
+          saveTime(time);
         }
       } else {
         setTimeout(() => {
@@ -153,7 +152,6 @@ function flipCard() {
 
 function restart() {
   game.clearCards();
-  compararTime(time);
   startGame();
   cardStart.play();
   let gameOverLayer = document.getElementById("gameOver");
@@ -193,60 +191,6 @@ function calculateTime(time) {
   let displayMinutes = totalMinutes.toString().padStart(2, "0");
 
   return `${displayMinutes}:${displaySeconds}`;
-}
-
-function recuperarTimeScoreUser() {
-  let recorde = document.getElementById("recorde");
-  // Faz uma requisição HTTP para o arquivo PHP que retorna o JSON
-  fetch("http://localhost/projetopa/api/recuperarecorduser.php")
-    .then((response) => response.json()) // Analisa a resposta como um objeto JSON
-    .then((data) => {
-      // Usa o objeto JSON retornado para exibir o tempo de gravação do usuário
-      recorde.textContent = data.time_record;
-    })
-    .catch((error) => console.error(error)); // Lida com erros da requisição HTTP
-
-  return recorde.textContent;
-}
-
-function compararTime(time) {
-  let recorde = document.getElementById("recorde");
-  let timeNovo = calculateTime(time);
-  let timeRecordUser = recuperarTimeScoreUser();
-
-  if (timeNovo < timeRecordUser) {
-    fetch("http://localhost/projetopa/api/alteratempouser.php", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        record: timeNovo,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        recorde.textContent = data.time_record;
-      })
-      .catch((error) => console.error(error));
-  } else if (timeRecordUser == "00:00") {
-    fetch("http://localhost/projetopa/api/alteratempouser.php", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        record: timeNovo,
-      }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        recorde.textContent = data.time_record;
-      })
-      .catch((error) => console.error(error));
-  } else if (timeNovo > timeRecordUser) {
-    console.log("Você não bateu seu record!");
-  }
 }
 
 function showHelp() {
