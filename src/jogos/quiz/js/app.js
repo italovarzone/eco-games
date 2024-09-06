@@ -4,23 +4,45 @@ function startGame() {
     const resultContainer = document.getElementById('result-container');
     const quizContainerQuestions = document.getElementById('quiz-container-questions');
     const headerQuizContainer = document.getElementById('header-quiz');
-  
-    // Resetting variables for a new game
+
+    // Resetando variáveis para um novo jogo
     currentQuestion = 0;
     score = 0;
     questionTimes = [];
     totalTimeSpent = 0; // Reseta o tempo total gasto para o novo jogo
     selectedQuestions = shuffleQuestions(questions).slice(0, 5);
-  
+
     resultContainer.style.display = 'none';
     quizContainerWrapper.style.display = 'flex';
     quizContainerQuestions.style.display = 'flex';
     quizContainer.style.display = 'flex';
-    headerQuizContainer.style.display = 'flex'; // Show header again if it was hidden
-    document.getElementById('next-button').style.display = 'none'; // Hide next button
-  
+    headerQuizContainer.style.display = 'flex'; // Mostrar cabeçalho novamente se estiver escondido
+    document.getElementById('next-button').style.display = 'none'; // Esconder botão de próxima pergunta
+
+    createProgressPlanets(); // Cria os planetas de progresso
     loadQuestion();
-  }
+}
+
+  function createProgressPlanets() {
+        const progressContainer = document.getElementById('progress-container');
+        progressContainer.innerHTML = ''; // Limpa o contêiner de progresso
+
+        selectedQuestions.forEach((_, index) => {
+            const planet = document.createElement('div');
+            planet.classList.add('planet');
+            planet.setAttribute('id', `planet-${index}`); // Adiciona um ID único para cada planeta
+            progressContainer.appendChild(planet);
+        });
+    }
+
+    function updateProgressPlanet(index, isCorrect) {
+        const planet = document.getElementById(`planet-${index}`);
+        if (isCorrect) {
+            planet.style.backgroundColor = '#4caf50'; // Verde para resposta correta
+        } else {
+            planet.style.backgroundColor = '#e74c3c'; // Vermelho para resposta incorreta
+        }
+    }
   
   function animateOptions() {
     const options = document.querySelectorAll('.option');
@@ -260,9 +282,9 @@ function startGame() {
     const resultContainer = document.getElementById('result');
     const nextButton = document.getElementById('next-button');
     const options = document.querySelectorAll('.option');
-  
+
     clearInterval(timerInterval); // Para o cronômetro ao verificar a resposta
-  
+
     options.forEach((option, index) => {
         option.disabled = true;
         if (index === correctAnswer) {
@@ -272,28 +294,30 @@ function startGame() {
             option.classList.add('incorrect');
             option.classList.add('incorrect-answer');
         }
-  
         option.disabled = true; // Desabilita os botões após a resposta
     });
-  
+
     const questionTime = timeLimit * 1000 - currentTime;
     questionTimes.push(questionTime); // Armazena o tempo da pergunta
     totalTimeSpent += questionTime; // Acumula o tempo total gasto
-  
+
     if (selectedOption === correctAnswer) {
         resultContainer.style.color = '#4caf50';
         resultContainer.textContent = `Resposta correta! ${selectedQuestions[currentQuestion].explanation}`;
         score++;
+        updateProgressPlanet(currentQuestion, true); // Atualiza o planeta para verde
     } else if (selectedOption === -1) {
-        resultContainer.style.color = 'orange'
+        resultContainer.style.color = 'orange';
         resultContainer.textContent = `Tempo esgotado! A resposta correta seria a opção ${correctAnswer + 1}. ${selectedQuestions[currentQuestion].explanation}`;
+        updateProgressPlanet(currentQuestion, false); // Atualiza o planeta para vermelho
     } else {
         resultContainer.style.color = '#e74c3c';
         resultContainer.textContent = `Resposta incorreta. A resposta correta seria a opção ${correctAnswer + 1}. ${selectedQuestions[currentQuestion].explanation}`;
+        updateProgressPlanet(currentQuestion, false); // Atualiza o planeta para vermelho
     }
-  
+
     nextButton.style.display = "flex";
-  }
+}
   
   function nextQuestion() {
     const options = document.querySelectorAll('.option');

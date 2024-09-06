@@ -40,6 +40,11 @@ body {
     max-width: 600px;
 }
 
+#header-quiz {
+    display: flex;
+    flex-direction: column;
+}
+
 #quiz-container {
     display: flex;
     flex-direction: column;
@@ -54,6 +59,22 @@ body {
     padding-bottom: 32px;
     font-size: 16px;
     font-weight: bold;
+}
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+    gap: 10px; /* Espaço entre os planetas */
+}
+
+.planet {
+    width: 20px; /* Largura do planeta */
+    height: 20px; /* Altura do planeta */
+    border-radius: 50%; /* Faz o planeta ser um círculo */
+    background-color: #a5a5a5; /* Cinza padrão */
+    transition: background-color 0.3s ease; /* Transição suave para a cor */
 }
 
 #help-button {
