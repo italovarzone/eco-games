@@ -37,6 +37,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 });
 
-function goToMenu() {
-    window.location.href = '../home/index.html'; 
+function goToPerfil() {
+    window.location.href = '../perfil/index.html'; 
 }
