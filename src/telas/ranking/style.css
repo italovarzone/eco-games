@@ -3,18 +3,20 @@
 :root {
     --cor-primaria: #22543d;
     --cor-secundaria: #f2f2f2;
-    --cor-fundo: #f2f2f2;
+    --cor-terciaria: #d6d6d6;
+    --cor-fundo: #fff;
     --cor-texto: #333;
     --cor-botao: #4caf50;
     --fonte-gamer: "Secular One", sans-serif;
 }
 
 body {
-    background-color: var(--cor-secundaria);
-    color: var(--cor-texto);
+    background-color: var(--cor-primaria);
+    color: var(--cor-primaria);
     display: flex;
     justify-content: center;
     font-family: var(--fonte-gamer);
+    font-size: 18px;
     align-items: center;
     margin: 0;
 }
@@ -22,7 +24,7 @@ body {
 .tab-group {
     margin-top: 25px;
     width: 100%;
-    max-width: 600px;
+    max-width: 1000px;
     border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -30,7 +32,7 @@ body {
 
 .tab-header {
     display: flex;
-    background: var(--cor-primaria);
+    background: var(--cor-secundaria);
 }
 
 .tab-header .tab {
@@ -38,16 +40,19 @@ body {
     text-align: center;
     padding: 15px;
     cursor: pointer;
-    color: white;
     transition: background 0.3s;
 }
 
 .tab-header .tab:hover {
-    background: var(--cor-botao);
+    background: var(--cor-terciaria);
 }
 
 .tab-header .tab.active {
-    background: var(--cor-botao);
+    background: var(--cor-terciaria);
+}
+
+.tab-content {
+    background-color: var(--cor-secundaria);
 }
 
 .tab-content .content {
@@ -70,8 +75,7 @@ body {
     justify-content: center;
     align-items: center;
     padding-bottom: 20px;
-    color: white;
-    background-color: var(--cor-primaria);
+    background-color: var(--cor-secundaria);
 }
 
 .score-user-actual h6 {
@@ -92,8 +96,7 @@ body {
 }
 
 .header {
-    background-color: var(--cor-primaria);
-    color: white;
+    background-color: var(--cor-secundaria);
     text-align: center;
     padding: 8px;
     font-size: 24px;
@@ -112,7 +115,7 @@ body {
 
 .ranking-table th {
     background-color: var(--cor-botao);
-    color: white;
+    color: var(--cor-secundaria);
 }
 
 .ranking-table tbody tr:nth-child(odd) {
@@ -161,6 +164,10 @@ body {
 
 /* Estilo para o carrossel na versão mobile */
 @media (max-width: 768px) {
+    body {
+        background-color: var(--cor-secundaria);
+    }
+
     .tab-header {
         display: none; /* Oculta as abas na versão mobile */
     }
