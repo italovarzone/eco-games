@@ -23,15 +23,16 @@ window.onload = function() {
   
 };
 
+const btnGoToMenu = document.getElementById('btnGotoMenu');
+  const btnGoToRanking = document.getElementById('btnGotoRanking');
 
+  btnGoToMenu.addEventListener('click', () => {
+    window.location.href = '../home/index.html';
+  });
 
-function goToMenu() {
-  window.location.href = '../home/index.html'; 
-}
-
-function goToRanking() {
-  window.location.href = '../ranking/index.html'; 
-}
+  btnGoToRanking.addEventListener('click', () => {
+    window.location.href = '../ranking/index.html';
+  });
 
 });
 
