@@ -17,7 +17,6 @@ const sendRecoveryEmail = (email, recoveryCode) => {
 
   return apiInstance.sendTransacEmail(sendSmtpEmail).then(
     function (data) {
-      console.log('Email enviado com sucesso:', data);
       return { success: true, data };
     },
     function (error) {

@@ -55,15 +55,12 @@ app.get("/", (req, res) => {
   res.send("hello")
 });
 
-// Função para gerar um código aleatório de 6 dígitos
 function generateRecoveryCode() {
   return Math.floor(100000 + Math.random() * 900000).toString();
 }
 
-// Armazenamento temporário para códigos de recuperação (substitua por banco de dados)
 const recoveryCodes = {};
 
-// Endpoint para enviar o código de recuperação
 app.post('/api/users/send-recovery-code', async (req, res) => {
   const { email } = req.body;
   
@@ -72,12 +69,10 @@ app.post('/api/users/send-recovery-code', async (req, res) => {
   }
 
   const recoveryCode = generateRecoveryCode();
-  console.log(`Gerando código de recuperação para ${email}: ${recoveryCode}`);
+  console.log(`Gerando código: ${recoveryCode}`);
 
-  // Armazena o código associado ao email (substitua por banco de dados)
   recoveryCodes[email] = recoveryCode;
 
-  // Envia o email de recuperação
   const result = await sendRecoveryEmail(email, recoveryCode);
 
   if (result.success) {
@@ -87,7 +82,6 @@ app.post('/api/users/send-recovery-code', async (req, res) => {
   }
 });
 
-// Endpoint para verificar o código de recuperação
 app.post('/api/users/verify-recovery-code', (req, res) => {
   const { email, code } = req.body;
 
@@ -95,17 +89,44 @@ app.post('/api/users/verify-recovery-code', (req, res) => {
     return res.status(400).json({ message: 'O email e o código são necessários.' });
   }
 
-  console.log(`Verificando código para ${email}: Inserido: ${code}, Armazenado: ${recoveryCodes[email]}`);
-
-  // Verifica o código associado ao email
   if (recoveryCodes[email] && recoveryCodes[email] === code) {
-    delete recoveryCodes[email]; // Remove o código após verificação bem-sucedida
+    delete recoveryCodes[email];
     res.json({ valid: true, message: 'Código verificado com sucesso!' });
   } else {
     res.json({ valid: false, message: 'Código inválido. Por favor, tente novamente.' });
   }
 });
 
+app.post('/api/users/reset-password', async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    return res.status(400).json({ message: 'Email e nova senha são necessários.' });
+  }
+
+  try {
+    const userQuery = await pool.query(
+      `SELECT * FROM public."User" WHERE email = $1`,
+      [email]
+    );
+
+    if (userQuery.rows.length === 0) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await pool.query(
+      `UPDATE public."User" SET password = $1 WHERE email = $2`,
+      [hashedPassword, email]
+    );
+
+    res.json({ success: true, message: 'Senha atualizada com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao atualizar a senha:', error);
+    res.status(500).json({ message: 'Erro ao atualizar a senha.' });
+  }
+});
 
 app.post("/api/users/register", async (req, res) => {
   let { name, email, password, password2 } = req.body;

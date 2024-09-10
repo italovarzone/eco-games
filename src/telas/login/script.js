@@ -93,7 +93,7 @@ document
       .then(data => {
         alert(data.message);
         document.getElementById('email-step').style.display = 'none';
-        document.getElementById('code-step').style.display = 'block';
+        document.getElementById('code-step').style.display = 'flex';
       })
       .catch(error => {
         console.error('Erro ao enviar o código de recuperação:', error);
@@ -121,7 +121,8 @@ document
       .then(data => {
         if (data.valid) {
           alert('Código verificado com sucesso! Agora você pode redefinir sua senha.');
-          // Exiba a interface de redefinição de senha
+          document.getElementById('password-recovery-modal').style.display = 'none'; // Fecha o modal de recuperação
+          document.getElementById('password-reset-modal').style.display = 'flex'; // Abre o modal de redefinição
         } else {
           alert('Código inválido. Por favor, tente novamente.');
         }
@@ -129,6 +130,43 @@ document
       .catch(error => {
         console.error('Erro ao verificar o código de recuperação:', error);
       });
+  });  
+  
+  document.getElementById('reset-password-btn').addEventListener('click', function () {
+    const email = document.getElementById('recovery-email').value; // Email é necessário para identificar o usuário
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+  
+    if (newPassword !== confirmPassword) {
+      alert('As senhas não coincidem. Por favor, tente novamente.');
+      return;
+    }
+  
+    // Enviar a nova senha para o servidor
+    fetch('http://localhost:3000/api/users/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, newPassword }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Senha redefinida com sucesso!');
+          document.getElementById('password-reset-modal').style.display = 'none'; // Fecha o modal de redefinição
+        } else {
+          alert('Erro ao redefinir senha. Por favor, tente novamente.');
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao redefinir senha:', error);
+      });
+  });
+  
+  // Fechar o modal de redefinição de senha
+  document.getElementById('close-reset-modal').addEventListener('click', function () {
+    document.getElementById('password-reset-modal').style.display = 'none';
   });
   
   

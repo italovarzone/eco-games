@@ -61,7 +61,6 @@ body {
 #auth-container {
   width: 100%;
   max-width: 350px;
-  text-align: center;
 }
 
 #auth-container img {
@@ -124,7 +123,7 @@ input:focus {
 }
 
 p {
-  margin-top: 20px;
+  margin: 0;
   color: var(--cor-texto);
 }
 
@@ -208,6 +207,29 @@ a:hover {
   font-size: 1.2rem;
 }
 
+#email-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#code-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+#reset-step {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
 
 .snackbar.show {
   visibility: visible;
