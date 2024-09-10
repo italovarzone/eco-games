@@ -137,7 +137,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 const updateUI = (user) => {
-  document.getElementById('msgOla').innerText = `Olá, ${user.name}`;
+  document.getElementById('msgOla').innerText = `${user.name}`;
 };
 
 function handleSidebarVisibility() {
