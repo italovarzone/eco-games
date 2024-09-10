@@ -69,3 +69,66 @@ document
       icon.classList.add('fa-eye');
     }
   });
+
+
+  document.getElementById('forgot-password').addEventListener('click', function () {
+    document.getElementById('password-recovery-modal').style.display = 'flex';
+  });
+  
+  document.getElementById('close-modal').addEventListener('click', function () {
+    document.getElementById('password-recovery-modal').style.display = 'none';
+  });
+  
+  document.getElementById('send-code-btn').addEventListener('click', function () {
+    const email = document.getElementById('recovery-email').value;
+  
+    fetch('http://localhost:3000/api/users/send-recovery-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        document.getElementById('email-step').style.display = 'none';
+        document.getElementById('code-step').style.display = 'block';
+      })
+      .catch(error => {
+        console.error('Erro ao enviar o código de recuperação:', error);
+      });
+  });
+  
+  document.getElementById('verify-code-btn').addEventListener('click', function () {
+    const email = document.getElementById('recovery-email').value; // Obtém o email do campo de email
+    const code = document.getElementById('verification-code').value;
+  
+    if (!email || !code) {
+      alert('Por favor, preencha o email e o código de verificação.');
+      return;
+    }
+  
+    // Verifique o código digitado pelo usuário com o código enviado por email
+    fetch('http://localhost:3000/api/users/verify-recovery-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, code }),  // Agora enviamos o email junto com o código
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.valid) {
+          alert('Código verificado com sucesso! Agora você pode redefinir sua senha.');
+          // Exiba a interface de redefinição de senha
+        } else {
+          alert('Código inválido. Por favor, tente novamente.');
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao verificar o código de recuperação:', error);
+      });
+  });
+  
+  

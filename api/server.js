@@ -7,6 +7,7 @@ const session = require("express-session");
 require("dotenv").config();
 const cors = require('cors');
 const app = express();
+const sendRecoveryEmail = require('./sendEmail');
 
 app.use(cors({
   origin: 'http://127.0.0.1:5500',
@@ -53,6 +54,58 @@ app.use(flash());
 app.get("/", (req, res) => {
   res.send("hello")
 });
+
+// Função para gerar um código aleatório de 6 dígitos
+function generateRecoveryCode() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+// Armazenamento temporário para códigos de recuperação (substitua por banco de dados)
+const recoveryCodes = {};
+
+// Endpoint para enviar o código de recuperação
+app.post('/api/users/send-recovery-code', async (req, res) => {
+  const { email } = req.body;
+  
+  if (!email) {
+    return res.status(400).json({ message: 'O email é necessário.' });
+  }
+
+  const recoveryCode = generateRecoveryCode();
+  console.log(`Gerando código de recuperação para ${email}: ${recoveryCode}`);
+
+  // Armazena o código associado ao email (substitua por banco de dados)
+  recoveryCodes[email] = recoveryCode;
+
+  // Envia o email de recuperação
+  const result = await sendRecoveryEmail(email, recoveryCode);
+
+  if (result.success) {
+    res.json({ message: 'Código de recuperação enviado com sucesso!' });
+  } else {
+    res.status(500).json({ message: 'Erro ao enviar o email de recuperação.', error: result.error });
+  }
+});
+
+// Endpoint para verificar o código de recuperação
+app.post('/api/users/verify-recovery-code', (req, res) => {
+  const { email, code } = req.body;
+
+  if (!email || !code) {
+    return res.status(400).json({ message: 'O email e o código são necessários.' });
+  }
+
+  console.log(`Verificando código para ${email}: Inserido: ${code}, Armazenado: ${recoveryCodes[email]}`);
+
+  // Verifica o código associado ao email
+  if (recoveryCodes[email] && recoveryCodes[email] === code) {
+    delete recoveryCodes[email]; // Remove o código após verificação bem-sucedida
+    res.json({ valid: true, message: 'Código verificado com sucesso!' });
+  } else {
+    res.json({ valid: false, message: 'Código inválido. Por favor, tente novamente.' });
+  }
+});
+
 
 app.post("/api/users/register", async (req, res) => {
   let { name, email, password, password2 } = req.body;
