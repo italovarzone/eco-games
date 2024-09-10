@@ -28,7 +28,7 @@ function startGame(userid) {
   // Desbloquear cliques após 3 segundos
   setTimeout(() => {
     clickBlocked = false;
-  }, 3000);
+  }, 4000);
 
   if (game.checkMatch()) {
     game.clearCards();
@@ -59,10 +59,10 @@ function initializeCards(cards) {
 
     setTimeout(() => {
       cardElement.classList.add("flip");
-    }, 300);
+    }, 400);
     setTimeout(() => {
       cardElement.classList.remove("flip");
-    }, 3000);
+    }, 4000);
 
     createCardContent(card, cardElement);
     cardElement.addEventListener("click", flipCard);

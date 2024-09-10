@@ -46,13 +46,15 @@ a {
   text-decoration: none; /* remove sublinhado */
   color: black; /* define a cor do texto como preto */
 }
+
 .card {
   width: 130px;
   height: 130px;
   position: relative;
-  transform-style: preserve-3d; /* faz com que indentifique o flip deixando o card 3d */
-  transition: transform 0.5s;
-
+  transform-style: preserve-3d; /* Mantém o contexto 3D para o flip */
+  transition: transform 0.5s; /* Suaviza a transição de flip */
+  cursor: pointer; /* Adiciona um ponteiro ao passar o mouse */
+  
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   -webkit-transition: transform 0.5s;
@@ -73,30 +75,35 @@ a {
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.5);
-  backface-visibility: hidden; /* esconde quando inverte eixo */
-
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-}
-
-.flip {
-  transform: rotateY(180deg); /* inverte o eixo Y */
-  -webkit-transform: rotateY(180deg);
-  -moz-transform: rotateY(180deg);
+  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+  
+  top: 0;
+  left: 0;
+  backface-visibility: hidden; /* Esconde a face que está atrás */
 }
 
 .card_back {
-  background-color: #101c2c;
-  /* display: none; */
+  z-index: 2; /* Coloca o verso acima da frente inicialmente */
+  transform: rotateY(0deg); /* Inicializa o verso visível */
+  background-color: #101c2c; /* Cor de fundo para o verso da carta */
+  background-image: url('./img/card.png'); /* Define a imagem de fundo para o verso da carta */
+  background-size: cover; /* Ajusta a imagem para cobrir todo o fundo */
+  background-repeat: no-repeat; /* Evita a repetição da imagem */
 }
 
 .card_front {
-  transform: rotateY(180deg); /* inicializa com o eixo Y invertido*/
-  background-color: #101c2c;
+  z-index: 1; /* Coloca a frente abaixo do verso */
+  transform: rotateY(180deg); /* Inicializa a frente de cabeça para baixo */
+  background-color: #101c2c; /* Cor de fundo para a frente da carta */
+}
+
+.flip {
+  transform: rotateY(180deg); /* Gira a carta para mostrar a frente */
   -webkit-transform: rotateY(180deg);
   -moz-transform: rotateY(180deg);
 }
+
+
 
 .mensagem {
   display: flex;
