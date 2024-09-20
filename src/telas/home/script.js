@@ -23,16 +23,18 @@ document.addEventListener("DOMContentLoaded", async () => {
   const btnCancelExit = document.getElementById('btnCancelExit');
 
   let isGameActive = false;
+  let isGamePage = false; // Para controlar se estamos em uma página de jogo
+  let currentContent = 'perfil'; // Para rastrear o conteúdo atual (inicia com 'perfil')
   let pendingNavigation = null;
 
   window.addEventListener('resize', handleSidebarVisibility);
 
   liGoToPerfil.addEventListener('click', () => {
-    handleExitNavigation('../perfil/index.html');
+    handleExitNavigation('perfil');
   });
 
   liGotoRanking.addEventListener('click', () => {
-    handleExitNavigation('../ranking/index.html');
+    handleExitNavigation('ranking');
   });
 
   gameOptions.forEach(option => {
@@ -47,21 +49,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   function handleExitNavigation(destination) {
-    if (isGameActive) {
+    // Se estamos em um jogo e o destino é perfil ou ranking, exibir o modal de saída
+    if (isGamePage && (destination === 'perfil' || destination === 'ranking')) {
       pendingNavigation = destination;
       showExitModal();
-    } else {
+    } 
+    // Se a navegação é entre perfil e ranking, permita navegação direta
+    else if ((currentContent === 'perfil' && destination === 'ranking') ||
+             (currentContent === 'ranking' && destination === 'perfil')) {
+      navigateTo(destination);
+    }
+    // Se estamos em um jogo e o destino é outro jogo, exibir o modal de saída
+    else if (isGamePage && destination !== currentContent) {
+      pendingNavigation = destination;
+      showExitModal();
+    } 
+    // Navegação direta para qualquer outra opção
+    else {
       navigateTo(destination);
     }
   }
 
   function navigateTo(destination) {
-    if (destination === '../perfil/index.html' || destination === '../ranking/index.html') {
-      window.location.href = destination;
-    } else {
-      loadGame(destination);
-    }
-
+    loadContent(destination);
     sidebar.classList.remove('open'); // Fecha a sidebar ao trocar de jogo ou página
   }
 
@@ -76,6 +86,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   btnConfirmExit.addEventListener('click', () => {
     closeExitModal();
     isGameActive = false; // Reset estado do jogo
+    isGamePage = false; // Não está mais em uma página de jogo
     navigateTo(pendingNavigation); // Navegar para o destino pendente
     pendingNavigation = null; // Limpar o destino pendente
   });
@@ -84,12 +95,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     closeExitModal(); // Apenas fecha o modal
   });
 
-  function loadGame(game) {
-    isGameActive = true;  // Agora o jogo está ativo
-    gameContainer.innerHTML = '';  // Limpa o container do jogo
+  function loadContent(destination) {
+    isGameActive = (destination === 'cacapalavras' || destination === 'hangame' || destination === 'ecopuzzle' || destination === 'quiz');
+    isGamePage = isGameActive;  // Atualiza o estado da página de jogo
+
+    gameContainer.innerHTML = '';  // Limpa o container de conteúdo
 
     let iframeSrc = '';
-    switch (game) {
+    switch (destination) {
       case 'cacapalavras':
         iframeSrc = "../../jogos/cacapalavras/index.html";
         break;
@@ -102,20 +115,29 @@ document.addEventListener("DOMContentLoaded", async () => {
       case 'quiz':
         iframeSrc = "../../jogos/quiz/index.html";
         break;
+      case 'perfil':
+        iframeSrc = "../perfil/index.html";
+        break;
+      case 'ranking':
+        iframeSrc = "../ranking/index.html";
+        break;
       default:
-        gameContainer.innerHTML = '<h2>Selecione um jogo na barra lateral</h2>';
+        gameContainer.innerHTML = '<h2>Selecione uma opção na barra lateral</h2>';
         isGameActive = false;
+        isGamePage = false;
         return;
     }
 
     gameContainer.innerHTML = `
-      <iframe id="game-iframe" src="${iframeSrc}" style="width: 100%; height: 100%; border: none;"></iframe>
+      <iframe id="content-iframe" src="${iframeSrc}" style="width: 100%; height: 100%; border: none;"></iframe>
     `;
+
+    currentContent = destination;
   }
 });
 
 const updateUI = (user) => {
-  document.getElementById('msgOla').innerText = `Olá, ${user.name}`;
+  document.getElementById('msgOla').innerText = `${user.name}`;
 };
 
 function handleSidebarVisibility() {

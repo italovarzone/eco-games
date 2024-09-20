@@ -36,7 +36,8 @@ hr {
 .nav-bar {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: unset;
+    gap: 32px;
     padding: 8px 16px;
     background-color: #f2f2f2;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
@@ -73,6 +74,11 @@ hr {
     z-index: 1000; /* Garante que a sidebar fique acima do conteúdo */
 }
 
+.user-greeting {
+  display: flex;
+  justify-content: center;
+}
+
 .profile-pic {
     width: 50px;
     height: 50px;
@@ -107,6 +113,7 @@ hr {
 }
 
 .sidebar h4 {
+    font-size: 24px;
     padding: 4px;
     text-align: center;
 }
@@ -125,6 +132,21 @@ hr {
     cursor: pointer;
     text-align: center;
     transition: background-color 0.3s;
+}
+
+.button-logout {
+  display: flex;
+  text-align: center;
+  padding-bottom: 16px;
+  justify-content: center;
+  color: rgb(182, 48, 48);
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.button-logout:hover {
+  text-decoration: underline;
 }
 
 .sidebar ul li:hover {
@@ -346,8 +368,8 @@ hr {
       display: flex;
     }
 
-    .sidebar h4 {
-      font-size: 21px;
+    .sidebar h2 {
+      font-size: 18px;
       padding: 4px;
       text-align: center;
   }

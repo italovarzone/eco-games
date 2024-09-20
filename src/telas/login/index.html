@@ -26,7 +26,7 @@
             <input type="password" id="login-password" required autocomplete="off">
             <i class="far fa-eye toggle-password" id="toggle-password"></i>
           </div>
-          
+          <p><a href="#" id="forgot-password">Esqueci minha senha</a></p>
           <button class="btn-primary" type="submit">Entrar</button>
           <div class="message"></div>
         </form>
@@ -34,7 +34,35 @@
       </div>
     </div>
   </div>
-  
+  <div id="password-recovery-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-modal">&times;</span>
+      <h2>Recuperação de Senha</h2>
+      <div id="email-step">
+        <label for="recovery-email">Digite seu email cadastrado:</label>
+        <input placeholder="Email" type="email" id="recovery-email" required autocomplete="off">
+        <button id="send-code-btn" class="btn-primary">Enviar Código</button>
+      </div>
+      <div id="code-step" style="display: none;">
+        <label for="verification-code">Digite o código de 6 dígitos:</label>
+        <input placeholder="Codigo" type="text" id="verification-code" maxlength="6" required autocomplete="off">
+        <button id="verify-code-btn" class="btn-primary">Verificar Código</button>
+      </div>
+    </div>
+  </div>  
+  <div id="password-reset-modal" class="modal">
+    <div class="modal-content">
+      <span class="close" id="close-reset-modal">&times;</span>
+      <h2>Redefinir Senha</h2>
+      <div id="reset-step">
+        <label for="new-password">Nova Senha:</label>
+        <input type="password" id="new-password" required autocomplete="off">
+        <label for="confirm-password">Confirmar Nova Senha:</label>
+        <input type="password" id="confirm-password" required autocomplete="off">
+        <button id="reset-password-btn" class="btn-primary">Redefinir Senha</button>
+      </div>
+    </div>
+  </div>  
   <div id="snackbar" class="snackbar"></div>
   <script type="module" src="script.js"></script>
 </body>

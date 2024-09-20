@@ -7,6 +7,7 @@ const session = require("express-session");
 require("dotenv").config();
 const cors = require('cors');
 const app = express();
+const sendRecoveryEmail = require('./sendEmail');
 
 app.use(cors({
   origin: 'http://127.0.0.1:5500',
@@ -52,6 +53,79 @@ app.use(flash());
 
 app.get("/", (req, res) => {
   res.send("hello")
+});
+
+function generateRecoveryCode() {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+}
+
+const recoveryCodes = {};
+
+app.post('/api/users/send-recovery-code', async (req, res) => {
+  const { email } = req.body;
+  
+  if (!email) {
+    return res.status(400).json({ message: 'O email é necessário.' });
+  }
+
+  const recoveryCode = generateRecoveryCode();
+  console.log(`Gerando código: ${recoveryCode}`);
+
+  recoveryCodes[email] = recoveryCode;
+
+  const result = await sendRecoveryEmail(email, recoveryCode);
+
+  if (result.success) {
+    res.json({ message: 'Código de recuperação enviado com sucesso!' });
+  } else {
+    res.status(500).json({ message: 'Erro ao enviar o email de recuperação.', error: result.error });
+  }
+});
+
+app.post('/api/users/verify-recovery-code', (req, res) => {
+  const { email, code } = req.body;
+
+  if (!email || !code) {
+    return res.status(400).json({ message: 'O email e o código são necessários.' });
+  }
+
+  if (recoveryCodes[email] && recoveryCodes[email] === code) {
+    delete recoveryCodes[email];
+    res.json({ valid: true, message: 'Código verificado com sucesso!' });
+  } else {
+    res.json({ valid: false, message: 'Código inválido. Por favor, tente novamente.' });
+  }
+});
+
+app.post('/api/users/reset-password', async (req, res) => {
+  const { email, newPassword } = req.body;
+
+  if (!email || !newPassword) {
+    return res.status(400).json({ message: 'Email e nova senha são necessários.' });
+  }
+
+  try {
+    const userQuery = await pool.query(
+      `SELECT * FROM public."User" WHERE email = $1`,
+      [email]
+    );
+
+    if (userQuery.rows.length === 0) {
+      return res.status(404).json({ message: 'Usuário não encontrado.' });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await pool.query(
+      `UPDATE public."User" SET password = $1 WHERE email = $2`,
+      [hashedPassword, email]
+    );
+
+    res.json({ success: true, message: 'Senha atualizada com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao atualizar a senha:', error);
+    res.status(500).json({ message: 'Erro ao atualizar a senha.' });
+  }
 });
 
 app.post("/api/users/register", async (req, res) => {

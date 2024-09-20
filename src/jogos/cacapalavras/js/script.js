@@ -1,4 +1,4 @@
-const words = ["ENERGIA"];
+const words = ["ENERGIA", "INOVACAO", "EMPREGO", "SUSTENTAVEL", "PARCERIA", "TECNOLOGIA", "CRESCIMENTO", "COLABORACAO"];
 const maxLetters = getMaxLetters(words);
 const crossword = document.getElementById("crossword");
 const wordList = document.getElementById("wordList");

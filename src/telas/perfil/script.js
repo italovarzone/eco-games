@@ -23,12 +23,7 @@ window.onload = function() {
   
 };
 
-const btnGoToMenu = document.getElementById('btnGotoMenu');
-  const btnGoToRanking = document.getElementById('btnGotoRanking');
-
-  btnGoToMenu.addEventListener('click', () => {
-    window.location.href = '../home/index.html';
-  });
+  const btnGoToRanking = document.getElementById('btnGoToRanking');
 
   btnGoToRanking.addEventListener('click', () => {
     window.location.href = '../ranking/index.html';

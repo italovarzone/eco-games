@@ -69,3 +69,104 @@ document
       icon.classList.add('fa-eye');
     }
   });
+
+
+  document.getElementById('forgot-password').addEventListener('click', function () {
+    document.getElementById('password-recovery-modal').style.display = 'flex';
+  });
+  
+  document.getElementById('close-modal').addEventListener('click', function () {
+    document.getElementById('password-recovery-modal').style.display = 'none';
+  });
+  
+  document.getElementById('send-code-btn').addEventListener('click', function () {
+    const email = document.getElementById('recovery-email').value;
+  
+    fetch('http://localhost:3000/api/users/send-recovery-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        alert(data.message);
+        document.getElementById('email-step').style.display = 'none';
+        document.getElementById('code-step').style.display = 'flex';
+      })
+      .catch(error => {
+        console.error('Erro ao enviar o código de recuperação:', error);
+      });
+  });
+  
+  document.getElementById('verify-code-btn').addEventListener('click', function () {
+    const email = document.getElementById('recovery-email').value; // Obtém o email do campo de email
+    const code = document.getElementById('verification-code').value;
+  
+    if (!email || !code) {
+      alert('Por favor, preencha o email e o código de verificação.');
+      return;
+    }
+  
+    // Verifique o código digitado pelo usuário com o código enviado por email
+    fetch('http://localhost:3000/api/users/verify-recovery-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, code }),  // Agora enviamos o email junto com o código
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.valid) {
+          alert('Código verificado com sucesso! Agora você pode redefinir sua senha.');
+          document.getElementById('password-recovery-modal').style.display = 'none'; // Fecha o modal de recuperação
+          document.getElementById('password-reset-modal').style.display = 'flex'; // Abre o modal de redefinição
+        } else {
+          alert('Código inválido. Por favor, tente novamente.');
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao verificar o código de recuperação:', error);
+      });
+  });  
+  
+  document.getElementById('reset-password-btn').addEventListener('click', function () {
+    const email = document.getElementById('recovery-email').value; // Email é necessário para identificar o usuário
+    const newPassword = document.getElementById('new-password').value;
+    const confirmPassword = document.getElementById('confirm-password').value;
+  
+    if (newPassword !== confirmPassword) {
+      alert('As senhas não coincidem. Por favor, tente novamente.');
+      return;
+    }
+  
+    // Enviar a nova senha para o servidor
+    fetch('http://localhost:3000/api/users/reset-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ email, newPassword }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        if (data.success) {
+          alert('Senha redefinida com sucesso!');
+          document.getElementById('password-reset-modal').style.display = 'none'; // Fecha o modal de redefinição
+        } else {
+          alert('Erro ao redefinir senha. Por favor, tente novamente.');
+        }
+      })
+      .catch(error => {
+        console.error('Erro ao redefinir senha:', error);
+      });
+  });
+  
+  // Fechar o modal de redefinição de senha
+  document.getElementById('close-reset-modal').addEventListener('click', function () {
+    document.getElementById('password-reset-modal').style.display = 'none';
+  });
+  
+  
