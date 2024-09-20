@@ -291,6 +291,170 @@ WHERE u.id = $1;`,
   );
 });
 
+
+app.get("/api/ranking/ecopuzzle", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  pool.query(
+    `WITH ranked AS (
+    SELECT 
+        id,
+        RANK() OVER (ORDER BY min_tempo_record ASC) AS posicao,
+        nome,
+        min_tempo_record AS tempo
+    FROM (
+        SELECT 
+            u.id AS id,
+            u.name AS nome,
+            MIN(e.tempo_record) AS min_tempo_record
+        FROM 
+            "Ecopuzzle" e
+        JOIN 
+            "User" u ON e.id_usuario = u.id
+        GROUP BY 
+            u.id, u.name
+    ) AS subquery
+)
+SELECT *
+FROM ranked
+WHERE id = $1
+UNION ALL
+SELECT *
+FROM ranked;`,
+[id],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      req.flash("success_msg", "query completed");
+      res.status(200).json(results.rows);
+    }
+  );
+});
+
+app.get("/api/ranking/crossworld", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  pool.query(
+    `
+    WITH ranked AS (
+    SELECT 
+    id,
+    RANK() OVER (ORDER BY min_tempo_record ASC) AS posicao,
+    nome,
+    min_tempo_record AS tempo
+FROM (
+    SELECT 
+        u.id AS id,
+        u.name AS nome,
+        MIN(c.tempo_record) AS min_tempo_record
+    FROM 
+        "Crossworld" c
+    JOIN 
+        "User" u ON c.id_usuario = u.id
+    GROUP BY 
+        u.id, u.name
+  ) AS subquery
+ )
+SELECT *
+FROM ranked
+WHERE id = $1
+UNION ALL
+SELECT *
+FROM ranked;`,
+[id],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      req.flash("success_msg", "query completed");
+      res.status(200).json(results.rows);
+    }
+  );
+});
+
+app.get("/api/ranking/quiz", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  pool.query(
+    `
+  WITH ranked AS (
+    SELECT 
+    id,
+    RANK() OVER (ORDER BY min_quantidade_erros ASC, min_tempo_record ASC) AS posicao,
+    nome,
+    min_quantidade_erros AS erros,
+    min_tempo_record AS tempo
+FROM (
+    SELECT 
+        u.id AS id,
+        u.name AS nome,
+        MIN(q.quantidade_erros) AS min_quantidade_erros,
+        MIN(q.tempo_record) AS min_tempo_record
+    FROM 
+        "Quiz" q
+    JOIN 
+        "User" u ON q.id_usuario = u.id
+    GROUP BY 
+        u.id, u.name
+  ) AS subquery
+)
+  SELECT *
+FROM ranked
+WHERE id = $1
+UNION ALL
+SELECT *
+FROM ranked;`,
+[id],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      req.flash("success_msg", "query completed");
+      res.status(200).json(results.rows);
+    }
+  );
+});
+
+app.get("/api/ranking/hangame", isAuthenticated, (req, res) => {
+  const { id, ...user } = req.user;
+  pool.query(
+    ` WITH ranked AS (
+    SELECT 
+    id,
+    RANK() OVER (ORDER BY min_quantidade_erros ASC, min_tempo_record ASC) AS posicao,
+    nome,
+    min_quantidade_erros AS erros,
+    min_tempo_record AS tempo
+FROM (
+    SELECT 
+        u.id AS id,
+        u.name AS nome,
+        MIN(h.quantidade_erros) AS min_quantidade_erros,
+        MIN(h.tempo_record) AS min_tempo_record
+    FROM 
+        "Hangame" h
+    JOIN 
+        "User" u ON h.id_usuario = u.id
+    GROUP BY 
+        u.id, u.name
+) AS subquery
+ )
+SELECT *
+FROM ranked
+WHERE id = $1
+UNION ALL
+SELECT *
+FROM ranked;`,
+[id],
+    (err, results) => {
+      if (err) {
+        throw err;
+      }
+      req.flash("success_msg", "query completed");
+      res.status(200).json(results.rows);
+    }
+  );
+});
+
+
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
