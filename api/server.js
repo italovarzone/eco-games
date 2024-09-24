@@ -393,14 +393,18 @@ FROM ranked
 WHERE id = $1
 UNION ALL
 SELECT *
-FROM ranked;`,
+FROM ranked
+LIMIT 11;`,
 [id],
     (err, results) => {
       if (err) {
         throw err;
       }
       req.flash("success_msg", "query completed");
-      res.status(200).json(results.rows);
+      res.status(200).json({
+        userId: id,
+        ranking: results.rows
+      });
     }
   );
 });
@@ -433,14 +437,18 @@ FROM ranked
 WHERE id = $1
 UNION ALL
 SELECT *
-FROM ranked;`,
+FROM ranked
+LIMIT 11;`,
 [id],
     (err, results) => {
       if (err) {
         throw err;
       }
       req.flash("success_msg", "query completed");
-      res.status(200).json(results.rows);
+      res.status(200).json({
+        userId: id,
+        ranking: results.rows
+      });
     }
   );
 });
@@ -468,6 +476,7 @@ FROM (
         "User" u ON q.id_usuario = u.id
     GROUP BY 
         u.id, u.name
+        
   ) AS subquery
 )
   SELECT *
@@ -475,14 +484,18 @@ FROM ranked
 WHERE id = $1
 UNION ALL
 SELECT *
-FROM ranked;`,
+FROM ranked
+LIMIT 11;`,
 [id],
     (err, results) => {
       if (err) {
         throw err;
       }
       req.flash("success_msg", "query completed");
-      res.status(200).json(results.rows);
+      res.status(200).json({
+        userId: id,
+        ranking: results.rows
+      });
     }
   );
 });
@@ -516,14 +529,18 @@ FROM ranked
 WHERE id = $1
 UNION ALL
 SELECT *
-FROM ranked;`,
+FROM ranked
+LIMIT 11;`,
 [id],
     (err, results) => {
       if (err) {
         throw err;
       }
       req.flash("success_msg", "query completed");
-      res.status(200).json(results.rows);
+      res.status(200).json({
+        userId: id,
+        ranking: results.rows
+      });
     }
   );
 });

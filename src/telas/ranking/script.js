@@ -54,47 +54,60 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 async function handleRanking(tabNumber) {
     let ranking;
+    let userId;
     switch (parseInt(tabNumber)) {
         case 1:
-            ranking = await getCrosswoldRanking(); 
+            ({ranking, userId} = await getCrosswoldRanking()); 
             console.log(ranking);
             break;
 
         case 2:
-            ranking = await getEcopuzzleRanking();
+            ({ranking, userId} = await getQuizRanking());
             console.log(ranking);
             break;
         case 3:
-            ranking = await getHangameRanking();
+            ({ranking, userId} = await getHangameRanking());
             console.log(ranking);
             break;
         case 4:
-            ranking = await getQuizRanking();
+            ({ranking, userId} = await getEcopuzzleRanking());
             console.log(ranking);
             break;
     }
 
-    if (ranking) {
+    if (ranking[0].id === userId) {
         let user = ranking.shift();
         console.log(user)
         updateRankingTable(ranking, tabNumber, user);
+    } else {
+        let user = {
+            posicao: "0",
+            nome: "voce ainda nao jogou",
+            tempo: 0,   
+            erros: 0
+        };
+        updateRankingTable(ranking, tabNumber, user);
     }
 
+
     function updateRankingTable(rankingData, tabNumber, user) {
+        tabNumber = parseInt(tabNumber);
 
         // Seleciona o tbody da tabela específica
         const tableBody = document.querySelector(`#tab-${tabNumber} .ranking-table tbody`);
         
         // Limpa qualquer conteúdo anterior da tabela
         tableBody.innerHTML = '';
-
+    
         const userPositionElement = document.querySelector(`#tab-${tabNumber} .score-user-actual .player p:nth-child(1)`);
         const userNameElement = document.querySelector(`#tab-${tabNumber} .score-user-actual .player p:nth-child(2)`);
         const userScoreElement = document.querySelector(`#tab-${tabNumber} .score-user-actual .player p:nth-child(3)`);
-    
+        
+        // Atualiza as informações do usuário atual
         userPositionElement.textContent = user.posicao;
         userNameElement.textContent = user.nome;
         userScoreElement.textContent = (user.tempo / 1000);
+    
         // Itera sobre os dados de ranking e cria as linhas da tabela
         rankingData.forEach(player => {
             const row = document.createElement('tr');
@@ -114,10 +127,18 @@ async function handleRanking(tabNumber) {
             scoreCell.textContent = player.tempo / 1000;
             row.appendChild(scoreCell);
     
+            // Se o tabNumber for 2 ou 3, adiciona a coluna de erros
+            if (tabNumber === 2 || tabNumber === 3) {
+                const errorsCell = document.createElement('td');
+                errorsCell.textContent = player.erros; // Garante que erros tenha um valor válido
+                row.appendChild(errorsCell);
+            }
+    
             // Insere a linha na tabela
             tableBody.appendChild(row);
         });
     }
+
 }
 
 
