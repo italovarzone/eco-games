@@ -1,4 +1,14 @@
-document.addEventListener('DOMContentLoaded', function () {
+import { getCrosswoldRanking } from '../../services/ranking/crossworld.js';
+import { getEcopuzzleRanking } from '../../services/ranking/ecopuzzle.js';
+import { getHangameRanking } from '../../services/ranking/hangame.js';
+import { getQuizRanking } from '../../services/ranking/quiz.js';
+
+document.addEventListener('DOMContentLoaded', async function () {
+    const numeroTabCrossworld = 1;
+    await handleRanking(numeroTabCrossworld);
+    
+    const btnGoToMenu = document.getElementById('btnGotoMenu');
+
     const tabs = document.querySelectorAll('.tab-header .tab');
     const contents = document.querySelectorAll('.tab-content .content');
     const slider = document.querySelector('.mobile-slider');
@@ -6,12 +16,13 @@ document.addEventListener('DOMContentLoaded', function () {
     // Lógica de abas para desktop
     if (window.innerWidth > 768) {
         tabs.forEach(tab => {
-            tab.addEventListener('click', function () {
+            tab.addEventListener('click', async function () {
                 tabs.forEach(t => t.classList.remove('active'));
                 tab.classList.add('active');
                 contents.forEach(content => content.classList.remove('active'));
                 const tabNumber = tab.getAttribute('data-tab');
                 document.getElementById(`tab-${tabNumber}`).classList.add('active');
+                await handleRanking(tabNumber);
             });
         });
     } else {
