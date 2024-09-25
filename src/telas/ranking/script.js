@@ -82,7 +82,7 @@ async function handleRanking(tabNumber) {
     } else {
         let user = {
             posicao: "0",
-            nome: "voce ainda nao jogou",
+            nome: "Você ainda não jogou!",
             tempo: 0,   
             erros: 0
         };
