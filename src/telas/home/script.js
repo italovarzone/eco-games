@@ -4,7 +4,6 @@ import { getUser } from '../../utils/auth.js';
 document.addEventListener("DOMContentLoaded", async () => {
   await requireAuth();
   const user = getUser();
-  console.log(user);
   if (user) {
     updateUI(user);
   }

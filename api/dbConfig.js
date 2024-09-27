@@ -1,14 +1,28 @@
 require("dotenv").config();
-
-const { Pool } = require("pg");
+const sql = require("mssql");
 
 const isProduction = process.env.NODE_ENV === "production";
 
-const connectionString = `postgresql://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_DATABASE}`;
+const config = {
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  port: parseInt(process.env.DB_PORT),
+  options: {
+    encrypt: isProduction, // Use encryption if in production
+    trustServerCertificate: true, // Change to false if using trusted certificates
+  }
+};
 
-const pool = new Pool({
-  connectionString: isProduction ? process.env.DATABASE_URL : connectionString,
-  ssl: isProduction
-});
+async function connectDB() {
+  try {
+    const pool = await sql.connect(config);
+    return pool;
+  } catch (err) {
+    console.error("Database connection failed", err);
+    throw err;
+  }
+}
 
-module.exports = { pool };
+module.exports = { connectDB, sql };

@@ -1,15 +1,28 @@
+import { requireAuth } from '../../utils/middleware.js';
+import { getUser } from '../../utils/auth.js';
 import { getCrosswoldRanking } from '../../services/ranking/crossworld.js';
 import { getEcopuzzleRanking } from '../../services/ranking/ecopuzzle.js';
 import { getHangameRanking } from '../../services/ranking/hangame.js';
 import { getQuizRanking } from '../../services/ranking/quiz.js';
 
 document.addEventListener('DOMContentLoaded', async function () {
+    await requireAuth();
+    const user = getUser();
+    if (user) {
+        await initializeRanking(user);
+    } else {
+        console.error("Usuário não encontrado. Redirecionando para login...");
+        window.location.href = '/login';
+    }
+});
+
+async function initializeRanking(user) {
     const isMobile = window.innerWidth <= 768;
 
     if (!isMobile) {
-        await handleRanking(1);
+        await handleRanking(1, user);
     } else {
-        await loadAllRankingsForMobile();
+        await loadAllRankingsForMobile(user);
     }
 
     const tabs = document.querySelectorAll('.tab-header .tab');
@@ -23,7 +36,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                 contents.forEach(content => content.classList.remove('active'));
                 const tabNumber = tab.getAttribute('data-tab');
                 document.getElementById(`tab-${tabNumber}`).classList.add('active');
-                await handleRanking(tabNumber);
+                await handleRanking(tabNumber, user);
             });
         });
     }
@@ -31,47 +44,59 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('btnGoToPerfil').addEventListener('click', () => {
         window.location.href = '../perfil/index.html';
     });
-});
+}
 
-async function loadAllRankingsForMobile() {
+async function loadAllRankingsForMobile(user) {
     for (let i = 1; i <= 4; i++) {
-        await handleRanking(i);
+        await handleRanking(i, user);
     }
 }
 
-async function handleRanking(tabNumber) {
-    let ranking, userId;
-    
+async function handleRanking(tabNumber, user) {
+    let ranking;
+
     try {
+        // Modificar a chamada para capturar o retorno de maneira correta
         switch (parseInt(tabNumber)) {
             case 1:
-                ({ ranking, userId } = await getCrosswoldRanking());
+                ranking = await getCrosswoldRanking() || [];  // Se retornar array diretamente
                 break;
             case 2:
-                ({ ranking, userId } = await getQuizRanking());
+                ranking = await getQuizRanking() || [];
                 break;
             case 3:
-                ({ ranking, userId } = await getHangameRanking());
+                ranking = await getHangameRanking() || [];
                 break;
             case 4:
-                ({ ranking, userId } = await getEcopuzzleRanking());
+                ranking = await getEcopuzzleRanking() || [];
                 break;
         }
-    
-        if (ranking && ranking[0].id === userId) {
-            let user = ranking.shift(); 
-            updateRankingTable(ranking, tabNumber, user);
+
+        // Verifica se o ranking foi retornado corretamente
+        if (!ranking || ranking.length === 0) {
+            throw new Error(`Ranking não disponível para a aba ${tabNumber}`);
+        }
+
+        // Verifica se o usuário logado está no ranking
+        let userInRanking = ranking.find(player => player.id_usuario === user.id);
+        let userPosition = ranking.findIndex(player => player.id_usuario === user.id) + 1; // Índice + 1 = posição real
+
+        if (userInRanking) {
+            userInRanking.posicao = userPosition; // Adiciona a posição correta ao objeto
+
+            // Exibe o jogador logado em "Sua Posição"
+            updateRankingTable(ranking, tabNumber, userInRanking);  
         } else {
-            let user = {
+            let userRanking = {
                 posicao: "0",
                 nome: "Você ainda não jogou!",
                 tempo: 0,   
                 erros: 0
             };
-            updateRankingTable(ranking, tabNumber, user);
+            updateRankingTable(ranking, tabNumber, userRanking);
         }
     } catch (error) {
-        console.error(`Erro ao carregar o ranking da aba ${tabNumber}:`, error);
+        console.error(`Erro ao carregar o ranking da aba ${tabNumber}:`, error.message);
     }
 }
 
@@ -83,6 +108,7 @@ function updateRankingTable(rankingData, tabNumber, user) {
 
     tableBody.innerHTML = '';
 
+    // Exibe a posição do jogador logado em "Sua Posição"
     const userPositionElement = document.querySelector(isMobile ? `#tab-${tabNumber}-mobile .score-user-actual .player p:nth-child(1)` : `#tab-${tabNumber} .score-user-actual .player p:nth-child(1)`);
     const userNameElement = document.querySelector(isMobile ? `#tab-${tabNumber}-mobile .score-user-actual .player p:nth-child(2)` : `#tab-${tabNumber} .score-user-actual .player p:nth-child(2)`);
     const userScoreElement = document.querySelector(isMobile ? `#tab-${tabNumber}-mobile .score-user-actual .player p:nth-child(3)` : `#tab-${tabNumber} .score-user-actual .player p:nth-child(3)`);
@@ -100,6 +126,7 @@ function updateRankingTable(rankingData, tabNumber, user) {
     userNameElement.textContent = user.nome;
     userScoreElement.textContent = (user.tempo / 1000);
 
+    // Adiciona o ranking ao jogador logado com destaque
     rankingData.forEach((player, index) => {
         const row = document.createElement('tr');
 
@@ -111,7 +138,7 @@ function updateRankingTable(rankingData, tabNumber, user) {
         } else if (index === 2) {
             positionCell.innerHTML = '<i class="fas fa-trophy" style="color: #cd7f32;"></i>';
         } else {
-            positionCell.textContent = player.posicao;
+            positionCell.textContent = player.posicao || (index + 1);  // Corrige a posição dos outros jogadores
         }
 
         row.appendChild(positionCell);
@@ -128,6 +155,11 @@ function updateRankingTable(rankingData, tabNumber, user) {
             const errorsCell = document.createElement('td');
             errorsCell.textContent = player.erros || 0;
             row.appendChild(errorsCell);
+        }
+
+        // Destaca o jogador logado com uma cor diferente
+        if (player.id_usuario === user.id_usuario) {
+            row.style.backgroundColor = "#dff0d8"; // Cor de destaque
         }
 
         tableBody.appendChild(row);
