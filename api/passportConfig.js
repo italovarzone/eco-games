@@ -3,8 +3,6 @@ const { connectDB, sql } = require("./dbConfig");
 const bcrypt = require("bcrypt");
 
 async function initialize(passport) {
-  console.log("Initialized");
-
   const authenticateUser = async (email, password, done) => {
     const pool = await connectDB();
 
