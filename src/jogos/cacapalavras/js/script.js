@@ -198,7 +198,7 @@ function handleCellSelection(cell) {
 function markSelectedWord() {
   const selectedWord = selectedCells.map(cell => cell.textContent).join('');
   const wordObj = words.find(word => selectedCells.every(cell => cell.dataset.words?.includes(word) && selectedWord.includes(word)));
-  
+
   if (wordObj) {
     selectedCells.forEach(cell => {
       cell.classList.remove('selected');
@@ -238,13 +238,20 @@ function updateWordList() {
 
 async function saveRecord(time) {
   try {
+    const access_token = localStorage.getItem("token");
+
+    if (!access_token) {
+      console.log("Token não encontrado");
+      return false;
+    }
     let res;
     const response = await fetch("http://localhost:3000/api/record/crossworld", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${access_token}`
       },
-      body: JSON.stringify({"tempo_record": time}),
+      body: JSON.stringify({ "tempo_record": time }),
       credentials: "include",
     });
 
@@ -304,6 +311,6 @@ function toggleFullScreen() {
 const fullscreenBtn = document.getElementById('fullscreen-btn');
 fullscreenBtn.addEventListener('click', toggleFullScreen);
 
-document.getElementById('return-to-menu-btn').addEventListener('click', function() {
+document.getElementById('return-to-menu-btn').addEventListener('click', function () {
   parent.finishCrossWorld();
 });

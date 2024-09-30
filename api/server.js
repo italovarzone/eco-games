@@ -8,6 +8,7 @@ require("dotenv").config();
 const cors = require('cors');
 const app = express();
 const sendRecoveryEmail = require('./sendEmail');
+const jwt = require('jsonwebtoken')
 
 app.use(cors({
   origin: 'http://127.0.0.1:5500',
@@ -195,8 +196,7 @@ app.post("/api/users/register", async (req, res) => {
   }
 });
 
-app.post(
-  "/api/users/login",
+app.post("/login",
   (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
       if (err) {
@@ -214,14 +214,99 @@ app.post(
     })(req, res, next);
   });
 
-app.get("/api/isLogged", isAuthenticated, (req, res) => {
+app.get("/me", isAuthenticated, (req, res) => {
   console.log(req.user);
   const { password, ...user } = req.user;
   res.send(user);
 });
 
-app.post("/api/record/crossworld", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+const extractBearerToken = headerValue => {
+  if (typeof headerValue !== 'string') {
+      return false
+  }
+
+  const matches = headerValue.match(/(bearer)\s+(\S+)/i)
+  return matches && matches[2]
+}
+
+// The middleware
+const checkTokenMiddleware = (req, res, next) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+
+  if (!token) {
+      return res.status(401).json({ message: 'need a token' })
+  }
+
+  jwt.verify(token, process.env.SESSION_SECRET, (err, decodedToken) => {
+      if (err) {
+          return res.status(401).json({ message: 'bad token' })
+      }
+  })
+
+  next()
+}
+function queryLogin(email, password) {
+  return new Promise((resolve, reject) => {
+    pool.query(
+      `SELECT * FROM public."User" WHERE email = $1`,
+      [email],
+      (err, results) => {
+        if (err) {
+          reject(err);  // Erro ao fazer a query
+        }
+
+        if (results.rows.length > 0) {
+          const user = results.rows[0];
+
+          bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+              reject(err);  // Erro ao comparar as senhas
+            }
+            if (isMatch) {
+              resolve(user);  // Senha correta
+            } else {
+              resolve(null);  // Senha incorreta
+            }
+          });
+        } else {
+          // Nenhum usuário encontrado com o email fornecido
+          resolve(null);
+        }
+      }
+    );
+  });
+}
+
+app.post('/api/users/login', async  (req, res) => {
+  if (!req.body.email || !req.body.password) {
+      return res.status(400).json({ message: 'enter the correct email and password' })
+  }
+ 
+  const user = await queryLogin(req.body.email, req.body.password)
+
+  if (!user) {
+      return res.status(400).json({ message: 'wrong login or password' })
+  }
+
+  const token = jwt.sign({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+  }, process.env.SESSION_SECRET, { expiresIn: '3 hours' })
+
+  res.json({ access_token: token })
+})
+
+app.get('/api/isLogged', checkTokenMiddleware, (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const decoded = jwt.decode(token, { complete: false })
+  res.json(decoded)
+})
+
+
+app.post("/api/record/crossworld", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record } = req.body;
   pool.query(
     `INSERT INTO public."Crossworld" (id, id_usuario, tempo_record, created_at)
@@ -242,8 +327,9 @@ app.post("/api/record/crossworld", isAuthenticated, (req, res) => {
   );
 });
 
-app.post("/api/record/ecopuzzle", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.post("/api/record/ecopuzzle", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record } = req.body;
   pool.query(
     `INSERT INTO public."Ecopuzzle"
@@ -265,8 +351,9 @@ app.post("/api/record/ecopuzzle", isAuthenticated, (req, res) => {
   );
 });
 
-app.post("/api/record/hangame", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.post("/api/record/hangame", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record, quantidade_erros } = req.body;
   pool.query(
     `INSERT INTO public."Hangame"
@@ -288,8 +375,9 @@ app.post("/api/record/hangame", isAuthenticated, (req, res) => {
   );
 });
 
-app.post("/api/record/quiz", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.post("/api/record/quiz", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record, quantidade_erros } = req.body;
   pool.query(
     `INSERT INTO public."Quiz"
@@ -311,8 +399,9 @@ app.post("/api/record/quiz", isAuthenticated, (req, res) => {
   );
 });
 
-app.get("/api/perfil/info", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.get("/api/perfil/info", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   pool.query(
     `SELECT 
     u.id AS usuario_id,
@@ -366,8 +455,9 @@ WHERE u.id = $1;`,
 });
 
 
-app.get("/api/ranking/ecopuzzle", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.get("/api/ranking/ecopuzzle", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   pool.query(
     `WITH ranked AS (
     SELECT 
@@ -409,8 +499,9 @@ LIMIT 11;`,
   );
 });
 
-app.get("/api/ranking/crossworld", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.get("/api/ranking/crossworld", checkTokenMiddleware, (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   pool.query(
     `
     WITH ranked AS (
@@ -453,8 +544,9 @@ LIMIT 11;`,
   );
 });
 
-app.get("/api/ranking/quiz", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.get("/api/ranking/quiz", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   pool.query(
     `
   WITH ranked AS (
@@ -500,8 +592,9 @@ LIMIT 11;`,
   );
 });
 
-app.get("/api/ranking/hangame", isAuthenticated, (req, res) => {
-  const { id, ...user } = req.user;
+app.get("/api/ranking/hangame", checkTokenMiddleware, (req, res) => {
+   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   pool.query(
     ` WITH ranked AS (
     SELECT 

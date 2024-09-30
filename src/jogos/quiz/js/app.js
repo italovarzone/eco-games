@@ -23,38 +23,38 @@ function startGame() {
     loadQuestion();
 }
 
-  function createProgressPlanets() {
-        const progressContainer = document.getElementById('progress-container');
-        progressContainer.innerHTML = ''; // Limpa o contêiner de progresso
+function createProgressPlanets() {
+    const progressContainer = document.getElementById('progress-container');
+    progressContainer.innerHTML = ''; // Limpa o contêiner de progresso
 
-        selectedQuestions.forEach((_, index) => {
-            const planet = document.createElement('div');
-            planet.classList.add('planet');
-            planet.setAttribute('id', `planet-${index}`); // Adiciona um ID único para cada planeta
-            progressContainer.appendChild(planet);
-        });
-    }
+    selectedQuestions.forEach((_, index) => {
+        const planet = document.createElement('div');
+        planet.classList.add('planet');
+        planet.setAttribute('id', `planet-${index}`); // Adiciona um ID único para cada planeta
+        progressContainer.appendChild(planet);
+    });
+}
 
-    function updateProgressPlanet(index, isCorrect) {
-        const planet = document.getElementById(`planet-${index}`);
-        if (isCorrect) {
-            planet.style.backgroundColor = '#4caf50'; // Verde para resposta correta
-        } else {
-            planet.style.backgroundColor = '#e74c3c'; // Vermelho para resposta incorreta
-        }
+function updateProgressPlanet(index, isCorrect) {
+    const planet = document.getElementById(`planet-${index}`);
+    if (isCorrect) {
+        planet.style.backgroundColor = '#4caf50'; // Verde para resposta correta
+    } else {
+        planet.style.backgroundColor = '#e74c3c'; // Vermelho para resposta incorreta
     }
-  
-  function animateOptions() {
+}
+
+function animateOptions() {
     const options = document.querySelectorAll('.option');
-  
+
     options.forEach((option, index) => {
         setTimeout(() => {
             option.style.opacity = '1';
         }, index * 100);
     });
-  }
+}
 
-  const questions = [
+const questions = [
     // ODS 1: Erradicação da Pobreza
     {
         question: "Qual é uma maneira eficaz de combater a pobreza extrema?",
@@ -68,7 +68,7 @@ function startGame() {
         correctAnswer: 0,
         explanation: "Criar mais empregos formais proporciona renda e estabilidade financeira, ajudando a erradicar a pobreza."
     },
-  
+
     // ODS 2: Fome Zero e Agricultura Sustentável
     {
         question: "Qual é uma prática sustentável para acabar com a fome?",
@@ -82,7 +82,7 @@ function startGame() {
         correctAnswer: 1,
         explanation: "Promover a agricultura sustentável garante acesso a alimentos nutritivos e de qualidade para crianças em idade escolar."
     },
-  
+
     // ODS 3: Saúde e Bem-estar
     {
         question: "O que pode melhorar a saúde materna?",
@@ -102,7 +102,7 @@ function startGame() {
         correctAnswer: 1,
         explanation: "Promover campanhas de vacinação é fundamental para melhorar a saúde pública e prevenir doenças transmissíveis."
     },
-  
+
     // ODS 4: Educação de Qualidade
     {
         question: "Como podemos garantir uma educação de qualidade para todos?",
@@ -116,7 +116,7 @@ function startGame() {
         correctAnswer: 2,
         explanation: "Formar professores qualificados é essencial para melhorar a qualidade da educação, pois eles são os principais agentes de ensino."
     },
-  
+
     // ODS 5: Igualdade de Gênero
     {
         question: "Qual medida pode promover a igualdade de gênero?",
@@ -136,7 +136,7 @@ function startGame() {
         correctAnswer: 0,
         explanation: "Fortalecer as leis de proteção às vítimas é crucial para combater a violência de gênero e garantir a segurança das mulheres."
     },
-  
+
     // ODS 6: Água Potável e Saneamento
     {
         question: "Qual ação ajuda a garantir água limpa e saneamento para todos?",
@@ -150,7 +150,7 @@ function startGame() {
         correctAnswer: 1,
         explanation: "Investir em sistemas de reutilização de água ajuda a garantir a sustentabilidade dos recursos hídricos e a reduzir o desperdício."
     },
-  
+
     // ODS 10: Redução das Desigualdades
     {
         question: "Como podemos reduzir as desigualdades sociais?",
@@ -164,7 +164,7 @@ function startGame() {
         correctAnswer: 2,
         explanation: "Criar políticas de inclusão social ajuda a reduzir as desigualdades econômicas, proporcionando oportunidades iguais para todos."
     },
-  
+
     // ODS 11: Cidades e Comunidades Sustentáveis
     {
         question: "O que pode tornar as cidades mais sustentáveis?",
@@ -184,7 +184,7 @@ function startGame() {
         correctAnswer: 3,
         explanation: "Promover o uso de transporte público reduz a emissão de poluentes e melhora a qualidade do ar nas cidades."
     },
-  
+
     // ODS 16: Paz, Justiça e Instituições Eficazes
     {
         question: "Qual é uma medida importante para promover a paz e a justiça?",
@@ -210,34 +210,34 @@ function startGame() {
         correctAnswer: 2,
         explanation: "Fortalecer o diálogo comunitário promove a paz e ajuda a resolver conflitos de maneira pacífica e colaborativa."
     }
-  ];
-  
-  let selectedQuestions = shuffleQuestions(questions).slice(0, 5); // Escolhe aleatoriamente 5 perguntas
-  const timeLimit = 30; // Tempo limite por pergunta em segundos
-  let timerInterval; // Variável para armazenar o intervalo do cronômetro
-  let currentTime; // Variável para armazenar o tempo restante
-  let totalTimeSpent = 0; // Variável para armazenar o tempo total em milissegundos
-  
-  // Função para embaralhar as perguntas
-  function shuffleQuestions(questionsArray) {
+];
+
+let selectedQuestions = shuffleQuestions(questions).slice(0, 5); // Escolhe aleatoriamente 5 perguntas
+const timeLimit = 30; // Tempo limite por pergunta em segundos
+let timerInterval; // Variável para armazenar o intervalo do cronômetro
+let currentTime; // Variável para armazenar o tempo restante
+let totalTimeSpent = 0; // Variável para armazenar o tempo total em milissegundos
+
+// Função para embaralhar as perguntas
+function shuffleQuestions(questionsArray) {
     return questionsArray.sort(() => Math.random() - 0.5);
-  }
-  
-  let currentQuestion = 0;
-  let score = 0;
-  let questionTimes = []; // Array para armazenar o tempo de cada pergunta
-  
-  function loadQuestion() {
+}
+
+let currentQuestion = 0;
+let score = 0;
+let questionTimes = []; // Array para armazenar o tempo de cada pergunta
+
+function loadQuestion() {
     const timerElement = document.getElementById('timer');
     const questionContainer = document.getElementById('question-container');
     const optionsContainer = document.getElementById('options-container');
     const resultContainer = document.getElementById('result');
     const nextButton = document.getElementById('next-button');
-  
+
     startTimer(); // Inicia o cronômetro ao carregar uma nova pergunta
-  
+
     questionContainer.textContent = selectedQuestions[currentQuestion].question;
-  
+
     optionsContainer.innerHTML = "";
     selectedQuestions[currentQuestion].options.forEach((option, index) => {
         const button = document.createElement('button');
@@ -246,38 +246,38 @@ function startGame() {
         button.addEventListener('click', () => checkAnswer(index));
         optionsContainer.appendChild(button);
     });
-  
+
     resultContainer.textContent = "";
     nextButton.style.display = "none";
-  }
-  
-  function startTimer() {
+}
+
+function startTimer() {
     const timerElement = document.getElementById('timer');
     currentTime = timeLimit * 1000; // Converte o tempo limite para milissegundos
     timerElement.textContent = `Tempo: ${calculateTime(currentTime)}`;
-  
+
     timerInterval = setInterval(() => {
         currentTime -= 1000;
         timerElement.textContent = `Tempo: ${calculateTime(currentTime)}`;
-  
+
         if (currentTime <= 0) {
             clearInterval(timerInterval);
             checkAnswer(-1); // Resposta incorreta (tempo esgotado)
         }
     }, 1000);
-  }
-  
-  function calculateTime(time) {
+}
+
+function calculateTime(time) {
     let totalSeconds = Math.floor(time / 1000);
     let totalMinutes = Math.floor(totalSeconds / 60);
-  
+
     let displaySeconds = (totalSeconds % 60).toString().padStart(2, "0");
     let displayMinutes = totalMinutes.toString().padStart(2, "0");
-  
+
     return `${displayMinutes}:${displaySeconds}`;
-  }
-  
-  function checkAnswer(selectedOption) {
+}
+
+function checkAnswer(selectedOption) {
     const correctAnswer = selectedQuestions[currentQuestion].correctAnswer;
     const resultContainer = document.getElementById('result');
     const nextButton = document.getElementById('next-button');
@@ -318,45 +318,52 @@ function startGame() {
 
     nextButton.style.display = "flex";
 }
-  
-  function nextQuestion() {
+
+function nextQuestion() {
     const options = document.querySelectorAll('.option');
-  
+
     options.forEach((option) => {
         option.classList.remove('correct', 'incorrect');
         option.disabled = false; // Habilita os botões para a próxima pergunta
     });
-  
+
     currentQuestion++;
-  
+
     if (currentQuestion < selectedQuestions.length) {
         loadQuestion();
     } else {
         clearInterval(timerInterval);
         showFinalResult();
     }
-  }
-  
-  async function saveRecord(time, incorrects) {
-      try {
+}
+
+async function saveRecord(time, incorrects) {
+    try {
+        const access_token = localStorage.getItem("token");
+
+        if (!access_token) {
+            console.log("Token não encontrado");
+            return false;
+        }
         let res;
         const response = await fetch("http://localhost:3000/api/record/quiz", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({"tempo_record": time, "quantidade_erros": incorrects}),
-          credentials: "include",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${access_token}`
+            },
+            body: JSON.stringify({ "tempo_record": time, "quantidade_erros": incorrects }),
+            credentials: "include",
         });
-    
+
         res = await response.json();
         console.log(res)
-      } catch (error) {
+    } catch (error) {
         console.log(error);
-      }
-  }
-  
-  function showFinalResult() {
+    }
+}
+
+function showFinalResult() {
     const quizContainerQuestions = document.getElementById('quiz-container-questions');
     const quizContainerWrapper = document.getElementById('quiz-container')
     const resultContainer = document.getElementById('result-container');
@@ -366,58 +373,57 @@ function startGame() {
     const percentageElement = document.getElementById('percentage');
     const totalScoreElement = document.getElementById('total-score');
     const totalTimeElement = document.getElementById('total-time');
-  
+
     quizContainerQuestions.style.display = 'none'; // Oculta o container de perguntas
     headerQuizContainer.style.display = 'none';
     quizContainerWrapper.style.display = 'none';
     resultContainer.style.display = 'flex';
     correctAnswersElement.textContent = score;
     incorrectAnswersElement.textContent = selectedQuestions.length - score;
-    let incorrect = selectedQuestions.length - score;    
+    let incorrect = selectedQuestions.length - score;
     percentageElement.textContent = ((score / selectedQuestions.length) * 100).toFixed(2) + '%';
     totalScoreElement.textContent = `${score} / ${selectedQuestions.length}`;
     totalTimeElement.textContent = calculateTime(totalTimeSpent); // Exibe o tempo total em MM:SS
     saveRecord(totalTimeSpent, incorrect); // Envia o tempo total em milissegundos para a API
-  }
-  
-  function showHelp() {
+}
+
+function showHelp() {
     const blurOverlay = document.getElementById('blur-overlay');
     const helpDialog = document.getElementById('help-dialog');
-  
+
     blurOverlay.style.display = 'block';
     helpDialog.style.display = 'flex';
-  
-  }
-  
-  function closeHelp() {
+
+}
+
+function closeHelp() {
     const blurOverlay = document.getElementById('blur-overlay');
     const helpDialog = document.getElementById('help-dialog');
-  
+
     blurOverlay.style.display = 'none';
     helpDialog.style.display = 'none';
-  }
-  
-  function toggleFullScreen() {
-      const fullscreenIcon = document.getElementById('fullscreen-icon');
-      const fullscreenBtn = document.getElementById('fullscreen-btn');
-    
-      if (!document.fullscreenElement) {
+}
+
+function toggleFullScreen() {
+    const fullscreenIcon = document.getElementById('fullscreen-icon');
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+
+    if (!document.fullscreenElement) {
         document.documentElement.requestFullscreen();
         fullscreenIcon.classList.remove('fa-expand');
         fullscreenIcon.classList.add('fa-compress');
         fullscreenBtn.classList.add('fullscreen');
-      } else {
+    } else {
         if (document.exitFullscreen) {
-          document.exitFullscreen();
-          fullscreenIcon.classList.remove('fa-compress');
-          fullscreenIcon.classList.add('fa-expand');
-          fullscreenBtn.classList.remove('fullscreen');
+            document.exitFullscreen();
+            fullscreenIcon.classList.remove('fa-compress');
+            fullscreenIcon.classList.add('fa-expand');
+            fullscreenBtn.classList.remove('fullscreen');
         }
-      }
-  }
-  
-  const fullscreenBtn = document.getElementById('fullscreen-btn');
-  fullscreenBtn.addEventListener('click', toggleFullScreen);
-  
-  startGame();
-  
+    }
+}
+
+const fullscreenBtn = document.getElementById('fullscreen-btn');
+fullscreenBtn.addEventListener('click', toggleFullScreen);
+
+startGame();

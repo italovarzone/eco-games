@@ -27,9 +27,9 @@ document
         spinner.style.display = "none";
         submitButton.disabled = false;
         submitButton.classList.remove('loading'); // Remove classe de carregamento
-        if (data.booleanAuth) {
+        if (data.access_token) {
           showSnackbar("Login bem-sucedido!", "success");
-          localStorage.setItem("email", email);
+          localStorage.setItem("token", data.access_token);
           setTimeout(() => {
             window.location.href = "/src/telas/home/index.html?";
           }, 1000);

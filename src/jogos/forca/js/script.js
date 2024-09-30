@@ -55,9 +55,9 @@ function calculateTime(time) {
 function createKeyboard() {
   const keyboardContainer = document.getElementById('keyboard');
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-  
+
   keyboardContainer.innerHTML = ''; // Limpa o conteúdo anterior
-  
+
   alphabet.forEach(letter => {
     const button = document.createElement('button');
     button.innerText = letter;
@@ -69,7 +69,7 @@ function createKeyboard() {
 // Função para lidar com a entrada do teclado virtual e físico
 function handleInput(key, button) {
   if (gameOver) return; // Não permitir entradas após o término do jogo
-  
+
   key = key.toUpperCase();
   if (!corrects.includes(key) && /^[A-Z]+$/.test(key)) {
     if (word.includes(key)) {
@@ -87,13 +87,13 @@ function handleInput(key, button) {
     } else if (!incorrects.includes(key)) {
       incorrects.push(key);
       maxGuesses--;
-    
+
       // Mudar o fundo do botão para vermelho ao errar
       if (button) {
         button.style.backgroundColor = '#ff4c4c'; // vermelho
         button.style.color = '#fff'; // texto branco
       }
-    
+
       // Alterar a cor do ícone de planeta para vermelho na ordem
       const planetIconsContainer = document.getElementById("planet-icons");
       const remainingPlanets = planetIconsContainer.children;
@@ -101,7 +101,7 @@ function handleInput(key, button) {
         const currentPlanet = remainingPlanets[incorrects.length - 1];
         currentPlanet.style.color = '#ff4c4c'; // vermelho
       }
-    
+
       // Verifica se todas as tentativas se esgotaram
       if (maxGuesses < 1) {
         pauseTime();
@@ -122,10 +122,10 @@ function handleInput(key, button) {
   setTimeout(() => {
     if (corrects.length === word.length) {
       pauseTime();
-      showResult(true); 
+      showResult(true);
     } else if (maxGuesses < 1) {
       pauseTime();
-      showResult(false); 
+      showResult(false);
       for (let i = 0; i < word.length; i++) {
         inputs.querySelectorAll("input")[i].value = word[i];
       }
@@ -151,13 +151,13 @@ function randomWord() {
   gameOver = false; // Reiniciar o estado de jogo
   startTime();
   let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
-  word = ranObj.word.toUpperCase();  
+  word = ranObj.word.toUpperCase();
   maxGuesses = 5;
   corrects = [];
   incorrects = [];
 
   hint.innerText = ranObj.hint;
-  
+
   // Adicionar os ícones de planeta
   const planetIconsContainer = document.getElementById("planet-icons");
   planetIconsContainer.innerHTML = ''; // Limpa os ícones anteriores
@@ -179,13 +179,20 @@ randomWord();
 
 async function saveRecord(time, incorrects) {
   try {
+    const access_token = localStorage.getItem("token");
+
+    if (!access_token) {
+      console.log("Token não encontrado");
+      return false;
+    }
     let res;
     const response = await fetch("http://localhost:3000/api/record/hangame", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${access_token}`
       },
-      body: JSON.stringify({"tempo_record": time, "quantidade_erros": incorrects}),
+      body: JSON.stringify({ "tempo_record": time, "quantidade_erros": incorrects }),
       credentials: "include",
     });
 
@@ -196,7 +203,7 @@ async function saveRecord(time, incorrects) {
   }
 }
 
-function showResult(won) { 
+function showResult(won) {
   gameOver = true; // Marcar o jogo como terminado
   gameContent.style.display = "none";
   resultContainer.style.display = "flex";
@@ -249,17 +256,17 @@ function toggleFullScreen() {
   const fullscreenBtn = document.getElementById('fullscreen-btn');
 
   if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      fullscreenIcon.classList.remove('fa-expand');
-      fullscreenIcon.classList.add('fa-compress');
-      fullscreenBtn.classList.add('fullscreen');
+    document.documentElement.requestFullscreen();
+    fullscreenIcon.classList.remove('fa-expand');
+    fullscreenIcon.classList.add('fa-compress');
+    fullscreenBtn.classList.add('fullscreen');
   } else {
-      if (document.exitFullscreen) {
-          document.exitFullscreen();
-          fullscreenIcon.classList.remove('fa-compress');
-          fullscreenIcon.classList.add('fa-expand');
-          fullscreenBtn.classList.remove('fullscreen');
-      }
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      fullscreenIcon.classList.remove('fa-compress');
+      fullscreenIcon.classList.add('fa-expand');
+      fullscreenBtn.classList.remove('fullscreen');
+    }
   }
 }
 

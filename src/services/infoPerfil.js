@@ -2,10 +2,17 @@ let info = null;
 
 export async function getInfo() {
   try {
+    const access_token = localStorage.getItem("token");
+
+    if (!access_token) {
+      console.log("Token não encontrado");
+      return false;
+    }
     const response = await fetch("http://localhost:3000/api/perfil/info", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${access_token}`
       },
       credentials: "include",
     });
