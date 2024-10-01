@@ -339,11 +339,17 @@ function startGame() {
   
   async function saveRecord(time, incorrects) {
       try {
+        const access_token = localStorage.getItem("token");
+        if (!access_token) {
+          console.log("Token não encontrado");
+          return false;
+        }
         let res;
         const response = await fetch("http://localhost:3000/api/record/quiz", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            "Authorization": `Bearer ${access_token}`
           },
           body: JSON.stringify({"tempo_record": time, "quantidade_erros": incorrects}),
           credentials: "include",

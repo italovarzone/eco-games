@@ -92,14 +92,20 @@ function createCardFace(face, card, element) {
   element.appendChild(cardElementFace);
 }
 
-async function saveTime(time) {
+async function saveRecord(time) {
   try {
+    const access_token = localStorage.getItem("token");
+    if (!access_token) {
+      console.log("Token não encontrado");
+      return false;
+    }
     console.log(time);
     let res;
     const response = await fetch("http://localhost:3000/api/record/ecopuzzle", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": `Bearer ${access_token}`
       },
       body: JSON.stringify({"tempo_record": time}),
       credentials: "include",

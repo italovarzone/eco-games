@@ -7,6 +7,7 @@ const session = require("express-session");
 const cors = require('cors');
 const sendRecoveryEmail = require('./sendEmail');
 const { connectDB, sql } = require("./dbConfig");
+const jwt = require('jsonwebtoken')
 
 const app = express();
 
@@ -165,33 +166,95 @@ app.post("/api/users/register", async (req, res) => {
   }
 });
 
-app.post(
-  "/api/users/login",
-  (req, res, next) => {
-    passport.authenticate("local", (err, user, info) => {
-      if (err) {
-        return res.status(500).json({ message: "Erro no servidor" });
-      }
-      if (!user) {
-        return res.status(401).json({ message: "Falha na autenticação", error: info.message, booleanAuth: false });
-      }
-      req.logIn(user, (err) => {
-        if (err) {
-          return res.status(500).json({ message: "Erro ao iniciar sessão" });
-        }
-        return res.status(200).json({ message: "Autenticação bem-sucedida", booleanAuth: true });
-      });
-    })(req, res, next);
+const extractBearerToken = headerValue => {
+  if (typeof headerValue !== 'string') {
+      return false
   }
-);
 
-app.get("/api/isLogged", isAuthenticated, (req, res) => {
-  const { password, ...user } = req.user;
-  res.send(user);
-});
+  const matches = headerValue.match(/(bearer)\s+(\S+)/i)
+  return matches && matches[2]
+}
 
-app.post("/api/record/crossworld", isAuthenticated, async (req, res) => {
-  const { id, ...user } = req.user;
+// The middleware
+const checkTokenMiddleware = (req, res, next) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+
+  if (!token) {
+      return res.status(401).json({ message: 'need a token' })
+  }
+
+  jwt.verify(token, process.env.SESSION_SECRET, (err, decodedToken) => {
+      if (err) {
+          return res.status(401).json({ message: 'bad token' })
+      }
+  })
+
+  next()
+}
+
+async function queryLogin(email, password) {
+  const pool = await connectDB();
+
+  return new Promise((resolve, reject) => {
+    // Supondo que a pool esteja configurada usando o pacote 'mssql'
+    pool
+      .request()
+      .input('email', sql.VarChar, email)
+      .query('SELECT * FROM [User] WHERE email = @email', (err, results) => {
+        if (err) {
+          reject(err); // Erro ao fazer a query
+        }
+
+        if (results.recordset.length > 0) {
+          const user = results.recordset[0];
+
+          bcrypt.compare(password, user.password, (err, isMatch) => {
+            if (err) {
+              reject(err); // Erro ao comparar as senhas
+            }
+            if (isMatch) {
+              resolve(user); // Senha correta
+            } else {
+              resolve(null); // Senha incorreta
+            }
+          });
+        } else {
+          // Nenhum usuário encontrado com o email fornecido
+          resolve(null);
+        }
+      });
+  });
+}
+
+app.post('/api/users/login', async  (req, res) => {
+  if (!req.body.email || !req.body.password) {
+      return res.status(400).json({ message: 'enter the correct email and password' })
+  }
+ 
+  const user = await queryLogin(req.body.email, req.body.password)
+
+  if (!user) {
+      return res.status(400).json({ message: 'wrong login or password' })
+  }
+
+  const token = jwt.sign({
+      id: user.id,
+      email: user.email,
+      name: user.name,
+  }, process.env.SESSION_SECRET, { expiresIn: '3 hours' })
+
+  res.json({ access_token: token })
+})
+
+app.get('/api/isLogged', checkTokenMiddleware, (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const decoded = jwt.decode(token, { complete: false })
+  res.json(decoded)
+})
+
+app.post("/api/record/crossworld", checkTokenMiddleware, async (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record } = req.body;
   const pool = await connectDB();
 
@@ -208,8 +271,9 @@ app.post("/api/record/crossworld", isAuthenticated, async (req, res) => {
   }
 });
 
-app.post("/api/record/ecopuzzle", isAuthenticated, async (req, res) => {
-  const { id, ...user } = req.user;
+app.post("/api/record/ecopuzzle",  checkTokenMiddleware, async (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record } = req.body;
   const pool = await connectDB();
 
@@ -226,8 +290,9 @@ app.post("/api/record/ecopuzzle", isAuthenticated, async (req, res) => {
   }
 });
 
-app.post("/api/record/hangame", isAuthenticated, async (req, res) => {
-  const { id, ...user } = req.user;
+app.post("/api/record/hangame",  checkTokenMiddleware, async (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record, quantidade_erros } = req.body;
   const pool = await connectDB();
 
@@ -245,8 +310,9 @@ app.post("/api/record/hangame", isAuthenticated, async (req, res) => {
   }
 });
 
-app.post("/api/record/quiz", isAuthenticated, async (req, res) => {
-  const { id, ...user } = req.user;
+app.post("/api/record/quiz",  checkTokenMiddleware, async (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record, quantidade_erros } = req.body;
   const pool = await connectDB();
 
@@ -264,8 +330,9 @@ app.post("/api/record/quiz", isAuthenticated, async (req, res) => {
   }
 });
 
-app.get("/api/perfil/info", isAuthenticated, async (req, res) => {
-  const { id, ...user } = req.user;
+app.get("/api/perfil/info",  checkTokenMiddleware, async (req, res) => {
+  const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
+  const { id, ...user } = jwt.decode(token, { complete: false })
   const pool = await connectDB();
 
   try {
@@ -315,115 +382,176 @@ app.get("/api/perfil/info", isAuthenticated, async (req, res) => {
   }
 });
 
-app.get("/api/ranking/ecopuzzle", isAuthenticated, async (req, res) => {
-  const pool = await connectDB();
-
+app.get("/api/ranking/ecopuzzle", checkTokenMiddleware, async (req, res) => {
   try {
+    const token = req.headers.authorization && extractBearerToken(req.headers.authorization);
+    const { id, ...user } = jwt.decode(token, { complete: false });
+
+    const pool = await sql.connect(/* sua configuração de conexão SQL Server */);
+
     const result = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
       .query(`
         WITH ranked AS (
           SELECT 
-            id_usuario,
-            RANK() OVER (ORDER BY MIN(tempo_record) ASC) AS posicao,
-            u.name AS nome,
-            MIN(tempo_record) AS tempo
-          FROM [Ecopuzzle] e
-          JOIN [User] u ON e.id_usuario = u.id
-          GROUP BY id_usuario, u.name
+              u.id,
+              RANK() OVER (ORDER BY MIN(e.tempo_record) ASC) AS posicao,
+              u.name AS nome,
+              MIN(e.tempo_record) AS tempo
+          FROM 
+              Ecopuzzle e
+          JOIN 
+              [User] u ON e.id_usuario = u.id
+          GROUP BY 
+              u.id, u.name
         )
-        SELECT * FROM ranked ORDER BY posicao ASC OFFSET 0 ROWS FETCH NEXT 11 ROWS ONLY;
+        SELECT *
+        FROM ranked
+        WHERE id = @id
+        UNION ALL
+        SELECT TOP 10 *
+        FROM ranked;
       `);
 
-    res.status(200).json(result.recordset);
+    req.flash("success_msg", "Query completed");
+    res.status(200).json({
+      userId: id,
+      ranking: result.recordset
+    });
   } catch (err) {
-    console.error("Erro ao obter ranking de Ecopuzzle:", err);
-    res.status(500).json({ error: 'Erro ao obter ranking de Ecopuzzle' });
+    console.error(err);
+    res.status(500).json({ error: "Erro ao buscar ranking" });
+  }
+});
+
+app.get("/api/ranking/crossworld", checkTokenMiddleware, async (req, res) => {
+  try {
+    const token = req.headers.authorization && extractBearerToken(req.headers.authorization);
+    const { id, ...user } = jwt.decode(token, { complete: false });
+
+    const pool = await sql.connect(/* sua configuração de conexão SQL Server */);
+
+    const result = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
+      .query(`
+        WITH ranked AS (
+          SELECT 
+              u.id,
+              RANK() OVER (ORDER BY MIN(c.tempo_record) ASC) AS posicao,
+              u.name AS nome,
+              MIN(c.tempo_record) AS tempo
+          FROM 
+              Crossworld c
+          JOIN 
+              [User] u ON c.id_usuario = u.id
+          GROUP BY 
+              u.id, u.name
+        )
+        SELECT *
+        FROM ranked
+        WHERE id = @id
+        UNION ALL
+        SELECT TOP 10 *
+        FROM ranked;
+      `);
+
+    req.flash("success_msg", "Query completed");
+    res.status(200).json({
+      userId: id,
+      ranking: result.recordset
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao buscar ranking" });
+  }
+});
+
+app.get("/api/ranking/quiz", checkTokenMiddleware, async (req, res) => {
+  try {
+    const token = req.headers.authorization && extractBearerToken(req.headers.authorization);
+    const { id, ...user } = jwt.decode(token, { complete: false });
+
+    const pool = await sql.connect(/* sua configuração de conexão SQL Server */);
+
+    const result = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
+      .query(`
+        WITH ranked AS (
+          SELECT 
+              u.id,
+              RANK() OVER (ORDER BY MIN(q.quantidade_erros) ASC, MIN(q.tempo_record) ASC) AS posicao,
+              u.name AS nome,
+              MIN(q.quantidade_erros) AS erros,
+              MIN(q.tempo_record) AS tempo
+          FROM 
+              Quiz q
+          JOIN 
+              [User] u ON q.id_usuario = u.id
+          GROUP BY 
+              u.id, u.name
+        )
+        SELECT *
+        FROM ranked
+        WHERE id = @id
+        UNION ALL
+        SELECT TOP 10 *
+        FROM ranked;
+      `);
+
+    req.flash("success_msg", "Query completed");
+    res.status(200).json({
+      userId: id,
+      ranking: result.recordset
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Erro ao buscar ranking" });
   }
 });
 
 
-app.get("/api/ranking/crossworld", isAuthenticated, async (req, res) => {
-  const pool = await connectDB();
-
+app.get("/api/ranking/hangame", checkTokenMiddleware, async (req, res) => {
   try {
+    const token = req.headers.authorization && extractBearerToken(req.headers.authorization);
+    const { id, ...user } = jwt.decode(token, { complete: false });
+
+    const pool = await sql.connect(/* sua configuração de conexão SQL Server */);
+
     const result = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
       .query(`
         WITH ranked AS (
           SELECT 
-            id_usuario,
-            RANK() OVER (ORDER BY MIN(tempo_record) ASC) AS posicao,
-            u.name AS nome,
-            MIN(tempo_record) AS tempo
-          FROM [Crossworld] c
-          JOIN [User] u ON c.id_usuario = u.id
-          GROUP BY id_usuario, u.name
+              u.id,
+              RANK() OVER (ORDER BY MIN(h.quantidade_erros) ASC, MIN(h.tempo_record) ASC) AS posicao,
+              u.name AS nome,
+              MIN(h.quantidade_erros) AS erros,
+              MIN(h.tempo_record) AS tempo
+          FROM 
+              Hangame h
+          JOIN 
+              [User] u ON h.id_usuario = u.id
+          GROUP BY 
+              u.id, u.name
         )
-        SELECT * FROM ranked ORDER BY posicao ASC OFFSET 0 ROWS FETCH NEXT 11 ROWS ONLY;
+        SELECT *
+        FROM ranked
+        WHERE id = @id
+        UNION ALL
+        SELECT TOP 10 *
+        FROM ranked;
       `);
-    res.status(200).json(result.recordset);
+
+    req.flash("success_msg", "Query completed");
+    res.status(200).json({
+      userId: id,
+      ranking: result.recordset
+    });
   } catch (err) {
-    console.error("Erro ao obter ranking de Crossworld:", err);
-    res.status(500).json({ error: 'Erro ao obter ranking de Crossworld' });
+    console.error(err);
+    res.status(500).json({ error: "Erro ao buscar ranking" });
   }
 });
-
-app.get("/api/ranking/quiz", isAuthenticated, async (req, res) => {
-  const pool = await connectDB();
-
-  try {
-    const result = await pool.request()
-      .query(`
-        WITH ranked AS (
-          SELECT 
-            q.id_usuario,
-            RANK() OVER (ORDER BY MIN(q.quantidade_erros) ASC, MIN(q.tempo_record) ASC) AS posicao,
-            u.name AS nome,
-            MIN(q.quantidade_erros) AS erros,
-            MIN(q.tempo_record) AS tempo
-          FROM [Quiz] q
-          JOIN [User] u ON q.id_usuario = u.id
-          GROUP BY q.id_usuario, u.name
-        )
-        SELECT DISTINCT id_usuario, posicao, nome, erros, tempo 
-        FROM ranked 
-        ORDER BY posicao ASC 
-        OFFSET 0 ROWS FETCH NEXT 11 ROWS ONLY;
-      `);
-      
-    res.status(200).json(result.recordset);
-  } catch (err) {
-    console.error("Erro ao obter ranking de Quiz:", err);
-    res.status(500).json({ error: 'Erro ao obter ranking de Quiz' });
-  }
-});
-
-
-app.get("/api/ranking/hangame", isAuthenticated, async (req, res) => {
-  const pool = await connectDB();
-
-  try {
-    const result = await pool.request()
-      .query(`
-        WITH ranked AS (
-          SELECT 
-            id_usuario,
-            RANK() OVER (ORDER BY MIN(quantidade_erros) ASC, MIN(tempo_record) ASC) AS posicao,
-            u.name AS nome,
-            MIN(quantidade_erros) AS erros,
-            MIN(tempo_record) AS tempo
-          FROM [Hangame] h
-          JOIN [User] u ON h.id_usuario = u.id
-          GROUP BY id_usuario, u.name
-        )
-        SELECT * FROM ranked ORDER BY posicao ASC OFFSET 0 ROWS FETCH NEXT 11 ROWS ONLY;
-      `);
-    res.status(200).json(result.recordset);
-  } catch (err) {
-    console.error("Erro ao obter ranking de Hangame:", err);
-    res.status(500).json({ error: 'Erro ao obter ranking de Hangame' });
-  }
-});
-
 
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
