@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         await initializeRanking(user);
     } else {
         console.error("Usuário não encontrado. Redirecionando para login...");
-        window.location.href = '/login';
+        window.location.href = "/src/telas/login/index.html?auth=required";
     }
 });
 
@@ -76,7 +76,7 @@ async function handleRanking(tabNumber) {
             updateRankingTable(ranking, tabNumber, user);
         } else {
             let user = {
-                posicao: "0",
+                posicao: 0,
                 nome: "Você ainda não jogou!",
                 tempo: 0,   
                 erros: 0
@@ -144,5 +144,9 @@ function updateRankingTable(rankingData, tabNumber, user) {
         }
 
         tableBody.appendChild(row);
+
+        if (player.id === user.id) {
+            row.style.backgroundColor = "#dff0d8"; // Cor de destaque
+        }
     });
 }
