@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   handleSidebarVisibility();
 
   const sidebar = document.querySelector('.sidebar');
+  const spanLogout = document.getElementById('spanLogout')
   const liGoToPerfil = document.getElementById('liGoToPerfil');
   const liGotoRanking = document.getElementById('liGotoRanking');
   const btnToggleSidebar = document.getElementById('btnToggleSidebar');
@@ -27,6 +28,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   let pendingNavigation = null;
 
   window.addEventListener('resize', handleSidebarVisibility);
+
+  spanLogout.addEventListener('click', () => {
+  localStorage.removeItem("token");
+    handleExitNavigation('login');
+  });
 
   liGoToPerfil.addEventListener('click', () => {
     handleExitNavigation('perfil');
@@ -119,6 +125,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         break;
       case 'ranking':
         iframeSrc = "../ranking/index.html";
+        break;
+      case 'login':
+        window.location.href = "/src/telas/login/index.html"
         break;
       default:
         gameContainer.innerHTML = '<h2>Selecione uma opção na barra lateral</h2>';

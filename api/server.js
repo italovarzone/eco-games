@@ -17,7 +17,7 @@ app.use(cors({
 }));
 
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500"); 
+  res.header("Access-Control-Allow-Origin", "http://127.0.0.1:5500");
   res.header("Access-Control-Allow-Credentials", "true");
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
   next();
@@ -57,7 +57,7 @@ const recoveryCodes = {};
 
 app.post('/api/users/send-recovery-code', async (req, res) => {
   const { email } = req.body;
-  
+
   if (!email) {
     return res.status(400).json({ message: 'O email é necessário.' });
   }
@@ -168,7 +168,7 @@ app.post("/api/users/register", async (req, res) => {
 
 const extractBearerToken = headerValue => {
   if (typeof headerValue !== 'string') {
-      return false
+    return false
   }
 
   const matches = headerValue.match(/(bearer)\s+(\S+)/i)
@@ -180,13 +180,13 @@ const checkTokenMiddleware = (req, res, next) => {
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
 
   if (!token) {
-      return res.status(401).json({ message: 'need a token' })
+    return res.status(401).json({ message: 'need a token' })
   }
 
   jwt.verify(token, process.env.SESSION_SECRET, (err, decodedToken) => {
-      if (err) {
-          return res.status(401).json({ message: 'bad token' })
-      }
+    if (err) {
+      return res.status(401).json({ message: 'bad token' })
+    }
   })
 
   next()
@@ -226,21 +226,21 @@ async function queryLogin(email, password) {
   });
 }
 
-app.post('/api/users/login', async  (req, res) => {
+app.post('/api/users/login', async (req, res) => {
   if (!req.body.email || !req.body.password) {
-      return res.status(400).json({ message: 'enter the correct email and password' })
+    return res.status(400).json({ message: 'enter the correct email and password' })
   }
- 
+
   const user = await queryLogin(req.body.email, req.body.password)
 
   if (!user) {
-      return res.status(400).json({ message: 'wrong login or password' })
+    return res.status(400).json({ message: 'wrong login or password' })
   }
 
   const token = jwt.sign({
-      id: user.id,
-      email: user.email,
-      name: user.name,
+    id: user.id,
+    email: user.email,
+    name: user.name,
   }, process.env.SESSION_SECRET, { expiresIn: '3 hours' })
 
   res.json({ access_token: token })
@@ -271,7 +271,7 @@ app.post("/api/record/crossworld", checkTokenMiddleware, async (req, res) => {
   }
 });
 
-app.post("/api/record/ecopuzzle",  checkTokenMiddleware, async (req, res) => {
+app.post("/api/record/ecopuzzle", checkTokenMiddleware, async (req, res) => {
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
   const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record } = req.body;
@@ -290,7 +290,7 @@ app.post("/api/record/ecopuzzle",  checkTokenMiddleware, async (req, res) => {
   }
 });
 
-app.post("/api/record/hangame",  checkTokenMiddleware, async (req, res) => {
+app.post("/api/record/hangame", checkTokenMiddleware, async (req, res) => {
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
   const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record, quantidade_erros } = req.body;
@@ -310,7 +310,7 @@ app.post("/api/record/hangame",  checkTokenMiddleware, async (req, res) => {
   }
 });
 
-app.post("/api/record/quiz",  checkTokenMiddleware, async (req, res) => {
+app.post("/api/record/quiz", checkTokenMiddleware, async (req, res) => {
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
   const { id, ...user } = jwt.decode(token, { complete: false })
   const { tempo_record, quantidade_erros } = req.body;
@@ -330,53 +330,156 @@ app.post("/api/record/quiz",  checkTokenMiddleware, async (req, res) => {
   }
 });
 
-app.get("/api/perfil/info",  checkTokenMiddleware, async (req, res) => {
+app.get("/api/perfil/info", checkTokenMiddleware, async (req, res) => {
   const token = req.headers.authorization && extractBearerToken(req.headers.authorization)
   const { id, ...user } = jwt.decode(token, { complete: false })
   const pool = await connectDB();
 
   try {
+    const ecopuzzleRanking = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
+      .query(`
+      WITH ranked AS (
+        SELECT 
+            u.id,
+            RANK() OVER (ORDER BY MIN(e.tempo_record) ASC) AS posicao,
+            u.name AS nome,
+            MIN(e.tempo_record) AS tempo
+        FROM 
+            Ecopuzzle e
+        JOIN 
+            [User] u ON e.id_usuario = u.id
+        GROUP BY 
+            u.id, u.name
+      )
+      SELECT *
+      FROM ranked
+      WHERE id = @id`);
+
+    const crossworldRanking = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
+      .query(`
+        WITH ranked AS (
+          SELECT 
+              u.id,
+              RANK() OVER (ORDER BY MIN(c.tempo_record) ASC) AS posicao,
+              u.name AS nome,
+              MIN(c.tempo_record) AS tempo
+          FROM 
+              Crossworld c
+          JOIN 
+              [User] u ON c.id_usuario = u.id
+          GROUP BY 
+              u.id, u.name
+        )
+        SELECT *
+        FROM ranked
+        WHERE id = @id`);
+
+    const quizRanking = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
+      .query(`
+          WITH ranked AS (
+            SELECT 
+                u.id,
+                RANK() OVER (ORDER BY MIN(q.quantidade_erros) ASC, MIN(q.tempo_record) ASC) AS posicao,
+                u.name AS nome,
+                MIN(q.quantidade_erros) AS erros,
+                MIN(q.tempo_record) AS tempo
+            FROM 
+                Quiz q
+            JOIN 
+                [User] u ON q.id_usuario = u.id
+            GROUP BY 
+                u.id, u.name
+          )
+          SELECT *
+          FROM ranked
+          WHERE id = @id`);
+
+    const hangameRanking = await pool.request()
+      .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
+      .query(`
+            WITH ranked AS (
+              SELECT 
+                  u.id,
+                  RANK() OVER (ORDER BY MIN(h.quantidade_erros) ASC, MIN(h.tempo_record) ASC) AS posicao,
+                  u.name AS nome,
+                  MIN(h.quantidade_erros) AS erros,
+                  MIN(h.tempo_record) AS tempo
+              FROM 
+                  Hangame h
+              JOIN 
+                  [User] u ON h.id_usuario = u.id
+              GROUP BY 
+                  u.id, u.name
+            )
+            SELECT *
+            FROM ranked
+            WHERE id = @id`);
+
     const result = await pool.request()
       .input("id", sql.Int, id)
       .query(`
-        SELECT 
-        u.id AS usuario_id,
-        u.name AS usuario_nome,
-        LEAST(
-            COALESCE(e.jogos_ecopuzzle, 0),
-            COALESCE(c.jogos_crossworld, 0),
-            COALESCE(q.jogos_quiz, 0),
-            COALESCE(h.jogos_hangame, 0)
-        ) AS jogos_completos,
-        COALESCE(e.jogos_ecopuzzle, 0) + COALESCE(c.jogos_crossworld, 0) + 
-        COALESCE(q.jogos_quiz, 0) + COALESCE(h.jogos_hangame, 0) AS desafios_vencidos,
-        COALESCE(e.tempo_total_ecopuzzle, 0) + COALESCE(c.tempo_total_crossworld, 0) + 
-        COALESCE(q.tempo_total_quiz, 0) + COALESCE(h.tempo_total_hangame, 0) AS tempo_total_jogos
-        FROM [User] u
-        LEFT JOIN (
-          SELECT id_usuario, COUNT(*) AS jogos_ecopuzzle, SUM(tempo_record) AS tempo_total_ecopuzzle
-          FROM [Ecopuzzle]
-          GROUP BY id_usuario
-        ) e ON u.id = e.id_usuario
-        LEFT JOIN (
-          SELECT id_usuario, COUNT(*) AS jogos_crossworld, SUM(tempo_record) AS tempo_total_crossworld
-          FROM [Crossworld]
-          GROUP BY id_usuario
-        ) c ON u.id = c.id_usuario
-        LEFT JOIN (
-          SELECT id_usuario, COUNT(*) AS jogos_quiz, SUM(tempo_record) AS tempo_total_quiz
-          FROM [Quiz]
-          GROUP BY id_usuario
-        ) q ON u.id = q.id_usuario
-        LEFT JOIN (
-          SELECT id_usuario, COUNT(*) AS jogos_hangame, SUM(tempo_record) AS tempo_total_hangame
-          FROM [Hangame]
-          GROUP BY id_usuario
-        ) h ON u.id = h.id_usuario
-        WHERE u.id = @id;
-      `);
+              SELECT 
+              u.id AS usuario_id,
+              u.name AS usuario_nome,
+              LEAST(
+                  COALESCE(e.jogos_ecopuzzle, 0),
+                  COALESCE(c.jogos_crossworld, 0),
+                  COALESCE(q.jogos_quiz, 0),
+                  COALESCE(h.jogos_hangame, 0)
+              ) AS jogos_completos,
+              COALESCE(e.jogos_ecopuzzle, 0) + COALESCE(c.jogos_crossworld, 0) + 
+              COALESCE(q.jogos_quiz, 0) + COALESCE(h.jogos_hangame, 0) AS desafios_vencidos,
+              COALESCE(e.tempo_total_ecopuzzle, 0) + COALESCE(c.tempo_total_crossworld, 0) + 
+              COALESCE(q.tempo_total_quiz, 0) + COALESCE(h.tempo_total_hangame, 0) AS tempo_total_jogos,
+              CASE 
+                  WHEN COALESCE(e.jogos_ecopuzzle, 0) >= COALESCE(c.jogos_crossworld, 0) AND 
+                       COALESCE(e.jogos_ecopuzzle, 0) >= COALESCE(q.jogos_quiz, 0) AND 
+                       COALESCE(e.jogos_ecopuzzle, 0) >= COALESCE(h.jogos_hangame, 0) THEN 'Ecopuzzle'
+                  WHEN COALESCE(c.jogos_crossworld, 0) >= COALESCE(e.jogos_ecopuzzle, 0) AND 
+                       COALESCE(c.jogos_crossworld, 0) >= COALESCE(q.jogos_quiz, 0) AND 
+                       COALESCE(c.jogos_crossworld, 0) >= COALESCE(h.jogos_hangame, 0) THEN 'Crossworld'
+                  WHEN COALESCE(q.jogos_quiz, 0) >= COALESCE(e.jogos_ecopuzzle, 0) AND 
+                       COALESCE(q.jogos_quiz, 0) >= COALESCE(c.jogos_crossworld, 0) AND 
+                       COALESCE(q.jogos_quiz, 0) >= COALESCE(h.jogos_hangame, 0) THEN 'GreenGenius'
+                  ELSE 'Hangame'
+              END AS jogo_mais_jogado
+              FROM [User] u
+              LEFT JOIN (
+                SELECT id_usuario, COUNT(*) AS jogos_ecopuzzle, SUM(tempo_record) AS tempo_total_ecopuzzle
+                FROM [Ecopuzzle]
+                GROUP BY id_usuario
+              ) e ON u.id = e.id_usuario
+              LEFT JOIN (
+                SELECT id_usuario, COUNT(*) AS jogos_crossworld, SUM(tempo_record) AS tempo_total_crossworld
+                FROM [Crossworld]
+                GROUP BY id_usuario
+              ) c ON u.id = c.id_usuario
+              LEFT JOIN (
+                SELECT id_usuario, COUNT(*) AS jogos_quiz, SUM(tempo_record) AS tempo_total_quiz
+                FROM [Quiz]
+                GROUP BY id_usuario
+              ) q ON u.id = q.id_usuario
+              LEFT JOIN (
+                SELECT id_usuario, COUNT(*) AS jogos_hangame, SUM(tempo_record) AS tempo_total_hangame
+                FROM [Hangame]
+                GROUP BY id_usuario
+              ) h ON u.id = h.id_usuario
+              WHERE u.id = @id;
+            `);
 
-    res.status(200).json(result.recordset[0]);
+
+    res.status(200).json({
+      baseInfo: result.recordset[0],
+      positions: {
+        ecopuzzle: ecopuzzleRanking.recordset[0],
+        crossworld: crossworldRanking.recordset[0],
+        quiz: quizRanking.recordset[0],
+        hangame: hangameRanking.recordset[0],
+      }
+    });
   } catch (err) {
     throw err;
   }
