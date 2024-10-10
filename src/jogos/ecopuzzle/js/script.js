@@ -140,7 +140,7 @@ function flipCard() {
           resultadoP.textContent = `Parabéns! Tempo de jogo: ${calculateTime(
             time
           )}`;
-          saveTime(time);
+          saveRecord(time);
         }
       } else {
         setTimeout(() => {
