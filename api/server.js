@@ -596,8 +596,8 @@ app.get("/api/ranking/quiz", checkTokenMiddleware, async (req, res) => {
   SELECT
     id,
     nome,
-    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo_record,
-    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS quantidade_erros
+    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo,
+    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS erros
   FROM
     ranked
   GROUP BY
@@ -605,7 +605,7 @@ app.get("/api/ranking/quiz", checkTokenMiddleware, async (req, res) => {
 ),
 FinalRanking AS (
   SELECT
-    RANK() OVER (ORDER BY quantidade_erros, tempo_record) AS posicao,
+    RANK() OVER (ORDER BY erros, tempo) AS posicao,
     *
   FROM
     BestAttempts
@@ -655,8 +655,8 @@ app.get("/api/ranking/hangame", checkTokenMiddleware, async (req, res) => {
   SELECT
     id,
     nome,
-    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo_record,
-    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS quantidade_erros
+    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo,
+    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS erros
   FROM
     ranked
   GROUP BY
@@ -664,7 +664,7 @@ app.get("/api/ranking/hangame", checkTokenMiddleware, async (req, res) => {
 ),
 FinalRanking AS (
   SELECT
-    RANK() OVER (ORDER BY quantidade_erros, tempo_record) AS posicao,
+    RANK() OVER (ORDER BY erros, tempo) AS posicao,
     *
   FROM
     BestAttempts
