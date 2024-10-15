@@ -578,28 +578,42 @@ app.get("/api/ranking/quiz", checkTokenMiddleware, async (req, res) => {
 
     const result = await pool.request()
       .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
-      .query(`
-        WITH ranked AS (
+      .query(`WITH ranked AS (
           SELECT 
               u.id,
-              RANK() OVER (ORDER BY MIN(q.quantidade_erros) ASC, MIN(q.tempo_record) ASC) AS posicao,
               u.name AS nome,
-              MIN(q.quantidade_erros) AS erros,
-              MIN(q.tempo_record) AS tempo
+    		  q.quantidade_erros,
+    		  q.tempo_record,
+    		  RANK() OVER (PARTITION BY u.id ORDER BY q.quantidade_erros, q.tempo_record) AS posicao
           FROM 
               Quiz q
           JOIN 
               [User] u ON q.id_usuario = u.id
-          GROUP BY 
-              u.id, u.name
-        )
-        SELECT *
-        FROM ranked
-        WHERE id = @id
-        UNION ALL
-        SELECT TOP 10 *
-        FROM ranked;
-      `);
+		  GROUP BY 
+   			  u.id, u.name, q.quantidade_erros, q.tempo_record
+        ),
+        BestAttempts AS (
+  SELECT
+    id,
+    nome,
+    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo_record,
+    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS quantidade_erros
+  FROM
+    ranked
+  GROUP BY
+    id, nome
+),
+FinalRanking AS (
+  SELECT
+    RANK() OVER (ORDER BY quantidade_erros, tempo_record) AS posicao,
+    *
+  FROM
+    BestAttempts
+)
+SELECT * FROM FinalRanking
+WHERE id = @id
+UNION ALL
+SELECT TOP 10 * FROM FinalRanking;`);
 
     req.flash("success_msg", "Query completed");
     res.status(200).json({
@@ -626,24 +640,39 @@ app.get("/api/ranking/hangame", checkTokenMiddleware, async (req, res) => {
         WITH ranked AS (
           SELECT 
               u.id,
-              RANK() OVER (ORDER BY MIN(h.quantidade_erros) ASC, MIN(h.tempo_record) ASC) AS posicao,
               u.name AS nome,
-              MIN(h.quantidade_erros) AS erros,
-              MIN(h.tempo_record) AS tempo
+    		  h.quantidade_erros,
+    		  h.tempo_record,
+    		  RANK() OVER (PARTITION BY u.id ORDER BY h.quantidade_erros, h.tempo_record) AS posicao
           FROM 
               Hangame h
           JOIN 
               [User] u ON h.id_usuario = u.id
-          GROUP BY 
-              u.id, u.name
-        )
-        SELECT *
-        FROM ranked
-        WHERE id = @id
-        UNION ALL
-        SELECT TOP 10 *
-        FROM ranked;
-      `);
+		  GROUP BY 
+   			  u.id, u.name, h.quantidade_erros, h.tempo_record
+        ),
+        BestAttempts AS (
+  SELECT
+    id,
+    nome,
+    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo_record,
+    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS quantidade_erros
+  FROM
+    ranked
+  GROUP BY
+    id, nome
+),
+FinalRanking AS (
+  SELECT
+    RANK() OVER (ORDER BY quantidade_erros, tempo_record) AS posicao,
+    *
+  FROM
+    BestAttempts
+)
+SELECT * FROM FinalRanking
+WHERE id = @id
+UNION ALL
+SELECT TOP 10 * FROM FinalRanking;`);
 
     req.flash("success_msg", "Query completed");
     res.status(200).json({
