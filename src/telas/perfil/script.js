@@ -38,7 +38,7 @@ const updateUI = (info) => {
   document.getElementById('spanHangamePosition').innerText = info.positions.hangame? info.positions.hangame.posicao : "--"
 document.getElementById('spanGreenGeniusPosition').innerText = info.positions.quiz? info.positions.quiz.posicao : "--"
   document.getElementById('spanEcopuzzlePosition').innerText = info.positions.ecopuzzle? info.positions.ecopuzzle.posicao : "--"
-  document.getElementById('spanJogoMaisJogado').innerText = info.baseInfo.jogo_mais_jogado;
+  document.getElementById('spanJogoMaisJogado').innerText = info.baseInfo.desafios_vencidos === 0? "--" : info.baseInfo.jogo_mais_jogado;
   document.getElementById('spanDesafiosVencidos').innerText = info.baseInfo.desafios_vencidos;
   document.getElementById('spanTempoTotal').innerText = totalTime;
 };
