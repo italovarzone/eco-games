@@ -22,6 +22,11 @@ var word,
 let interval;
 let time = 0; // Tempo em milissegundos
 
+// Exibe o popup de "Como Jogar" ao iniciar a página
+document.addEventListener("DOMContentLoaded", () => {
+  showHelp();
+});
+
 // Temporizador - funções
 function startTime() {
   let startTime = Date.now() - time;
@@ -52,6 +57,35 @@ function calculateTime(time) {
   return `${displayMinutes}:${displaySeconds}`;
 }
 
+// Função para iniciar o jogo ao clicar no botão "Jogar Agora"
+function startGame() {
+  closeHelp(); // Fecha o popup de ajuda
+  stopTime();  // Reseta o tempo ao iniciar o jogo
+  startTime(); // Inicia o temporizador
+  randomWord(); // Inicia uma palavra aleatória
+  createKeyboard(); // Cria o teclado virtual
+  typingInput.focus(); // Focar no campo de entrada para capturar teclas físicas
+}
+
+// Função para resetar o jogo
+function resetGame() {
+  stopTime(); // Reseta o temporizador
+  resultContainer.style.display = "none"; // Esconde os resultados
+  gameContent.style.display = "block"; // Mostra o conteúdo do jogo
+  randomWord(); // Gera uma nova palavra
+  createKeyboard(); // Recria o teclado
+  startTime(); // Reinicia o temporizador
+  corrects = []; // Reseta letras corretas
+  incorrects = []; // Reseta letras incorretas
+  typingInput.focus(); // Define o foco automaticamente ao resetar o jogo
+  gameOver = false; // Reabilita o jogo
+}
+
+resetBtns.forEach(btn => btn.addEventListener("click", (e) => {
+  e.preventDefault();
+  resetGame(); // Chama a função de resetar o jogo
+}));
+
 function createKeyboard() {
   const keyboardContainer = document.getElementById('keyboard');
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
@@ -68,7 +102,7 @@ function createKeyboard() {
 
 // Função para lidar com a entrada do teclado virtual e físico
 function handleInput(key, button) {
-  if (gameOver) return; // Não permitir entradas após o término do jogo
+  if (gameOver) return;
   
   key = key.toUpperCase();
   if (!corrects.includes(key) && /^[A-Z]+$/.test(key)) {
@@ -81,8 +115,8 @@ function handleInput(key, button) {
       }
       // Mudar o fundo para verde escuro ao acertar
       if (button) {
-        button.style.backgroundColor = '#22543d'; // verde escuro
-        button.style.color = '#fff'; // texto branco
+        button.style.backgroundColor = '#22543d';
+        button.style.color = '#fff';
       }
     } else if (!incorrects.includes(key)) {
       incorrects.push(key);
@@ -90,8 +124,8 @@ function handleInput(key, button) {
     
       // Mudar o fundo do botão para vermelho ao errar
       if (button) {
-        button.style.backgroundColor = '#ff4c4c'; // vermelho
-        button.style.color = '#fff'; // texto branco
+        button.style.backgroundColor = '#ff4c4c';
+        button.style.color = '#fff';
       }
     
       // Alterar a cor do ícone de planeta para vermelho na ordem
@@ -99,7 +133,7 @@ function handleInput(key, button) {
       const remainingPlanets = planetIconsContainer.children;
       if (remainingPlanets.length > incorrects.length - 1) {
         const currentPlanet = remainingPlanets[incorrects.length - 1];
-        currentPlanet.style.color = '#ff4c4c'; // vermelho
+        currentPlanet.style.color = '#ff4c4c';
       }
     
       // Verifica se todas as tentativas se esgotaram
@@ -133,38 +167,36 @@ function handleInput(key, button) {
   });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  createKeyboard();
-  typingInput.addEventListener("input", (e) => handleInput(e.target.value));
-  document.addEventListener("keydown", (e) => {
-    const key = e.key.toUpperCase();
-    if (/^[A-Z]$/.test(key)) {
-      const button = Array.from(document.querySelectorAll('.keyboard-container button'))
-        .find(btn => btn.innerText === key);
+// Captura as letras do teclado físico apenas uma vez
+document.addEventListener("keydown", (e) => {
+  const key = e.key.toUpperCase();
+  if (/^[A-Z]$/.test(key)) {
+    const button = Array.from(document.querySelectorAll('.keyboard-container button'))
+      .find(btn => btn.innerText === key && !btn.disabled); // Certifica-se de que o botão não foi clicado antes
+    if (button) {
       handleInput(key, button);
     }
-  });
-  typingInput.focus(); // Definir o foco automaticamente ao carregar a página
+  }
+  typingInput.focus(); // Mantém o foco no campo de entrada
 });
 
 function randomWord() {
-  gameOver = false; // Reiniciar o estado de jogo
-  startTime();
+  gameOver = false;
   let ranObj = wordList[Math.floor(Math.random() * wordList.length)];
-  word = ranObj.word.toUpperCase();  
+  word = ranObj.word.toUpperCase();
   maxGuesses = 5;
   corrects = [];
   incorrects = [];
 
   hint.innerText = ranObj.hint;
-  
+
   // Adicionar os ícones de planeta
   const planetIconsContainer = document.getElementById("planet-icons");
-  planetIconsContainer.innerHTML = ''; // Limpa os ícones anteriores
+  planetIconsContainer.innerHTML = '';
   for (let i = 0; i < maxGuesses; i++) {
     const planetIcon = document.createElement('i');
     planetIcon.className = 'fa-solid fa-earth-americas';
-    planetIcon.style.color = '#4caf50'; // cor padrão verde
+    planetIcon.style.color = '#4caf50'; 
     planetIconsContainer.appendChild(planetIcon);
   }
 
@@ -175,8 +207,7 @@ function randomWord() {
   inputs.innerHTML = html;
 }
 
-randomWord();
-
+// Função para salvar o recorde
 async function saveRecord(time, incorrects) {
   try {
     const access_token = localStorage.getItem("token");
@@ -196,7 +227,7 @@ async function saveRecord(time, incorrects) {
     });
 
     res = await response.json();
-    console.log(res)
+    console.log(res);
   } catch (error) {
     console.log(error);
   }
@@ -217,23 +248,7 @@ function showResult(won) {
   }
 }
 
-function resetGame() {
-  resultContainer.style.display = "none";
-  gameContent.style.display = "block";
-  stopTime();
-  randomWord();
-  createKeyboard(); // Recria o teclado
-  typingInput.focus(); // Definir o foco automaticamente ao resetar o jogo
-}
-
-resetBtns.forEach(btn => btn.addEventListener("click", (e) => {
-  e.preventDefault();
-  resetGame();
-}));
-
-inputs.addEventListener("click", () => typingInput.focus());
-document.addEventListener("keydown", () => typingInput.focus());
-
+// Exibe o popup de ajuda
 function showHelp() {
   const blurOverlay = document.getElementById('blur-overlay');
   const helpDialog = document.getElementById('help-dialog');
@@ -242,6 +257,7 @@ function showHelp() {
   helpDialog.style.display = 'flex';
 }
 
+// Fecha o popup de ajuda
 function closeHelp() {
   const blurOverlay = document.getElementById('blur-overlay');
   const helpDialog = document.getElementById('help-dialog');
@@ -250,22 +266,23 @@ function closeHelp() {
   helpDialog.style.display = 'none';
 }
 
+// Função para alternar tela cheia
 function toggleFullScreen() {
   const fullscreenIcon = document.getElementById('fullscreen-icon');
   const fullscreenBtn = document.getElementById('fullscreen-btn');
 
   if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      fullscreenIcon.classList.remove('fa-expand');
-      fullscreenIcon.classList.add('fa-compress');
-      fullscreenBtn.classList.add('fullscreen');
+    document.documentElement.requestFullscreen();
+    fullscreenIcon.classList.remove('fa-expand');
+    fullscreenIcon.classList.add('fa-compress');
+    fullscreenBtn.classList.add('fullscreen');
   } else {
-      if (document.exitFullscreen) {
-          document.exitFullscreen();
-          fullscreenIcon.classList.remove('fa-compress');
-          fullscreenIcon.classList.add('fa-expand');
-          fullscreenBtn.classList.remove('fullscreen');
-      }
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      fullscreenIcon.classList.remove('fa-compress');
+      fullscreenIcon.classList.add('fa-expand');
+      fullscreenBtn.classList.remove('fullscreen');
+    }
   }
 }
 

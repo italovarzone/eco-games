@@ -44,13 +44,47 @@ function calculateTime(time) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  startGame();
+  // Exibe o popup de "Como Jogar" ao iniciar a página
+  showHelp();
 });
 
 function startGame() {
-  // Limpar o conteúdo existente
+  // Iniciar o jogo e o temporizador
+  stopTime(); // Garantir que o temporizador comece zerado
   clearGame();
+  generateGrid();
+  placeWords();
+  fillEmptyCells();
+  populateWordList();
+  closeHelp(); // Fecha o popup de "Como Jogar"
+  startTime(); // Iniciar o temporizador
+}
 
+function clearGame() {
+  const cells = crossword.querySelectorAll(".cell");
+  cells.forEach(cell => {
+    cell.textContent = "";
+    cell.classList.remove("selected", "correct");
+    cell.removeAttribute("data-words");
+  });
+  wordList.innerHTML = "";
+  stopTime();
+}
+
+function resetGame() {
+  clearGame();
+  const gameResultContainer = document.getElementById("game-result-container");
+  gameResultContainer.style.display = "none";
+  gameContainer.style.display = "flex";
+  // Mostrar o popup de "Como Jogar" novamente ao reiniciar
+  startGame();
+}
+
+function getMaxLetters(words) {
+  return Math.max(...words.map(word => word.length));
+}
+
+function generateGrid() {
   // Criar o grid de células
   for (let row = 0; row < 15; row++) {
     for (let col = 0; col < 15; col++) {
@@ -66,8 +100,10 @@ function startGame() {
       }
     }
   }
+}
 
-  // Posicionar as palavras
+function placeWords() {
+  // Posicionar as palavras no grid
   words.forEach((word, index) => {
     const direction = index % 2 === 0 ? "horizontal" : "vertical";
     let startRow, startCol;
@@ -87,16 +123,10 @@ function startGame() {
       }
     }
   });
+}
 
-  // Adicionar a lista de palavras
-  words.forEach(word => {
-    const wordItem = document.createElement("div");
-    wordItem.classList.add("word-item");
-    wordItem.textContent = word;
-    wordList.appendChild(wordItem);
-  });
-
-  // Preencher células vazias com letras aleatórias
+function fillEmptyCells() {
+  // Preencher as células vazias com letras aleatórias
   for (let row = 0; row < 15; row++) {
     for (let col = 0; col < 15; col++) {
       const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
@@ -106,32 +136,16 @@ function startGame() {
       }
     }
   }
-
-  // Iniciar o timer
-  startTime();
 }
 
-function clearGame() {
-  const cells = crossword.querySelectorAll(".cell");
-  cells.forEach(cell => {
-    cell.textContent = "";
-    cell.classList.remove("selected", "correct");
-    cell.removeAttribute("data-words");
+function populateWordList() {
+  // Adicionar a lista de palavras no grid
+  words.forEach(word => {
+    const wordItem = document.createElement("div");
+    wordItem.classList.add("word-item");
+    wordItem.textContent = word;
+    wordList.appendChild(wordItem);
   });
-  wordList.innerHTML = "";
-  stopTime();
-}
-
-function resetGame() {
-  clearGame();
-  const gameResultContainer = document.getElementById("game-result-container");
-  gameResultContainer.style.display = "none";
-  gameContainer.style.display = "flex";
-  startGame();
-}
-
-function getMaxLetters(words) {
-  return Math.max(...words.map(word => word.length));
 }
 
 function isSafePlacement(word, startRow, startCol, direction) {
@@ -220,7 +234,6 @@ function markSelectedWord() {
 
 function updateWordList() {
   const wordItems = document.querySelectorAll(".word-item");
-  const cells = document.querySelectorAll(".cell");
 
   let allWordsFound = true;
 
@@ -278,6 +291,9 @@ function showHelp() {
 
   blurOverlay.style.display = 'block';
   helpDialog.style.display = 'flex';
+
+  // Garantir que o temporizador esteja zerado
+  stopTime();
 }
 
 function closeHelp() {
@@ -309,7 +325,3 @@ function toggleFullScreen() {
 
 const fullscreenBtn = document.getElementById('fullscreen-btn');
 fullscreenBtn.addEventListener('click', toggleFullScreen);
-
-document.getElementById('return-to-menu-btn').addEventListener('click', function() {
-  parent.finishCrossWorld();
-});

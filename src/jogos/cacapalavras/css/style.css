@@ -290,6 +290,25 @@ body {
     padding: 12px;
 }
 
+#start-game-button {
+    font-family: var(--fonte-gamer);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 3px;
+    background-color: #4caf50;
+    width: 200px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    border-right: solid #3e8e41 6px;
+    border-bottom: solid #3e8e41 4px;
+}
+
+#start-game-button:hover {
+    color: #3e8e41;
+    transition: 0.1s;
+}
+
 #play-again-button {
     font-family: var(--fonte-gamer);
     padding: 10px 20px;

@@ -13,13 +13,12 @@
     <div id="help-dialog">
       <p>Bem-vindo ao CrossWorld</p>
       <p>Encontre todas as palavras e ganhe o jogo!</p>
-      <button id="close-help" onclick="closeHelp()">Fechar</button>
+      <!-- Alterado para "Iniciar Jogo" -->
+      <button id="start-game-button" onclick="startGame()">Jogar Agora</button>
     </div>
     <div class="game">
       <div class="crossword-container" id="game-container">
-        <div class="container-button-help">
-          <button id="help-button" onclick="showHelp()">Como jogar?</button>
-        </div>
+        <!-- Botão "Como Jogar?" removido -->
         <div class="word-list" id="wordList"></div>
         <div id="crossword" class="crossword"></div>
         <div id="timer">Tempo: 00:00</div>

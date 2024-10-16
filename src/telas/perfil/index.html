@@ -12,40 +12,73 @@
 <body>
   <div class="perfil-container">
     <div class="perfil-card">
-      <img src="../../../assets/img/avatar-teste.webp" class="perfil-avatar">
-      <div class="perfil-info">
-        <h2>Nome do Jogador</h2>
-        <div class="dados">
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>CrossWorld:</span>
-            <span id="spanCrossworldPosition">30</span>
+      <!-- Avatar e Nome do jogador -->
+      <div class="perfil-header">
+        <img src="../../../assets/img/avatar-teste.webp" class="perfil-avatar">
+        <div class="perfil-info">
+          <h2>...</h2>
+        </div>
+      </div>
+
+      <!-- Conteúdo dividido em duas colunas -->
+      <div class="perfil-conteudo">
+        <!-- Coluna 1: Jogos -->
+        <div class="coluna">
+          <div class="secao">
+            <h3>Total de Jogadas</h3>
+            <div class="jogos-lista">
+              <div>
+                <span>CrossWorld:</span>
+                <span id="spanCrossworldPosition">...</span>
+              </div>
+              <div>
+                <span>GreenGenius:</span>
+                <span id="spanGreenGeniusPosition">...</span>
+              </div>
+              <div>
+                <span>Hangame:</span>
+                <span id="spanHangamePosition">...</span>
+              </div>
+              <div>
+                <span>Ecopuzzle:</span>
+                <span id="spanEcopuzzlePosition">...</span>
+              </div>
+            </div>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>GreenGenius:</span>
-            <span id="spanGreenGeniusPosition">30</span>
+        </div>
+
+        <!-- Coluna 2: Informações Adicionais -->
+        <div class="coluna">
+          <div class="secao">
+            <h3>Jogo Mais Jogado</h3>
+            <div class="dados-jogador">
+              <div>
+                <span id="spanJogoMaisJogado">...</span>
+              </div>
+            </div>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Hangame:</span>
-            <span id="spanHangamePosition">30</span>
+
+          <div class="secao">
+            <h3>Desafios Vencidos</h3>
+            <div class="dados-jogador">
+              <div>
+                <span id="spanDesafiosVencidos">...</span>
+              </div>
+            </div>
           </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Ecopuzzle:</span>
-            <span id="spanEcopuzzlePosition">30</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Jogo mais jogado:</span>
-            <span id="spanJogoMaisJogado">30</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Desafios Vencidos:</span>
-            <span id="spanDesafiosVencidos">18</span>
-          </div>
-          <div style="display: flex; justify-content: space-between; align-items: center;">
-            <span>Tempo Total:</span>
-            <span id="spanTempoTotal">48 horas e 30 minutos</span>
+
+          <div class="secao">
+            <h3>Tempo Total</h3>
+            <div class="dados-jogador">
+              <div>
+                <span id="spanTempoTotal">...</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
+
+      <!-- Botão para ir ao Ranking -->
       <div class="perfil-actions">
         <button id="btnGoToRanking" class="btn btn-primary">Ranking</button>
       </div>

@@ -333,6 +333,7 @@ a {
 
 #gameBoard {
   max-width: 960px;
+  padding-top: 32px;
   display: grid;
   grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr 1fr;
   gap: 15px;

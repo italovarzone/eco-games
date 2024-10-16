@@ -1,4 +1,10 @@
+// Exibe o popup de "Como Jogar" ao iniciar a página
+document.addEventListener("DOMContentLoaded", () => {
+    showHelp();
+  });
+
 function startGame() {
+    closeHelp(); // Fecha o popup de ajuda
     const quizContainer = document.getElementById('quiz-container');
     const quizContainerWrapper = document.getElementById('quiz-wrapper');
     const resultContainer = document.getElementById('result-container');
@@ -424,6 +430,4 @@ function startGame() {
   
   const fullscreenBtn = document.getElementById('fullscreen-btn');
   fullscreenBtn.addEventListener('click', toggleFullScreen);
-  
-  startGame();
   

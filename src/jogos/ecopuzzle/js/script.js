@@ -8,21 +8,19 @@ const cardCheck = document.querySelector("#card-check");
 const cardWin = document.querySelector("#card-win");
 const cardStart = document.querySelector("#card-start");
 
-const button = document.querySelector(".login__button");
-const form = document.querySelector(".login-form");
-
 let clickBlocked = true;
 let iduser;
 
 document.addEventListener("DOMContentLoaded", () => {
-  startGame();
+  // Exibe o popup de "Como Jogar" ao iniciar a página
+  showHelp();
 });
 
 function startGame(userid) {
   iduser = userid;
   cardStart.play();
-  stopTime();
-  startTime();
+  stopTime();  // Reseta o tempo ao iniciar o jogo
+  startTime(); // Começa o temporizador ao iniciar o jogo
   initializeCards(game.createCardsFromTechs());
 
   // Desbloquear cliques após 3 segundos
@@ -30,21 +28,7 @@ function startGame(userid) {
     clickBlocked = false;
   }, 4000);
 
-  if (game.checkMatch()) {
-    game.clearCards();
-    cardCheck.play();
-
-    if (game.checkGameOver()) {
-      let gameOverLayer = document.getElementById("gameOver");
-      gameOverLayer.style.display = "flex";
-
-      cardWin.play();
-      pauseTime();
-      let resultadoP = document.getElementById("resultado");
-      let tempoJogo = calculateTime(time);
-      resultadoP.textContent = `Parabéns! Tempo de jogo: ${tempoJogo}`;
-    }
-  }
+  closeHelp(); // Fecha o popup de "Como Jogar" ao iniciar o jogo
 }
 
 function initializeCards(cards) {
@@ -99,7 +83,6 @@ async function saveRecord(time) {
       console.log("Token não encontrado");
       return false;
     }
-    console.log(time);
     let res;
     const response = await fetch("http://localhost:3000/api/record/ecopuzzle", {
       method: "POST",
@@ -107,12 +90,12 @@ async function saveRecord(time) {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${access_token}`
       },
-      body: JSON.stringify({"tempo_record": time}),
+      body: JSON.stringify({ "tempo_record": time }),
       credentials: "include",
     });
 
     res = await response.json();
-    console.log(res)
+    console.log(res);
   } catch (error) {
     console.log(error);
   }
@@ -137,9 +120,7 @@ function flipCard() {
           cardWin.play();
           pauseTime();
           let resultadoP = document.getElementById("resultado");
-          resultadoP.textContent = `Parabéns! Tempo de jogo: ${calculateTime(
-            time
-          )}`;
+          resultadoP.textContent = `Parabéns! Tempo de jogo: ${calculateTime(time)}`;
           saveRecord(time);
         }
       } else {
@@ -164,8 +145,7 @@ function restart() {
   gameOverLayer.style.display = "none";
 }
 
-// ----------------------------------------------
-
+// Temporizador
 let interval;
 let time = 0;
 let timeP = document.getElementById("time");
@@ -199,12 +179,16 @@ function calculateTime(time) {
   return `${displayMinutes}:${displaySeconds}`;
 }
 
+// Funções para abrir/fechar o diálogo de ajuda
 function showHelp() {
   const blurOverlay = document.getElementById('blur-overlay');
   const helpDialog = document.getElementById('help-dialog');
 
   blurOverlay.style.display = 'block';
   helpDialog.style.display = 'flex';
+
+  // Garantir que o temporizador esteja zerado
+  stopTime();
 }
 
 function closeHelp() {
@@ -215,22 +199,23 @@ function closeHelp() {
   helpDialog.style.display = 'none';
 }
 
+// Função para alternar tela cheia
 function toggleFullScreen() {
   const fullscreenIcon = document.getElementById('fullscreen-icon');
   const fullscreenBtn = document.getElementById('fullscreen-btn');
 
   if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
-      fullscreenIcon.classList.remove('fa-expand');
-      fullscreenIcon.classList.add('fa-compress');
-      fullscreenBtn.classList.add('fullscreen');
+    document.documentElement.requestFullscreen();
+    fullscreenIcon.classList.remove('fa-expand');
+    fullscreenIcon.classList.add('fa-compress');
+    fullscreenBtn.classList.add('fullscreen');
   } else {
-      if (document.exitFullscreen) {
-          document.exitFullscreen();
-          fullscreenIcon.classList.remove('fa-compress');
-          fullscreenIcon.classList.add('fa-expand');
-          fullscreenBtn.classList.remove('fullscreen');
-      }
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+      fullscreenIcon.classList.remove('fa-compress');
+      fullscreenIcon.classList.add('fa-expand');
+      fullscreenBtn.classList.remove('fullscreen');
+    }
   }
 }
 

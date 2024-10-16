@@ -2,73 +2,112 @@
   --cor-primaria: #22543d; /* Cor de fundo principal */
   --cor-secundaria: #a5a5a5; /* Cor secundária */
   --cor-fundo: #f2f2f2; /* Cor de fundo do conteúdo */
-  --cor-texto: #f2f2f2; /* Cor do texto */
+  --cor-texto: #ffffff; /* Cor do texto */
   --cor-botao: #4caf50; /* Cor dos botões */
   --fonte-gamer: "Secular One", sans-serif; /* Fonte principal */
+  --cor-destaque: #1db85b; /* Cor de destaque para valores */
+  --cor-secao: #e8f5e9; /* Cor para fundo das seções */
 }
 
+/* Estilos gerais para desktop */
 body {
   margin: 0;
-  height: 100vh; /* Ocupa a altura total da viewport */
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
   font-family: var(--fonte-gamer);
-  background-color: var(--cor-primaria); /* Fundo principal */
-  color: var(--cor-texto); /* Cor do texto */
+  background-color: var(--cor-primaria);
+  color: var(--cor-texto);
+  overflow: hidden;
 }
 
 .perfil-container {
+  width: 90%;
+  max-width: 1200px;
+  padding: 20px;
   background-color: var(--cor-fundo);
-  padding: 30px;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-  text-align: center;
-  width: 80%;
-  max-width: 800px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 .perfil-card {
-  background-color: var(--cor-fundo); /* Fundo do cartão de perfil */
-  padding: 20px;
-  border-radius: 10px;
-  color: var(--cor-texto); /* Cor do texto */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   width: 100%;
+}
+
+.perfil-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
 }
 
 .perfil-avatar {
   width: 150px;
   height: 150px;
-  margin-bottom: 20px;
-  border: 3px solid var(--cor-secundaria); /* Borda do avatar */
+  margin-right: 30px;
+  border: 5px solid var(--cor-secundaria);
   border-radius: 50%;
-  background-image: url('../../../assets/img/avatar-teste.webp');
   background-size: cover;
   background-position: center;
 }
 
-.perfil-info {
-  text-align: center;
+.perfil-info h2 {
+  font-size: 2.5rem;
+  color: var(--cor-primaria);
+  border-bottom: 2px solid var(--cor-secundaria);
+  display: inline-block;
+  margin: 0;
+  padding: 10px;
+}
+
+.perfil-conteudo {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.coluna {
+  flex: 1;
+  min-width: 300px;
+}
+
+.secao {
+  background-color: var(--cor-secao);
+  padding: 15px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
 }
 
-.perfil-info h2 {
-  padding: 16px;
-  margin: 0;
-  font-size: xx-large;
-  color: #000; /* Cor secundária para o título */
+.secao h3 {
+  font-size: 1.5rem;
+  color: var(--cor-primaria);
+  margin-bottom: 10px;
+}
+
+.jogos-lista div, .dados-jogador div {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+}
+
+.jogos-lista div:last-child, .dados-jogador div:last-child {
+  border-bottom: none;
+}
+
+.jogos-lista span, .dados-jogador span {
+  font-size: 1.1rem;
+  color: var(--cor-primaria);
+}
+
+.jogos-lista span:last-child, .dados-jogador span:last-child {
+  color: var(--cor-destaque);
+  font-weight: bold;
 }
 
 .perfil-actions {
-  display: flex;
-  gap: 16px;
-  margin-top: 20px;
+  margin-top: 30px;
+  text-align: center;
 }
 
 .btn-primary {
@@ -76,7 +115,7 @@ body {
   padding: 10px 20px;
   border: none;
   border-radius: 3px;
-  background-color: var(--cor-botao); /* Cor dos botões */
+  background-color: #4caf50;
   width: 200px;
   color: #ffffff;
   font-size: 16px;
@@ -90,59 +129,56 @@ body {
   transition: 0.1s;
 }
 
-.dados {
-  display: flex;
-  flex-direction: column;
-  padding: 16px;
-  width: 450px;
-  font-size: larger;
-  background-color: var(--cor-fundo); /* Fundo de dados */
-  color: #000; /* Cor do texto */
-}
-
+/* Ajustes para mobile */
 @media screen and (max-width: 768px) {
   body {
-    background-color: var(--cor-texto);
+    overflow: auto;
+    height: 100%;
   }
 
   .perfil-container {
-    width: 95%;
-    padding: 10px;
-    box-shadow: none;
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    border-radius: 0;
+    overflow-y: auto;
+  }
+
+  .perfil-header {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .perfil-avatar {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
+    margin-right: 0;
     margin-bottom: 15px;
-  }
-
-  .perfil-info {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
   }
 
   .perfil-info h2 {
-    font-size: 18px;
-    padding: 12px;
+    font-size: 1.8rem;
+    padding: 0;
+    margin-bottom: 15px;
   }
 
-  .dados {
-    width: 100%;
-    padding: 12px;
-  }
-
-  .perfil-actions {
-    width: 100%;
+  .perfil-conteudo {
     flex-direction: column;
+    gap: 15px;
+  }
+
+  .coluna {
+    width: 100%;
+  }
+
+  .secao h3 {
+    font-size: 1.4rem;
   }
 
   .btn-primary {
     width: 100%;
-    padding: 8px;
+    font-size: 1rem;
+    margin-bottom: 48px;
   }
 }
