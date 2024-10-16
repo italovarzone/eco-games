@@ -100,7 +100,7 @@ function updateRankingTable(rankingData, tabNumber, user) {
     const userNameElement = document.querySelector(isMobile ? `#tab-${tabNumber}-mobile .score-user-actual .player p:nth-child(2)` : `#tab-${tabNumber} .score-user-actual .player p:nth-child(2)`);
     const userScoreElement = document.querySelector(isMobile ? `#tab-${tabNumber}-mobile .score-user-actual .player p:nth-child(3)` : `#tab-${tabNumber} .score-user-actual .player p:nth-child(3)`);
 
-    userPositionElement.innerHTML = user.posicao;
+    userPositionElement.innerHTML = user.posicao + "º";
 
     if (user.posicao == 1) {
         userPositionElement.innerHTML = '<i class="fas fa-trophy" style="color: #FFD700;"></i> ' + user.posicao + "º";

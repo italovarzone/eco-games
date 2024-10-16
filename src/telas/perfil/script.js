@@ -34,10 +34,10 @@ window.onload = function() {
 const updateUI = (info) => {
   const totalTime = convertSecondsToMinutesAndSeconds(info.baseInfo.tempo_total_jogos / 1000)
   document.querySelector('.perfil-info h2').innerText = info.baseInfo.usuario_nome;
-  document.getElementById('spanCrossworldPosition').innerText = info.positions.crossworld? info.positions.crossworld.posicao : "--"
-  document.getElementById('spanHangamePosition').innerText = info.positions.hangame? info.positions.hangame.posicao : "--"
-document.getElementById('spanGreenGeniusPosition').innerText = info.positions.quiz? info.positions.quiz.posicao : "--"
-  document.getElementById('spanEcopuzzlePosition').innerText = info.positions.ecopuzzle? info.positions.ecopuzzle.posicao : "--"
+  document.getElementById('spanCrossworldPosition').innerText = info.positions.crossworld? info.positions.crossworld.posicao + "º lugar" : "--"
+  document.getElementById('spanHangamePosition').innerText = info.positions.hangame? info.positions.hangame.posicao + "º lugar" : "--"
+document.getElementById('spanGreenGeniusPosition').innerText = info.positions.quiz? info.positions.quiz.posicao + "º lugar" : "--"
+  document.getElementById('spanEcopuzzlePosition').innerText = info.positions.ecopuzzle? info.positions.ecopuzzle.posicao + "º lugar" : "--"
   document.getElementById('spanJogoMaisJogado').innerText = info.baseInfo.desafios_vencidos === 0? "--" : info.baseInfo.jogo_mais_jogado;
   document.getElementById('spanDesafiosVencidos').innerText = info.baseInfo.desafios_vencidos;
   document.getElementById('spanTempoTotal').innerText = totalTime;
