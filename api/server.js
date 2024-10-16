@@ -380,43 +380,77 @@ app.get("/api/perfil/info", checkTokenMiddleware, async (req, res) => {
       .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
       .query(`
           WITH ranked AS (
-            SELECT 
-                u.id,
-                RANK() OVER (ORDER BY MIN(q.quantidade_erros) ASC, MIN(q.tempo_record) ASC) AS posicao,
-                u.name AS nome,
-                MIN(q.quantidade_erros) AS erros,
-                MIN(q.tempo_record) AS tempo
-            FROM 
-                Quiz q
-            JOIN 
-                [User] u ON q.id_usuario = u.id
-            GROUP BY 
-                u.id, u.name
-          )
-          SELECT *
-          FROM ranked
-          WHERE id = @id`);
+          SELECT 
+              u.id,
+              u.name AS nome,
+    		  q.quantidade_erros,
+    		  q.tempo_record,
+    		  RANK() OVER (PARTITION BY u.id ORDER BY q.quantidade_erros, q.tempo_record) AS posicao
+          FROM 
+              Quiz q
+          JOIN 
+              [User] u ON q.id_usuario = u.id
+		  GROUP BY 
+   			  u.id, u.name, q.quantidade_erros, q.tempo_record
+        ),
+        BestAttempts AS (
+  SELECT
+    id,
+    nome,
+    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo,
+    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS erros
+  FROM
+    ranked
+  GROUP BY
+    id, nome
+),
+FinalRanking AS (
+  SELECT
+    RANK() OVER (ORDER BY erros, tempo) AS posicao,
+    *
+  FROM
+    BestAttempts
+)
+SELECT * FROM FinalRanking
+WHERE id = @id;`);
 
     const hangameRanking = await pool.request()
       .input('id', sql.Int, id)  // Ajuste o tipo conforme necessário
       .query(`
             WITH ranked AS (
-              SELECT 
-                  u.id,
-                  RANK() OVER (ORDER BY MIN(h.quantidade_erros) ASC, MIN(h.tempo_record) ASC) AS posicao,
-                  u.name AS nome,
-                  MIN(h.quantidade_erros) AS erros,
-                  MIN(h.tempo_record) AS tempo
-              FROM 
-                  Hangame h
-              JOIN 
-                  [User] u ON h.id_usuario = u.id
-              GROUP BY 
-                  u.id, u.name
-            )
-            SELECT *
-            FROM ranked
-            WHERE id = @id`);
+          SELECT 
+              u.id,
+              u.name AS nome,
+    		  h.quantidade_erros,
+    		  h.tempo_record,
+    		  RANK() OVER (PARTITION BY u.id ORDER BY h.quantidade_erros, h.tempo_record) AS posicao
+          FROM 
+              Hangame h
+          JOIN 
+              [User] u ON h.id_usuario = u.id
+		  GROUP BY 
+   			  u.id, u.name, h.quantidade_erros, h.tempo_record
+        ),
+        BestAttempts AS (
+  SELECT
+    id,
+    nome,
+    MIN(CASE WHEN posicao = 1 THEN tempo_record END) AS tempo,
+    MIN(CASE WHEN posicao = 1 THEN quantidade_erros END) AS erros
+  FROM
+    ranked
+  GROUP BY
+    id, nome
+),
+FinalRanking AS (
+  SELECT
+    RANK() OVER (ORDER BY erros, tempo) AS posicao,
+    *
+  FROM
+    BestAttempts
+)
+SELECT * FROM FinalRanking
+WHERE id = @id`);
 
     const result = await pool.request()
       .input("id", sql.Int, id)
