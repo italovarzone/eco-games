@@ -223,6 +223,8 @@ function startGame() {
   let timerInterval; // Variável para armazenar o intervalo do cronômetro
   let currentTime; // Variável para armazenar o tempo restante
   let totalTimeSpent = 0; // Variável para armazenar o tempo total em milissegundos
+  let time = 30 * 1000;
+  const timerElement = document.getElementById('timer');
   
   // Função para embaralhar as perguntas
   function shuffleQuestions(questionsArray) {
@@ -258,20 +260,22 @@ function startGame() {
   }
   
   function startTimer() {
-    const timerElement = document.getElementById('timer');
-    currentTime = timeLimit * 1000; // Converte o tempo limite para milissegundos
-    timerElement.textContent = `Tempo: ${calculateTime(currentTime)}`;
-  
+    let startTime = Date.now();
+
     timerInterval = setInterval(() => {
-        currentTime -= 1000;
-        timerElement.textContent = `Tempo: ${calculateTime(currentTime)}`;
+      let elapsedTime = Date.now() - startTime;
+      let remainingTime = time - elapsedTime;
   
-        if (currentTime <= 0) {
-            clearInterval(timerInterval);
-            checkAnswer(-1); // Resposta incorreta (tempo esgotado)
-        }
+      if (remainingTime <= 0) {
+        clearInterval(timerInterval);
+        remainingTime = 0; // Para evitar números negativos
+        checkAnswer(-1); // Resposta incorreta (tempo esgotado)
+      }
+      currentTime = remainingTime;
+      timerElement.textContent = `Tempo: ${calculateTime(remainingTime)}`;
     }, 1000);
   }
+
   
   function calculateTime(time) {
     let totalSeconds = Math.floor(time / 1000);
