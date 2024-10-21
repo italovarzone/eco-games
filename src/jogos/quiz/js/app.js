@@ -219,11 +219,11 @@ function startGame() {
   ];
   
   let selectedQuestions = shuffleQuestions(questions).slice(0, 5); // Escolhe aleatoriamente 5 perguntas
-  const timeLimit = 30; // Tempo limite por pergunta em segundos
+  const timeLimit = 32; // Tempo limite por pergunta em segundos
   let timerInterval; // Variável para armazenar o intervalo do cronômetro
   let currentTime; // Variável para armazenar o tempo restante
   let totalTimeSpent = 0; // Variável para armazenar o tempo total em milissegundos
-  let time = 30 * 1000;
+  let time = 32 * 1000;
   const timerElement = document.getElementById('timer');
   
   // Função para embaralhar as perguntas
