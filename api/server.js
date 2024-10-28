@@ -719,12 +719,32 @@ SELECT TOP 10 * FROM FinalRanking;`);
   }
 });
 
+app.get("/api/get", async (req, res) => {
+  try {
+    console.log('')
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "" });
+  }
+});
+
 function isAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   res.status(401).json({ message: "Não autenticado" });
 }
+
+// Rota fake de GET para manter a conexão
+setInterval(() => {
+  axios.get(`https://sustenteco.onrender.com/api/get`)
+    .then(response => {
+      console.log('GET realizado com sucesso');
+    })
+    .catch(error => {
+      console.error('GET feito.');
+    });
+}, 1 * 60 * 1000);  // 5 minutos em milissegundos
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
