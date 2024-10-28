@@ -52,7 +52,7 @@ document
         if (data.res === "Success" || data.res === "Suceccs") {
           showSnackbar("Registro bem-sucedido! Por favor, faça login.", "success");
           setTimeout(() => {
-            window.location.href = "/src/telas/login/index.html";
+            window.location.href = "/telas/login/index.html";
           }, 1000);
         } else if (data.register && data.register.errors) {
           const errors = data.register.errors.map(error => error.message).join(', ');

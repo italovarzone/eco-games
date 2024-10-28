@@ -31,7 +31,7 @@ document
           showSnackbar("Login bem-sucedido!", "success");
           localStorage.setItem("token", data.access_token);
           setTimeout(() => {
-            window.location.href = "/src/telas/home/index.html?";
+            window.location.href = "/telas/home/index.html?";
           }, 1000);
         } else {
           showSnackbar("Credenciais inválidas. Por favor, tente novamente.", "error");

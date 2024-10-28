@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         await initializeRanking(user);
     } else {
         console.error("Usuário não encontrado. Redirecionando para login...");
-        window.location.href = "/src/telas/login/index.html?auth=required";
+        window.location.href = "/telas/login/index.html?auth=required";
     }
 });
 

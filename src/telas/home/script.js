@@ -127,7 +127,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         iframeSrc = "../ranking/index.html";
         break;
       case 'login':
-        window.location.href = "/src/telas/login/index.html"
+        window.location.href = "/telas/login/index.html"
         break;
       default:
         gameContainer.innerHTML = '<h2>Selecione uma opção na barra lateral</h2>';
