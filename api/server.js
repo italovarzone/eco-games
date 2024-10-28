@@ -3,6 +3,7 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("express-flash");
+const axios = require('axios');
 const session = require("express-session");
 const cors = require('cors');
 const sendRecoveryEmail = require('./sendEmail');
