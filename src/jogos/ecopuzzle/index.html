@@ -17,10 +17,25 @@
 
     <div id="blur-overlay"></div>
     <div id="help-dialog">
-      <p>Bem-vindo ao EcoPuzzle!</p>
-      <p>Combine cada lixeira com o tipo de lixo correspondente para ganhar o jogo!</p>
-      <!-- Alterado o botão para iniciar o jogo -->
-      <button class="btn-primary" id="start-game-button" onclick="startGame()">Jogar Agora</button>
+      <p style="padding: 24px;">Combine cada lixeira com o tipo de lixo correspondente para ganhar o jogo! Siga os passos abaixo:</p>
+      <ul id="how-to-play-list">
+        <strong>1. Escolha duas cartas:</strong> Clique (caso esteja no celular, toque) em uma carta e em seguida em outra para selecioná-las.
+        <br>
+        <br>
+        <strong>2. Combine as cartas:</strong> Combine o item selecionado com sua lixeira respectiva ao resíduo (no celular, toque e combine).
+        <br>
+        <br>
+        <strong>3. Verifique a combinação:</strong> Ao acertar, o item ficará selecionado em tela, conforme o gif abaixo.
+        <br>
+        <br>
+        <strong>4. Complete o jogo:</strong> Combine todos os resíduos com sua respectiva lixeira corretamente para vencer!
+      </ul>
+      <!-- Exibição do GIF com instruções -->
+      <div class="instruction-gif-container">
+        <img src="../../img/gif/ecopuzzle.gif" alt="Instruções de como jogar EcoPuzzle" class="instruction-gif">
+      </div>
+      <!-- Botão para começar o jogo -->
+      <button style="margin-bottom: 100px;" class="btn-primary" id="start-game-button" onclick="startGame()">Jogar Agora</button>
     </div>
 
     <div id="gameBoard"></div>

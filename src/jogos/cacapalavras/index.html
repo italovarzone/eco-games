@@ -11,10 +11,25 @@
   <div class="container">
     <div id="blur-overlay"></div>
     <div id="help-dialog">
-      <p>Bem-vindo ao CrossWorld</p>
-      <p>Encontre todas as palavras e ganhe o jogo!</p>
-      <!-- Alterado para "Iniciar Jogo" -->
-      <button id="start-game-button" onclick="startGame()">Jogar Agora</button>
+      <p style="padding: 24px;">Seu objetivo é encontrar todas as palavras escondidas na grade. Siga os passos abaixo para jogar:</p>
+      <ul id="how-to-play-list">
+        <strong>1. Escolha uma palavra:</strong> Veja a lista de palavras no topo da grade. Essas são as palavras que você precisa encontrar.
+        <br>
+        <br>
+        <strong>2. Selecione as letras:</strong> Clique e arraste (caso esteja no celular, toque e arraste) para selecionar as letras de uma palavra. Você pode selecionar palavras na horizontal ou vertical.
+        <br>
+        <br>
+        <strong>3. Palavras encontradas:</strong> Quando você encontrar uma palavra, ela ficará destacada na grade e será riscada da lista de palavras.
+        <br>
+        <br>
+        <strong>4. Complete o jogo:</strong> Encontre todas as palavras para vencer o jogo e veja seu tempo total!
+      </ul>
+      <!-- Exibição do GIF com instruções -->
+      <div class="instruction-gif-container">
+        <img src="../../img/gif/crossworld.gif" alt="Como Jogar" class="instruction-gif">
+      </div>
+      <!-- Botão para começar o jogo -->
+      <button style="margin-bottom: 120px;" id="start-game-button" onclick="startGame()">Jogar Agora</button>
     </div>
     <div class="game">
       <div class="crossword-container" id="game-container">

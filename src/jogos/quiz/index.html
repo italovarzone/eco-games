@@ -10,9 +10,23 @@
 <body>
   <div id="blur-overlay"></div>
   <div id="help-dialog">
-    <p>Bem-vindo ao Green Genius!</p>
-    <p>Responda às perguntas e teste seu conhecimento sobre os Objetivos de Desenvolvimento Sustentável (ODS).</p>
-    <button id="play-now-button" onclick="startGame()">Jogar Agora</button>
+    <p style="padding: 24px;">Responda perguntas sobre os Objetivos de Desenvolvimento Sustentável e teste seu conhecimento. Siga as instruções abaixo:</p>
+    <ul id="how-to-play-list">
+        <strong>1. Leia a pergunta:</strong> Cada pergunta é baseada em um dos ODS.
+        <br>
+        <br>
+        <strong>2. Escolha uma resposta:</strong> Clique (em celular, toque) na alternativa que você acredita estar correta.
+        <br>
+        <br>
+        <strong>3. Acompanhe o progresso:</strong> As bolinhas acima das perguntas indicam seu desempenho em cada questão (verde para correta, vermelho para incorreta).
+        <br>
+        <br>
+        <strong>4. Gerencie o tempo:</strong> Você tem um limite de tempo para cada pergunta de 30 segundos, então seja rápido!
+    </ul>
+    <div class="instruction-gif-container">
+      <img src="../../img/gif/quiz.gif" alt="Instruções do Quiz ODS" class="instruction-gif">
+    </div>
+    <button style="margin-bottom: 120px;" id="play-now-button" onclick="startGame()">Jogar Agora</button>
   </div>
   
   <div class="quiz-wrapper" id="quiz-wrapper">

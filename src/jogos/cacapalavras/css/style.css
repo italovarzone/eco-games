@@ -61,16 +61,34 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    font-family: var(--fonte-gamer);
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    max-width: 90%;
+    padding: 20px;
 }
 
 #help-dialog p {
     font-size: 16px;
     margin-bottom: 10px;
     color: #333;
+}
+  
+.instruction-gif-container {
+width: 100%;
+display: flex;
+justify-content: center;
+margin: 10px 0;
+}
+
+.instruction-gif {
+max-width: 100%;
+height: auto;
+width: 450px;
+border-radius: 5px;
 }
 
 #close-help {
@@ -339,6 +357,7 @@ body {
         border-radius: 0px;
         padding: 16px 0px 0px 0px;
     }
+    
     .crossword {
         width: 350px;
         height: 400px;
@@ -355,8 +374,46 @@ body {
     .crossword .cell {
         width: 20px;
         height: 24px;
-
         font-size: 10px;
+    }
+
+    /* Ajustes para o diálogo "Como Jogar" ocupar toda a tela */
+    #help-dialog {
+        width: 100vw;
+        height: 100vh;
+        padding: 20px;
+        overflow-y: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background-color: white;
+    }
+
+    #how-to-play-list {
+        font-size: 16px;
+        padding-left: 0;
+        text-align: left;
+        margin-bottom: 20px;
+    }
+
+    #help-dialog p {
+        font-size: 18px;
+        margin-bottom: 24px;
+        margin-top: 250px;
+    }
+
+    .instruction-gif-container {
+        margin: 20px 0;
+    }
+
+    #start-game-button {
+        font-size: 18px;
+        padding: 12px 24px;
+        width: 90%;
+        max-width: 300px;
+        border-radius: 8px;
     }
 
     .game {
@@ -385,3 +442,4 @@ body {
         width: 120px;
     }
 }
+

@@ -19,11 +19,24 @@
 <body>
     <div id="blur-overlay"></div>
     <div id="help-dialog">
-        <p>Bem-vindo ao Hangame!</p>
-        <p>
-            Você deve adivinhar palavras relacionadas à sustentabilidade! Use o teclado virtual ou físico para escolher letras e completar a palavra, cada erro remove um ícone de planeta, ao esgotar as tentativas, o jogo termina. A dica ajuda a guiar suas escolhas, e seu objetivo é completar a palavra antes que todos os planetas desapareçam.
-        </p>
-        <button id="start-game" onclick="startGame()">Jogar Agora</button>
+        <p style="padding: 24px;">Você deve adivinhar palavras relacionadas à sustentabilidade! Siga os passos abaixo:</p>
+        <ul id="how-to-play-list">
+            <strong>1. Comece com uma letra:</strong> Use o teclado virtual (no celular) ou o seu teclado físico (em desktop) para escolher uma letra.
+            <br>
+            <br>
+            <strong>2. Acertos e erros:</strong> Cada letra correta será preenchida na palavra. Cada erro, pintará o planeta de vermelho.
+            <br>
+            <br>
+            <strong>3. Atenção aos planetas:</strong> Você tem um número limitado de vidas. Se todos os planetas ficarém VERMELHOS, você perde e o jogo termina!
+            <br>
+            <br>
+            <strong>4. Dicas:</strong> Use a dica para ajudar a adivinhar a palavra antes que o tempo acabe!
+        </ul>
+        <!-- Exibição do GIF com instruções -->
+        <div class="instruction-gif-container">
+            <img src="../../img/gif/hangame.gif" alt="Instruções do Hangame" class="instruction-gif">
+        </div>
+        <button style="margin-bottom: 100px;" id="start-game" onclick="startGame()">Jogar Agora</button>
     </div>
     
     <div class="container" id="game-content">
