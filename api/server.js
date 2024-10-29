@@ -750,5 +750,4 @@ async function callGetRoute() {
   }
 }
 
-// Configurar a chamada a cada 1 minuto
-setInterval(callGetRoute, 60000); // 60000 ms = 1 minuto
+setInterval(callGetRoute, 300000); //5 min
