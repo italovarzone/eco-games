@@ -193,7 +193,7 @@ document
         }
       } catch (error) {
         // Se o token for inválido, você pode limpar o token do localStorage para evitar tentativas automáticas futuras
-        localStorage.removeItem("token");
+        console.error(error);
       }
     }
   }
