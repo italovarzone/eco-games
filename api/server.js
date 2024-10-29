@@ -3,12 +3,12 @@ const express = require("express");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const flash = require("express-flash");
-const axios = require('axios');
 const session = require("express-session");
 const cors = require('cors');
 const sendRecoveryEmail = require('./sendEmail');
 const { connectDB, sql } = require("./dbConfig");
 const jwt = require('jsonwebtoken')
+const axios = require('axios');
 
 const app = express();
 
@@ -736,17 +736,19 @@ function isAuthenticated(req, res, next) {
   res.status(401).json({ message: "Não autenticado" });
 }
 
-// Rota fake de GET para manter a conexão
-setInterval(() => {
-  axios.get(`https://sustenteco.onrender.com/api/get`)
-    .then(response => {
-      console.log('GET realizado com sucesso');
-    })
-    .catch(error => {
-      console.error('GET feito.');
-    });
-}, 1 * 60 * 1000);  // 5 minutos em milissegundos
-
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+// Função para realizar o GET na rota /get
+async function callGetRoute() {
+  try {
+    const response = await axios.get('https://sustenteco.onrender.com/api/get');
+    console.log("GET successful:", response.data);
+  } catch (error) {
+    console.error("Error GET:", error);
+  }
+}
+
+// Configurar a chamada a cada 1 minuto
+setInterval(callGetRoute, 60000); // 60000 ms = 1 minuto
