@@ -394,7 +394,7 @@ border-radius: 5px;
     #help-dialog p {
         font-size: 18px;
         margin-bottom: 24px;
-        margin-top: 300px;
+        margin-top: 450px;
     }
 
     #quiz-container-questions {
@@ -404,8 +404,21 @@ border-radius: 5px;
         box-shadow: none;
     }
 
+    
+    #fullscreen-btn {
+        display: none;
+    }
+
     .options {
         padding-bottom: 24px;
+    }
+
+    #play-now-button {
+        font-size: 18px;
+        padding: 12px 24px;
+        width: 90%;
+        max-width: 300px;
+        border-radius: 8px;
     }
 
     #play-again-button {

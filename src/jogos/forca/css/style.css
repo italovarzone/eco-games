@@ -11,7 +11,6 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 body {
@@ -418,40 +417,54 @@ border-radius: 5px;
     background-color: white;
   }
 
-      /* Ajustes para o diálogo "Como Jogar" ocupar toda a tela */
-      #help-dialog {
-        width: 100vw;
-        height: 100vh;
-        padding: 20px;
-        overflow-y: auto;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        background-color: white;
-    }
+    /* Ajustes para o diálogo "Como Jogar" ocupar toda a tela */
+  #help-dialog {
+    width: 100vw;
+    height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    box-shadow: none;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    background-color: white;
+  }
 
-    #how-to-play-list {
-        font-size: 16px;
-        padding-left: 0;
-        text-align: left;
-        margin-bottom: 20px;
-    }
+  #how-to-play-list {
+      font-size: 16px;
+      padding-left: 0;
+      text-align: left;
+      margin-bottom: 20px;
+  }
 
-    #help-dialog p {
-        font-size: 18px;
-        margin-bottom: 24px;
-        margin-top: 250px;
-    }
+  #help-dialog p {
+      font-size: 18px;
+      margin-bottom: 24px;
+      margin-top: 400px;
+  }
 
-    .instruction-gif-container {
-        margin: 20px 0;
-    }
+  .instruction-gif-container {
+      margin: 20px 0;
+  }
 
   .content .reset-btn {
     width: 100%;
     font-size: 16px;
+  }
+
+  #start-game {
+    font-size: 18px;
+    padding: 12px 24px;
+    width: 90%;
+    max-width: 300px;
+    border-radius: 8px;
+}
+
+  
+  #fullscreen-btn {
+    display: none;
   }
 
   #result-container {
