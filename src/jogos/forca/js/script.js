@@ -249,9 +249,16 @@ function showResult(won) {
 function showHelp() {
   const blurOverlay = document.getElementById('blur-overlay');
   const helpDialog = document.getElementById('help-dialog');
+  const isMobile = window.innerWidth <= 768;
 
   blurOverlay.style.display = 'block';
   helpDialog.style.display = 'flex';
+
+  if (!isMobile) {
+    helpDialog.style.maxHeight = "600px";
+    helpDialog.style.overflowX = "overlay";
+    helpDialog.style.justifyContent = "flex-start";
+  }
 }
 
 // Fecha o popup de ajuda

@@ -183,9 +183,16 @@ function calculateTime(time) {
 function showHelp() {
   const blurOverlay = document.getElementById('blur-overlay');
   const helpDialog = document.getElementById('help-dialog');
+  const isMobile = window.innerWidth <= 768;
 
   blurOverlay.style.display = 'block';
   helpDialog.style.display = 'flex';
+
+  if (!isMobile) {
+    helpDialog.style.maxHeight = "600px";
+    helpDialog.style.overflowX = "overlay";
+    helpDialog.style.justifyContent = "flex-start";
+  }
 
   // Garantir que o temporizador esteja zerado
   stopTime();
