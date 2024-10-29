@@ -1,15 +1,20 @@
 document
   .getElementById("login-form")
   .addEventListener("submit", function (event) {
-    submitButton.classList.add("loading");
     event.preventDefault();
     const email = document.getElementById("login-email").value;
     const password = document.getElementById("login-password").value;
+    const spinner = document.querySelector(".spinner");
+    const message = document.querySelector(".message");
     const submitButton = document.querySelector("button[type='submit']");
     const snackbar = document.getElementById("snackbar");
+    const textButton = document.querySelector(".text-button");
 
-    // Adiciona a classe 'loading' para exibir o spinner e ocultar o texto
-    
+    spinner.style.display = "block";
+    submitButton.disabled = true;
+    textButton.style.display = "none";
+    submitButton.classList.add('loading'); // Adiciona classe de carregamento ao botão
+    message.style.display = "none";
 
     fetch("https://sustenteco.onrender.com/api/users/login", {
       method: "POST",
@@ -21,8 +26,10 @@ document
     })
       .then((response) => response.json())
       .then((data) => {
-        submitButton.classList.remove("loading"); // Remove a classe de carregamento
+        spinner.style.display = "none";
         submitButton.disabled = false;
+        submitButton.classList.remove('loading'); // Remove classe de carregamento
+        textButton.style.display = "inline-block";
         if (data.access_token) {
           showSnackbar("Login bem-sucedido!", "success");
           localStorage.setItem("token", data.access_token);
@@ -34,8 +41,10 @@ document
         }
       })
       .catch((error) => {
-        submitButton.classList.remove("loading"); // Remove a classe de carregamento
+        spinner.style.display = "none";
         submitButton.disabled = false;
+        submitButton.classList.remove('loading'); // Remove classe de carregamento
+        textButton.style.display = "inline-block";
         showSnackbar("Erro ao fazer login: " + error.message, "error");
         console.error("Erro ao fazer login:", error);
       });

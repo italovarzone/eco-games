@@ -137,14 +137,6 @@ input:focus {
   100% { transform: rotate(360deg); }
 }
 
-.btn-primary.loading .btn-text {
-  display: none; /* Oculta o texto quando o spinner é exibido */
-}
-
-.btn-primary.loading .spinner {
-  display: inline-block; /* Exibe o spinner quando o botão está em loading */
-}
-
 p {
   margin: 0;
   color: var(--cor-texto);
