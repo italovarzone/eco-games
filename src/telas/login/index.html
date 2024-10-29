@@ -17,7 +17,6 @@
       <div id="auth-container">
         <h2>Faça seu Login</h2>
         <form id="login-form">
-          <div class="spinner"></div>
           <label for="login-email">Email:</label>
           <input type="email" id="login-email" required autocomplete="off">
           
@@ -27,7 +26,10 @@
             <i class="far fa-eye toggle-password" id="toggle-password"></i>
           </div>
           <p><a href="#" id="forgot-password">Esqueci minha senha</a></p>
-          <button class="btn-primary" type="submit">Entrar</button>
+          <button class="btn-primary" type="submit">
+            <span class="btn-text">Entrar</span>
+            <div class="spinner" style="display: none;"></div>
+          </button>          
           <div class="message"></div>
         </form>
         <p>Não tem uma conta? <a href="../registro/index.html">Registrar</a></p>

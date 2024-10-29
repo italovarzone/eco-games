@@ -122,6 +122,29 @@ input:focus {
   transition: 0.1s;
 }
 
+.spinner {
+  border: 3px solid var(--cor-secundaria);
+  border-top: 3px solid #fff;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.btn-primary.loading .btn-text {
+  display: none; /* Oculta o texto quando o spinner é exibido */
+}
+
+.btn-primary.loading .spinner {
+  display: inline-block; /* Exibe o spinner quando o botão está em loading */
+}
+
 p {
   margin: 0;
   color: var(--cor-texto);

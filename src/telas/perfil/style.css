@@ -139,9 +139,9 @@ body {
 
   .perfil-container {
     width: 100%;
-    height: 100vh;
     padding: 20px;
     box-shadow: none;
+    height: 125vh;
     border-radius: 0;
   }
 
@@ -180,6 +180,6 @@ body {
   .btn-primary {
     width: 100%;
     font-size: 1rem;
-    margin-bottom: 48px;
+    margin-bottom: 24px;
   }
 }
