@@ -53,6 +53,7 @@ body {
 
 #help-dialog {
     display: none;
+    font-family: var(--fonte-gamer);
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -61,7 +62,6 @@ body {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-family: var(--fonte-gamer);
     background-color: #fff;
     padding: 20px;
     border-radius: 10px;
@@ -69,7 +69,7 @@ body {
     text-align: left;
     max-width: 90%;
     padding: 20px;
-}
+  }
 
 #help-dialog p {
     font-size: 16px;
@@ -383,14 +383,15 @@ border-radius: 5px;
         width: 100vw;
         height: 100vh;
         padding: 20px;
-        overflow-y: auto;
+        overflow-x: hidden;
         display: flex;
         flex-direction: column;
+        box-shadow: none;
         justify-content: center;
         align-items: center;
         text-align: center;
         background-color: white;
-    }
+      }
 
     #how-to-play-list {
         font-size: 16px;
