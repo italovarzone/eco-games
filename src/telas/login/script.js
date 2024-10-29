@@ -1,3 +1,8 @@
+import { requireAuth } from '../../utils/middleware.js';
+import { getUser } from '../../utils/auth.js';
+
+checkAuthAndRedirect();
+
 document
   .getElementById("login-form")
   .addEventListener("submit", function (event) {
@@ -173,4 +178,23 @@ document
     document.getElementById('password-reset-modal').style.display = 'none';
   });
   
+  async function checkAuthAndRedirect() {
+    const token = localStorage.getItem("token");
+  
+    if (token) {
+      try {
+        // Função para verificar se o token é válido
+        await requireAuth();
+  
+        const user = getUser();
+        if (user) {
+          updateUI(user);
+          window.location.href = "/telas/home/index.html?";
+        }
+      } catch (error) {
+        // Se o token for inválido, você pode limpar o token do localStorage para evitar tentativas automáticas futuras
+        localStorage.removeItem("token");
+      }
+    }
+  }
   
