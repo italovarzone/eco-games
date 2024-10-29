@@ -124,6 +124,7 @@ h6 {
     body {
         background-color: var(--cor-terciaria);
         margin: 0;
+        margin-bottom: 128px;
         padding: 8px;
     }
 
