@@ -188,7 +188,6 @@ document
   
         const user = getUser();
         if (user) {
-          updateUI(user);
           window.location.href = "/telas/home/index.html?";
         }
       } catch (error) {
