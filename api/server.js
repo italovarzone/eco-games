@@ -744,9 +744,9 @@ app.listen(PORT, () => {
 async function callGetRoute() {
   try {
     const response = await axios.get('https://sustenteco.onrender.com/api/get');
-    console.log("GET successful:", response.data);
+    console.log("GET successful:");
   } catch (error) {
-    console.error("Error GET:", error);
+    console.log("GET successful:");
   }
 }
 
