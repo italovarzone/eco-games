@@ -8,18 +8,16 @@ document
     const email = document.getElementById("register-email").value.trim();
     const password = document.getElementById("register-password").value.trim();
     const password2 = document.getElementById("register-password2").value.trim();
-    
-    console.log("Nome:", name);
-    console.log("Email:", email);
-    console.log("Senha:", password);
-    console.log("Confirmar Senha:", password2);
-
+    const spinner = document.querySelector(".spinner");
+    const textButton = document.querySelector(".text-button");
     const submitButton = document.querySelector("button[type='submit']");
     const snackbar = document.getElementById("snackbar");
 
     // Mostrar spinner e desabilitar o botão
+    spinner.style.display = "block";
     submitButton.disabled = true;
-    submitButton.classList.add('loading');
+    textButton.style.display = "none";
+    submitButton.classList.add('loading'); 
 
     // Validação de senha
     if (!password || !password2 || password !== password2) {
@@ -45,8 +43,10 @@ document
       })
       .then((data) => {
         console.log("Resposta do backend:", data);
+        spinner.style.display = "none";
         submitButton.disabled = false;
-        submitButton.classList.remove('loading');
+        submitButton.classList.remove('loading'); // Remove classe de carregamento
+        textButton.style.display = "inline-block";
         
         // Verificação corrigida para aceitar "Suceccs"
         if (data.res === "Success" || data.res === "Suceccs") {
@@ -62,8 +62,10 @@ document
         }
       })
       .catch((error) => {
+        spinner.style.display = "none";
         submitButton.disabled = false;
-        submitButton.classList.remove('loading');
+        submitButton.classList.remove('loading'); // Remove classe de carregamento
+        textButton.style.display = "inline-block";
         showSnackbar("Erro ao fazer registro: " + error.message, "error");
         console.error("Erro ao fazer registro:", error);
       });
