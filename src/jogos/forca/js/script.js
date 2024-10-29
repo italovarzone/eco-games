@@ -64,7 +64,6 @@ function startGame() {
   startTime(); // Inicia o temporizador
   randomWord(); // Inicia uma palavra aleatória
   createKeyboard(); // Cria o teclado virtual
-  typingInput.focus(); // Focar no campo de entrada para capturar teclas físicas
 }
 
 // Função para resetar o jogo
@@ -77,7 +76,6 @@ function resetGame() {
   startTime(); // Reinicia o temporizador
   corrects = []; // Reseta letras corretas
   incorrects = []; // Reseta letras incorretas
-  typingInput.focus(); // Define o foco automaticamente ao resetar o jogo
   gameOver = false; // Reabilita o jogo
 }
 
@@ -177,7 +175,6 @@ document.addEventListener("keydown", (e) => {
       handleInput(key, button);
     }
   }
-  typingInput.focus(); // Mantém o foco no campo de entrada
 });
 
 function randomWord() {
