@@ -1,7 +1,9 @@
 import { requireAuth } from '../../utils/middleware.js';
 import { getUser } from '../../utils/auth.js';
 
-checkAuthAndRedirect();
+document.addEventListener("DOMContentLoaded", () => {
+  checkAuthAndRedirect();
+});
 
 document
   .getElementById("login-form")
@@ -191,8 +193,9 @@ document
           window.location.href = "/telas/home/index.html?";
         }
       } catch (error) {
-        // Se o token for inválido, você pode limpar o token do localStorage para evitar tentativas automáticas futuras
-        console.error(error);
+        console.error("Token inválido ou erro de autenticação:", error);
+        // Se o token for inválido, remova-o do localStorage para evitar tentativas automáticas futuras
+        localStorage.removeItem("token");
       }
     }
   }
