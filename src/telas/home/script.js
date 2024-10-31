@@ -2,11 +2,11 @@ import { requireAuth } from '../../utils/middleware.js';
 import { getUser } from '../../utils/auth.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-  await requireAuth();
-  const user = getUser();
-  if (user) {
-    updateUI(user);
-  }
+  // await requireAuth();
+  // const user = getUser();
+  // if (user) {
+  //   updateUI(user);
+  // }
 
   handleSidebarVisibility();
 
@@ -195,7 +195,7 @@ function goToSlide(slideIndex) {
 }
 
 function startSlideShow() {
-  slideInterval = setInterval(nextSlide, 9000);
+  slideInterval = setInterval(nextSlide, 11000);
 }
 
 function stopSlideShow() {
