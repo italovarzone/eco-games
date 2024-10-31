@@ -2,12 +2,12 @@ import { requireAuth } from '../../utils/middleware.js';
 import { getInfo } from '../../services/infoPerfil.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // await requireAuth();
-  // const info = await getInfo();
-  // console.log(info)
-  // if (info) {
-  //   updateUI(info);
-  // }
+  await requireAuth();
+  const info = await getInfo();
+  console.log(info)
+  if (info) {
+    updateUI(info);
+  }
 window.onload = function() {
   const userName = "...";
   const gamesCompleted =  0;
