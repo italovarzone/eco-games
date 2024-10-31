@@ -31,6 +31,14 @@ function startGame(userid) {
   closeHelp(); // Fecha o popup de "Como Jogar" ao iniciar o jogo
 }
 
+function goToHome() {
+  if (window.self !== window.top) {
+    window.top.location.href = "../../telas/home/index.html";
+  } else {
+    window.location.href = "../../telas/home/index.html";
+  }
+}
+
 function initializeCards(cards) {
   let gameBoard = document.getElementById("gameBoard");
   gameBoard.innerHTML = "";

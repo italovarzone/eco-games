@@ -31,6 +31,14 @@ document.addEventListener("DOMContentLoaded", () => {
   showHelp();
 });
 
+function goToHome() {
+  if (window.self !== window.top) {
+    window.top.location.href = "../../telas/home/index.html";
+  } else {
+    window.location.href = "../../telas/home/index.html";
+  }
+}
+
 // Temporizador - funções
 function startTime() {
   let startTime = Date.now() - time;

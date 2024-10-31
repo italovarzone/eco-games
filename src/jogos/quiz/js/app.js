@@ -239,7 +239,7 @@ function startGame() {
   let currentQuestion = 0;
   let score = 0;
   let questionTimes = []; // Array para armazenar o tempo de cada pergunta
-  
+
   function loadQuestion() {
     const timerElement = document.getElementById('timer');
     const questionContainer = document.getElementById('question-container');
@@ -262,6 +262,14 @@ function startGame() {
   
     resultContainer.textContent = "";
     nextButton.style.display = "none";
+  }
+
+  function goToHome() {
+    if (window.self !== window.top) {
+      window.top.location.href = "../../telas/home/index.html";
+    } else {
+      window.location.href = "../../telas/home/index.html";
+    }
   }
   
   function startTimer() {

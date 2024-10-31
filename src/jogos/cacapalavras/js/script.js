@@ -37,6 +37,14 @@ function stopTime() {
   timerElement.textContent = "Tempo: 00:00";
 }
 
+function goToHome() {
+  if (window.self !== window.top) {
+    window.top.location.href = "../../telas/home/index.html";
+  } else {
+    window.location.href = "../../telas/home/index.html";
+  }
+}
+
 function calculateTime(time) {
   let totalSeconds = Math.floor(time / 1000);
   let totalMinutes = Math.floor(totalSeconds / 60);
