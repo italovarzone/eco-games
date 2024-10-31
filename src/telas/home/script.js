@@ -195,7 +195,7 @@ function goToSlide(slideIndex) {
 }
 
 function startSlideShow() {
-  slideInterval = setInterval(nextSlide, 5000);
+  slideInterval = setInterval(nextSlide, 9000);
 }
 
 function stopSlideShow() {
