@@ -257,9 +257,9 @@ function showResult(won) {
 
   if (won) {
     saveRecord(time, incorrects.length); // Enviando tempo em milissegundos
-    resultMessage.innerText = "Parabéns! Você ganhou!";
+    resultMessage.innerText = "Parabéns! Você acertou a palavra!";
   } else {
-    resultMessage.innerText = "Que pena! Você perdeu. Tente novamente!";
+    resultMessage.innerText = "Que pena! Você errou... Tente novamente!";
   }
 }
 
