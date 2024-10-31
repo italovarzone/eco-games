@@ -2,11 +2,11 @@ import { requireAuth } from '../../utils/middleware.js';
 import { getUser } from '../../utils/auth.js';
 
 document.addEventListener("DOMContentLoaded", async () => {
-  // await requireAuth();
-  // const user = getUser();
-  // if (user) {
-  //   updateUI(user);
-  // }
+  await requireAuth();
+  const user = getUser();
+  if (user) {
+    updateUI(user);
+  }
 
   handleSidebarVisibility();
 
