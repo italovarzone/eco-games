@@ -245,13 +245,46 @@ border-radius: 5px;
     transition: 0.1s;
   }
 
+  .btn-menu-container {
+    display: flex;
+    flex-direction: row;
+    padding: 0;
+    gap: 8px;
+}
+
+.btn-menu-container button {
+    width: 120px;
+}
+
+.no-play-again {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    font-family: var(--fonte-gamer);
+    border: none;
+    border-radius: 3px;
+    background-color: #af4c4c;
+    width: 200px;
+    color: #ffffff;
+    font-size: 16px;
+    cursor: pointer;
+    border-right: solid #8e3e3e 6px;
+    border-bottom: solid #8e3e3e 4px;
+}
+
+.no-play-again:hover {
+    color: #8e3e3e;
+    transition: 0.1s;
+}
+
+
 #result-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     background-color: #fff;
-    width: 300px;
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -264,8 +297,8 @@ border-radius: 5px;
 }
 
 #result-container span {
+    color: black;
     font-weight: bold;
-    color: var(--cor-primaria);
 }
 
 #result-container h2 {
@@ -422,6 +455,24 @@ border-radius: 5px;
         margin-bottom: 180px;
     }
 
+    .btn-menu-container button {
+        width: 120px;
+    }
+
+    .btn-menu-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 8px;
+        flex-wrap: wrap;
+        align-items: center;
+    }
+
+    .no-play-again {
+        width: 155px;
+        padding: 10px 20px;
+    }
+
     #play-again-button {
         width: auto;
     }
@@ -432,6 +483,7 @@ border-radius: 5px;
     }
 
     #result-container {
+        margin-top: 220px;
         box-shadow: none;
     }
 

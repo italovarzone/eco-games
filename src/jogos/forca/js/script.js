@@ -22,6 +22,10 @@ var word,
 let interval;
 let time = 0; // Tempo em milissegundos
 
+const wordCheck = document.querySelector("#word-check");
+const wordWin = document.querySelector("#word-win");
+const wordStart = document.querySelector("#word-start");
+
 // Exibe o popup de "Como Jogar" ao iniciar a página
 document.addEventListener("DOMContentLoaded", () => {
   showHelp();
@@ -59,6 +63,8 @@ function calculateTime(time) {
 
 // Função para iniciar o jogo ao clicar no botão "Jogar Agora"
 function startGame() {
+  wordStart.play();
+
   closeHelp(); // Fecha o popup de ajuda
   stopTime();  // Reseta o tempo ao iniciar o jogo
   startTime(); // Inicia o temporizador
@@ -68,6 +74,7 @@ function startGame() {
 
 // Função para resetar o jogo
 function resetGame() {
+  wordStart.play();
   stopTime(); // Reseta o temporizador
   resultContainer.style.display = "none"; // Esconde os resultados
   gameContent.style.display = "block"; // Mostra o conteúdo do jogo
@@ -104,9 +111,11 @@ function handleInput(key, button) {
   
   key = key.toUpperCase();
   if (!corrects.includes(key) && /^[A-Z]+$/.test(key)) {
+    wordCheck.play();
     if (word.includes(key)) {
       for (let i = 0; i < word.length; i++) {
         if (word[i] === key) {
+          wordCheck.play();
           corrects.push(key);
           inputs.querySelectorAll("input")[i].value = key;
         }
@@ -231,6 +240,7 @@ async function saveRecord(time, incorrects) {
 }
 
 function showResult(won) { 
+  wordWin.play();
   gameOver = true; // Marcar o jogo como terminado
   gameContent.style.display = "none";
   resultContainer.style.display = "flex";

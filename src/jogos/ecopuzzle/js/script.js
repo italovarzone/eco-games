@@ -120,7 +120,7 @@ function flipCard() {
           cardWin.play();
           pauseTime();
           let resultadoP = document.getElementById("resultado");
-          resultadoP.textContent = `Parabéns! Tempo de jogo: ${calculateTime(time)}`;
+          resultadoP.textContent = `${calculateTime(time)}`;
           saveRecord(time);
         }
       } else {

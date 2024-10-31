@@ -68,17 +68,23 @@
     </div>
         
     <div id="result-container" style="display: none;">
-        <h2>Resultados</h2>
-        <p id="result-message"></p>
+        <h2>Parabéns! Você acertou a palavra!</h2>
         <div class="result">
             <p>Total de erros: <span id="total-errors"></span></p>
             <p>Tempo: <span id="total-time"></span></p>
         </div>
-        <button class="reset-btn">Jogar Novamente</button>
+        <div class="btn-menu-container">
+            <button class="reset-btn">Jogar Novamente</button>
+            <a href="?" class="no-play-again">Voltar ao menu</a>
+        </div>
     </div>
 
     <button id="fullscreen-btn"><i id="fullscreen-icon" class="fas fa-expand"></i></button>
     
+    <audio src="./sound/card-start.mp3" preload="auto" id="word-start"></audio>
+    <audio src="./sound/card-check.mp3" preload="auto" id="word-check"></audio>
+    <audio src="./sound/card-win.mp3" preload="auto" id="word-win"></audio>
+
     <script src="./js/word.js"></script>
     <script src="./js/script.js"></script>
 </body>

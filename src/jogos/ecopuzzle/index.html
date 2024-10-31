@@ -51,9 +51,13 @@
   <button id="fullscreen-btn"><i id="fullscreen-icon" class="fas fa-expand"></i></button>
 
   <div id="gameOver">
-    <div class="mensagem">
-      <p id="resultado"></p>
-      <button class="btn btn-primary" onclick="restart()">Jogar Novamente</button>
+    <div id="game-result-container">
+      <h2>Parabéns! Você combinou todas as cartas!</h2>
+      <p>Tempo Total: <span id="resultado"></span></p>
+      <div class="btn-menu-container">
+        <button class="btn btn-primary" onclick="restart()">Jogar Novamente</button>
+        <a href="?" class="no-play-again">Voltar ao menu</a>
+      </div>
     </div>
   </div>
 

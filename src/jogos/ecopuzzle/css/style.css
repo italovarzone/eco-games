@@ -102,9 +102,32 @@ a {
   -moz-transform: rotateY(180deg);
 }
 
+#game-result-container {
+  width: 400px;
+  height: auto;
+  background-color: #f2f2f2;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+}
 
+#game-result-container h2 {
+  color: black;
+  font-size: 24px;
+}
 
-.mensagem {
+#game-result-container p {
+  color: black;
+  font-size: 16px;
+  padding: 12px;
+}
+
+/* .mensagem {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -114,7 +137,7 @@ a {
   border-radius: 10px;
   background-color: #ffffff;
   text-align: center;
-}
+} */
 
 #help-button {
   color: var(--cor-secundaria);
@@ -294,6 +317,34 @@ a {
   transition: 0.1s;
 }
 
+.btn-menu-container {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+}
+
+.no-play-again {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 20px;
+  text-decoration: none;
+  font-family: var(--fonte-gamer);
+  border: none;
+  border-radius: 3px;
+  background-color: #af4c4c;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  border-right: solid #8e3e3e 6px;
+  border-bottom: solid #8e3e3e 4px;
+}
+
+.no-play-again:hover {
+  color: #8e3e3e;
+  transition: 0.1s;
+}
+
 .start:hover {
   color: #3e8e41;
   transition: 0.1s;
@@ -383,10 +434,36 @@ a {
 }
 
 @media (max-width: 768px) {
+  body {
+    background-color: white;
+  }
+
   .game-container {
     border-radius: 0;
+    padding-right: 0;
+    padding-left: 0;
     width: 100% !important;
     height: 100% !important;
+  }
+
+  .btn-menu-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  .no-play-again {
+      width: 155px;
+      padding: 10px 20px;
+  }
+
+  #game-result-container {
+    background-color: white;
+    box-shadow: none;
+    width: 300px;
   }
 
     /* Ajustes para o diálogo "Como Jogar" ocupar toda a tela */
@@ -430,6 +507,7 @@ a {
   #gameBoard {
     grid-template: 1fr 1fr 1fr 1fr 1fr / 1fr 1fr 1fr 1fr;
     gap: 15px;
+    padding-top: 128px;
   }
   .card {
     width: 77px;
@@ -441,6 +519,8 @@ a {
   }
 
   #gameOver {
+    box-shadow: none;
+    border: none;
     background-color: white;
   }
 

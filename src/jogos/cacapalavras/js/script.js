@@ -6,6 +6,10 @@ const timerElement = document.getElementById("timer");
 const gameContainer = document.getElementById("game-container");
 const congratulationsContainer = document.getElementById("game-result-container");
 
+const wordCheck = document.querySelector("#word-check");
+const wordWin = document.querySelector("#word-win");
+const wordStart = document.querySelector("#word-start");
+
 let isMouseDown = false;
 let selectedCells = [];
 
@@ -49,6 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function startGame() {
+  wordStart.play();
   // Iniciar o jogo e o temporizador
   stopTime(); // Garantir que o temporizador comece zerado
   clearGame();
@@ -217,6 +222,7 @@ function markSelectedWord() {
     selectedCells.forEach(cell => {
       cell.classList.remove('selected');
       cell.classList.add('correct');
+      wordCheck.play();
     });
     const wordItem = Array.from(document.querySelectorAll('.word-item')).find(item => item.textContent === wordObj);
     if (wordItem) {
@@ -275,6 +281,7 @@ async function saveRecord(time) {
 }
 
 function showDialog() {
+  wordWin.play();
   pauseTime();
   const gameContainer = document.getElementById("game-container");
   const gameResultContainer = document.getElementById("game-result-container");

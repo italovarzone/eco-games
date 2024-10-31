@@ -46,7 +46,7 @@
     </div>
     <div id="result-container" style="display: none;">
       <div style="display: flex; align-items: center;">
-        <h2>Resultados</h2>
+        <h2>Parabéns! Você respondeu todas as perguntas!</h2>
       </div>
       <div class="result">
         <p>Corretas: <span id="correct-answers"></span></p>
@@ -55,9 +55,17 @@
         <p>Total: <span id="total-score"></span></p>
         <p>Tempo total: <span id="total-time"></span></p>
       </div>
-      <button id="play-again-button" onclick="startGame()">Jogar Novamente</button>
+      <div class="btn-menu-container">
+        <button id="play-again-button" onclick="startGame()">Jogar Novamente</button>
+        <a href="?" class="no-play-again">Voltar ao menu</a>
+      </div>
     </div>
   </div>
+
+  <audio src="./sound/card-start.mp3" preload="auto" id="question-start"></audio>
+  <audio src="./sound/card-check.mp3" preload="auto" id="question-check"></audio>
+  <audio src="./sound/card-win.mp3" preload="auto" id="question-win"></audio>
+
 
   <button id="fullscreen-btn"><i id="fullscreen-icon" class="fas fa-expand"></i></button>
   

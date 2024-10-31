@@ -1,3 +1,7 @@
+const questionCheck = document.querySelector("#question-check");
+const questionWin = document.querySelector("#question-win");
+const questionStart = document.querySelector("#question-start");
+
 // Exibe o popup de "Como Jogar" ao iniciar a página
 document.addEventListener("DOMContentLoaded", () => {
     showHelp();
@@ -27,6 +31,7 @@ function startGame() {
 
     createProgressPlanets(); // Cria os planetas de progresso
     loadQuestion();
+    questionStart.play();
 }
 
   function createProgressPlanets() {
@@ -298,6 +303,7 @@ function startGame() {
     options.forEach((option, index) => {
         option.disabled = true;
         if (index === correctAnswer) {
+            questionCheck.play();
             option.classList.add('correct');
             option.classList.add('correct-answer');
         } else {
@@ -373,6 +379,7 @@ function startGame() {
   }
   
   function showFinalResult() {
+    questionWin.play();
     const quizContainerQuestions = document.getElementById('quiz-container-questions');
     const quizContainerWrapper = document.getElementById('quiz-container')
     const resultContainer = document.getElementById('result-container');

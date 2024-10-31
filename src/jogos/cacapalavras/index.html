@@ -43,11 +43,17 @@
         <p>Tempo Total: <span id="total-time"></span></p>
         <div class="btn-menu-container">
           <button id="play-again-button" class="btn btn-primary" onclick="resetGame()">Jogar Novamente</button>
+          <a href="?" class="no-play-again">Voltar ao menu</a>
         </div>
       </div>
     </div>
     <button id="fullscreen-btn"><i id="fullscreen-icon" class="fas fa-expand"></i></button>
   </div>
+
+  <audio src="./sound/card-start.mp3" preload="auto" id="word-start"></audio>
+  <audio src="./sound/card-check.mp3" preload="auto" id="word-check"></audio>
+  <audio src="./sound/card-win.mp3" preload="auto" id="word-win"></audio>
+
   <script src="js/script.js"></script>
 </body>
 </html>
