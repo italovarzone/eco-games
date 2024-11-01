@@ -24,9 +24,9 @@ body {
 
 .perfil-container {
   display: flex;
-  max-height: 400px;
+  max-height: 500px;
   overflow: auto;
-  width: 90%;
+  width: 1200px;
   padding: 20px;
   background-color: var(--cor-fundo);
   border-radius: 15px;
