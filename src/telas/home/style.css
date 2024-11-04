@@ -370,6 +370,14 @@ hr {
       display: flex;
     }
 
+    .carousel-indicators {
+      margin-bottom: 220px;
+    }
+
+    .carousel-item img {
+      margin-top: 120px;
+    }
+
     .sidebar h2 {
       font-size: 18px;
       padding: 4px;
