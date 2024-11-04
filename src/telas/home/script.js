@@ -1,6 +1,8 @@
 import { requireAuth } from '../../utils/middleware.js';
 import { getUser } from '../../utils/auth.js';
 
+window.goToSlide = goToSlide;
+
 document.addEventListener("DOMContentLoaded", async () => {
   await requireAuth();
   const user = getUser();

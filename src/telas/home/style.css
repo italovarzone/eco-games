@@ -378,25 +378,22 @@ hr {
   }
   
   .carousel-indicators {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
     display: flex;
     justify-content: center;
-    align-items: center;
+    margin-top: 10px;
   }
   
-  .indicator {
-    width: 10px;
-    height: 10px;
-    background-color: rgba(255, 255, 255, 0.7);
+  .carousel-indicators .indicator {
+    width: 15px;
+    height: 15px;
     margin: 0 5px;
+    background-color: rgb(204, 204, 204); /* Cor cinza para as bolinhas */
     border-radius: 50%;
     cursor: pointer;
     transition: background-color 0.3s;
   }
   
-  .indicator.active {
-    background-color: rgba(255, 255, 255, 1);
+  .carousel-indicators .indicator.active {
+    background-color: rgb(139, 139, 139); /* Cor mais escura para a bolinha ativa */
   }
+  
