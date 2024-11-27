@@ -13,11 +13,11 @@ const wordStart = document.querySelector("#word-start");
 let isMouseDown = false;
 let selectedCells = [];
 
-// Variáveis para controle de tempo
+
 let interval;
 let time = 0;
 
-// Temporizador - funções
+
 function startTime() {
   let startTime = Date.now() - time;
   interval = setInterval(() => {
@@ -56,21 +56,21 @@ function calculateTime(time) {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Exibe o popup de "Como Jogar" ao iniciar a página
+  
   showHelp();
 });
 
 function startGame() {
   wordStart.play();
-  // Iniciar o jogo e o temporizador
-  stopTime(); // Garantir que o temporizador comece zerado
+  
+  stopTime(); 
   clearGame();
   generateGrid();
   placeWords();
   fillEmptyCells();
   populateWordList();
-  closeHelp(); // Fecha o popup de "Como Jogar"
-  startTime(); // Iniciar o temporizador
+  closeHelp(); 
+  startTime(); 
 }
 
 function clearGame() {
@@ -89,7 +89,7 @@ function resetGame() {
   const gameResultContainer = document.getElementById("game-result-container");
   gameResultContainer.style.display = "none";
   gameContainer.style.display = "flex";
-  // Mostrar o popup de "Como Jogar" novamente ao reiniciar
+  
   startGame();
 }
 
@@ -98,7 +98,7 @@ function getMaxLetters(words) {
 }
 
 function generateGrid() {
-  // Criar o grid de células
+  
   for (let row = 0; row < 15; row++) {
     for (let col = 0; col < 15; col++) {
       let cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
@@ -116,7 +116,7 @@ function generateGrid() {
 }
 
 function placeWords() {
-  // Posicionar as palavras no grid
+  
   words.forEach((word, index) => {
     const direction = index % 2 === 0 ? "horizontal" : "vertical";
     let startRow, startCol;
@@ -139,7 +139,7 @@ function placeWords() {
 }
 
 function fillEmptyCells() {
-  // Preencher as células vazias com letras aleatórias
+  
   for (let row = 0; row < 15; row++) {
     for (let col = 0; col < 15; col++) {
       const cell = crossword.querySelector(`[data-row="${row}"][data-col="${col}"]`);
@@ -152,7 +152,7 @@ function fillEmptyCells() {
 }
 
 function populateWordList() {
-  // Adicionar a lista de palavras no grid
+  
   words.forEach(word => {
     const wordItem = document.createElement("div");
     wordItem.classList.add("word-item");
@@ -314,7 +314,7 @@ function showHelp() {
     helpDialog.style.justifyContent = "flex-start";
   }
 
-  // Garantir que o temporizador esteja zerado
+  
   stopTime();
 }
 

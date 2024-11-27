@@ -1,11 +1,11 @@
 @import url("https://fonts.googleapis.com/css2?family=Secular+One&display=swap");
 
 :root {
-  --cor-primaria: #22543d; /* verde escuro */
-  --cor-secundaria: #a5a5a5; /* cinza claro */
-  --cor-fundo: #f2f2f2; /* cinza claro */
-  --cor-texto: #333; /* preto */
-  --cor-botao: #6ab04c; /* verde claro */
+  --cor-primaria: #22543d;
+  --cor-secundaria: #a5a5a5;
+  --cor-fundo: #f2f2f2;
+  --cor-texto: #333;
+  --cor-botao: #6ab04c;
   --fonte-gamer: "Secular One", sans-serif;
 }
 
@@ -42,17 +42,17 @@ body {
 }
 
 a {
-  text-decoration: none; /* remove sublinhado */
-  color: black; /* define a cor do texto como preto */
+  text-decoration: none;
+  color: black;
 }
 
 .card {
   width: 130px;
   height: 130px;
   position: relative;
-  transform-style: preserve-3d; /* Mantém o contexto 3D para o flip */
-  transition: transform 0.5s; /* Suaviza a transição de flip */
-  cursor: pointer; /* Adiciona um ponteiro ao passar o mouse */
+  transform-style: preserve-3d; 
+  transition: transform 0.5s; 
+  cursor: pointer;
   
   -webkit-transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
@@ -78,26 +78,26 @@ a {
   
   top: 0;
   left: 0;
-  backface-visibility: hidden; /* Esconde a face que está atrás */
+  backface-visibility: hidden;
 }
 
 .card_back {
-  z-index: 2; /* Coloca o verso acima da frente inicialmente */
-  transform: rotateY(0deg); /* Inicializa o verso visível */
-  background-color: #101c2c; /* Cor de fundo para o verso da carta */
-  background-image: url('./img/card.png'); /* Define a imagem de fundo para o verso da carta */
-  background-size: cover; /* Ajusta a imagem para cobrir todo o fundo */
-  background-repeat: no-repeat; /* Evita a repetição da imagem */
+  z-index: 2; 
+  transform: rotateY(0deg);
+  background-color: #101c2c;
+  background-image: url('./img/card.png');
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .card_front {
-  z-index: 1; /* Coloca a frente abaixo do verso */
-  transform: rotateY(180deg); /* Inicializa a frente de cabeça para baixo */
-  background-color: #101c2c; /* Cor de fundo para a frente da carta */
+  z-index: 1;
+  transform: rotateY(180deg);
+  background-color: #101c2c;
 }
 
 .flip {
-  transform: rotateY(180deg); /* Gira a carta para mostrar a frente */
+  transform: rotateY(180deg);
   -webkit-transform: rotateY(180deg);
   -moz-transform: rotateY(180deg);
 }
@@ -126,18 +126,6 @@ a {
   font-size: 16px;
   padding: 12px;
 }
-
-/* .mensagem {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-  padding: 40px;
-  margin: 20px;
-  border-radius: 10px;
-  background-color: #ffffff;
-  text-align: center;
-} */
 
 #help-button {
   color: var(--cor-secundaria);
@@ -253,12 +241,6 @@ a {
   font-weight: bold;
 }
 
-/*#recorde {
-  display: inline-block;
-  font-size: 16px;
-  font-weight: bold;
-}*/
-
 .record-label {
   margin-right: 10px;
 }
@@ -276,7 +258,7 @@ a {
   background-color: #22543d;
   color: #333;
   font-size: 2rem;
-  display: flex; /* none play game */
+  display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -357,7 +339,7 @@ a {
   background-color: #22543d;
   color: #333;
   font-size: 2rem;
-  display: none; /* flex sobrepõe a tela */
+  display: none;
   justify-content: center;
   align-items: center;
   flex-direction: column;
@@ -466,7 +448,6 @@ a {
     width: 300px;
   }
 
-    /* Ajustes para o diálogo "Como Jogar" ocupar toda a tela */
     #help-dialog {
       width: 100vw;
       height: 100vh;
@@ -540,26 +521,12 @@ a {
 
 }
 
-/* @media (max-width: 600px) {
-  #gameBoard {
-    gap: 10px;
-  }
-  .card {
-    width: 60px;
-    height: 60px;
-  }
-  .icon {
-    width: 43px;
-    height: 43px;
-  }
-} */
-
 #fullscreen-btn {
   display: none;
 }
 
 #fullscreen-btn:hover {
-  background-color: #45a049; /* Altere esta cor conforme necessário */
+  background-color: #45a049;
 }
 
 #fullscreen-icon {
@@ -567,10 +534,10 @@ a {
 }
 
 #fullscreen-btn.fullscreen {
-  background-color: #4caf50; /* Altere esta cor conforme necessário */
+  background-color: #4caf50;
 }
 
 #fullscreen-btn.fullscreen:hover {
-  background-color: #45a049; /* Altere esta cor conforme necessário */
+  background-color: #45a049;
 }
 

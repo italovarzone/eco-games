@@ -15,7 +15,7 @@ window.onload = function() {
   const challengesLost = 0;
   const totalPlayTime = "...";
 
-  console.log(document.querySelector('.games-completed')); // Verifica se o elemento existe
+  console.log(document.querySelector('.games-completed'));
   console.log(document.querySelector('.challenges-won'));
   console.log(document.querySelector('.challenges-lost'));
   console.log(document.querySelector('.total-play-time'));
@@ -44,8 +44,8 @@ document.getElementById('spanGreenGeniusPosition').innerText = info.positions.qu
 };
 
 function convertSecondsToMinutesAndSeconds(seconds) {
-  const minutes = Math.floor(seconds / 60); // Converte para minutos
-  const remainingSeconds = (seconds % 60).toFixed(2); // Calcula o restante em segundos
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = (seconds % 60).toFixed(2);
 
   return `${minutes} minutos e ${remainingSeconds} segundos`;
 }

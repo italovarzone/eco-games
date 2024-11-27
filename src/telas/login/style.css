@@ -1,6 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Secular+One&display=swap");
 
-/* Variáveis de cor e tipografia */
 :root {
   --cor-primaria: #22543d;
   --cor-secundaria: #a5a5a5;
@@ -22,7 +21,6 @@ body {
   font-family: var(--fonte-gamer);
 }
 
-/* Layout principal */
 .container {
   display: flex;
   width: 100%;
@@ -30,7 +28,6 @@ body {
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Coluna esquerda para a imagem (desktop) */
 .left-content {
   flex: 1;
   background-color: var(--cor-primaria);
@@ -47,7 +44,6 @@ body {
   max-height: 100%;
 }
 
-/* Coluna direita para o formulário de login */
 .right-content {
   flex: 1;
   padding: 40px;
@@ -95,7 +91,7 @@ input {
   color: var(--cor-texto);
   background-color: #fff;
   width: 100%;
-  box-sizing: border-box; /* Incluir padding na largura */
+  box-sizing: border-box;
 }
 
 input:focus {
@@ -153,7 +149,7 @@ a:hover {
 }
 
 .modal {
-  display: none; /* Ocultar modal por padrão */
+  display: none;
   position: fixed;
   z-index: 1000;
   left: 0;
@@ -183,8 +179,6 @@ a:hover {
   font-size: 1.5rem;
 }
 
-
-/* Snackbar */
 .snackbar {
   visibility: hidden;
   min-width: 250px;
@@ -201,7 +195,6 @@ a:hover {
   font-family: var(--fonte-gamer);
 }
 
-/* Estilo para o wrapper de input de senha */
 .input-password-wrapper {
   position: relative;
   width: 100%;
@@ -211,12 +204,12 @@ a:hover {
 
 .input-password-wrapper input {
   width: 100%;
-  padding-right: 40px; /* Espaço para o ícone */
+  padding-right: 40px;
 }
 
 .input-password-wrapper .toggle-password {
   position: absolute;
-  right: 10px; /* Espaçamento do lado direito */
+  right: 10px;
   cursor: pointer;
   color: var(--cor-secundaria);
   font-size: 1.2rem;
@@ -256,26 +249,25 @@ a:hover {
   10%, 90% { opacity: 1; }
 }
 
-/* Ajustes para Mobile */
 @media (max-width: 768px) {
   .container {
-    flex-direction: column; /* Muda para coluna apenas no mobile */
-    padding: 20px; /* Padding para não encostar nas bordas */
-    align-items: center; /* Centraliza os itens */
+    flex-direction: column; 
+    padding: 20px;
+    align-items: center;
     justify-content: center;
-    box-sizing: border-box; /* Garantir que o padding seja incluído na largura */
+    box-sizing: border-box;
   }
 
   .left-content {
-    display: none; /* Esconder a imagem no mobile */
+    display: none;
   }
 
   .right-content {
     width: 100%;
-    max-width: 500px; /* Limite máximo de largura */
-    background-color: var(--cor-fundo); /* Fundo com var(--cor-fundo) */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1); /* Sombra ao redor do formulário */
-    border-radius: 10px; /* Bordas arredondadas */
+    max-width: 500px;
+    background-color: var(--cor-fundo);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
     padding: 20px;
   }
 
@@ -285,6 +277,6 @@ a:hover {
   }
 
   input, button {
-    width: 100%; /* Inputs e botões ocupam 100% da largura */
+    width: 100%;
   }
 }

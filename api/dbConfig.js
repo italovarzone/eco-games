@@ -10,8 +10,8 @@ const config = {
   database: process.env.DB_DATABASE,
   port: parseInt(process.env.DB_PORT),
   options: {
-    encrypt: isProduction, // Use encryption if in production
-    trustServerCertificate: true, // Change to false if using trusted certificates
+    encrypt: isProduction, 
+    trustServerCertificate: true, 
   }
 };
 

@@ -12,23 +12,20 @@ let clickBlocked = true;
 let iduser;
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Exibe o popup de "Como Jogar" ao iniciar a página
   showHelp();
 });
 
 function startGame(userid) {
   iduser = userid;
   cardStart.play();
-  stopTime();  // Reseta o tempo ao iniciar o jogo
-  startTime(); // Começa o temporizador ao iniciar o jogo
+  stopTime();
+  startTime();
   initializeCards(game.createCardsFromTechs());
-
-  // Desbloquear cliques após 3 segundos
   setTimeout(() => {
     clickBlocked = false;
   }, 4000);
 
-  closeHelp(); // Fecha o popup de "Como Jogar" ao iniciar o jogo
+  closeHelp();
 }
 
 function goToHome() {
@@ -110,7 +107,7 @@ async function saveRecord(time) {
 }
 
 function flipCard() {
-  if (clickBlocked) return; // Bloquear cliques enquanto clickBlocked for true
+  if (clickBlocked) return;
 
   if (game.setCard(this.id)) {
     this.classList.add("flip");
@@ -152,8 +149,6 @@ function restart() {
   let gameOverLayer = document.getElementById("gameOver");
   gameOverLayer.style.display = "none";
 }
-
-// Temporizador
 let interval;
 let time = 0;
 let timeP = document.getElementById("time");
@@ -186,8 +181,6 @@ function calculateTime(time) {
 
   return `${displayMinutes}:${displaySeconds}`;
 }
-
-// Funções para abrir/fechar o diálogo de ajuda
 function showHelp() {
   const blurOverlay = document.getElementById('blur-overlay');
   const helpDialog = document.getElementById('help-dialog');
@@ -201,8 +194,6 @@ function showHelp() {
     helpDialog.style.overflowX = "overlay";
     helpDialog.style.justifyContent = "flex-start";
   }
-
-  // Garantir que o temporizador esteja zerado
   stopTime();
 }
 
@@ -213,8 +204,6 @@ function closeHelp() {
   blurOverlay.style.display = 'none';
   helpDialog.style.display = 'none';
 }
-
-// Função para alternar tela cheia
 function toggleFullScreen() {
   const fullscreenIcon = document.getElementById('fullscreen-icon');
   const fullscreenBtn = document.getElementById('fullscreen-btn');

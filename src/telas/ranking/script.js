@@ -146,7 +146,7 @@ function updateRankingTable(rankingData, tabNumber, user) {
         tableBody.appendChild(row);
 
         if (player.id === user.id) {
-            row.style.backgroundColor = "#dff0d8"; // Cor de destaque
+            row.style.backgroundColor = "#dff0d8";
         }
     });
 }

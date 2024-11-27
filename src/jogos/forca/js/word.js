@@ -1,9 +1,4 @@
 const wordList = [
-    /*{
-        word: "",
-        hint: ""
-    },*/
-    // ODS 13: Ação contra a Mudança Global do Clima
     {
         word: "mitigacao",
         hint: "Redução dos impactos negativos das mudanças climáticas."
@@ -45,7 +40,6 @@ const wordList = [
         hint: "Fenômeno climático extremo."
     },
 
-    // ODS 14: Vida na Água
     {
         word: "biodiversidade",
         hint: "Variedade de vida na Terra ou em um ecossistema específico."
@@ -87,7 +81,6 @@ const wordList = [
         hint: "Material poluente frequentemente encontrado nos oceanos."
     },
 
-    // ODS 15: Vida Terrestre
     {
         word: "reflorestamento",
         hint: "Plantio de árvores para restaurar áreas desmatadas."

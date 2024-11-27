@@ -11,7 +11,7 @@ const sendRecoveryEmail = (email, recoveryCode) => {
   const sendSmtpEmail = new SibApiV3Sdk.SendSmtpEmail();
 
   sendSmtpEmail.to = [{ email: email }];
-  sendSmtpEmail.sender = { name: 'Sustenteco', email: 'italovarza@gmail.com' }; // Substitua pelo email verificado
+  sendSmtpEmail.sender = { name: 'Sustenteco', email: 'italovarza@gmail.com' }; 
   sendSmtpEmail.subject = 'Código de Recuperação de Senha - Sustenteco';
   sendSmtpEmail.htmlContent = `<p>Seu código de recuperação de senha é: <strong>${recoveryCode}</strong></p>`;
 

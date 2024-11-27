@@ -1,15 +1,14 @@
 :root {
-  --cor-primaria: #22543d; /* Cor de fundo principal */
-  --cor-secundaria: #a5a5a5; /* Cor secundária */
-  --cor-fundo: #f2f2f2; /* Cor de fundo do conteúdo */
-  --cor-texto: #ffffff; /* Cor do texto */
-  --cor-botao: #4caf50; /* Cor dos botões */
-  --fonte-gamer: "Secular One", sans-serif; /* Fonte principal */
-  --cor-destaque: #1db85b; /* Cor de destaque para valores */
-  --cor-secao: #e8f5e9; /* Cor para fundo das seções */
+  --cor-primaria: #22543d;
+  --cor-secundaria: #a5a5a5;
+  --cor-fundo: #f2f2f2;
+  --cor-texto: #ffffff;
+  --cor-botao: #4caf50;
+  --fonte-gamer: "Secular One", sans-serif;
+  --cor-destaque: #1db85b;
+  --cor-secao: #e8f5e9;
 }
 
-/* Estilos gerais para desktop */
 body {
   margin: 0;
   min-height: 100vh;
@@ -131,7 +130,6 @@ body {
   transition: 0.1s;
 }
 
-/* Ajustes para mobile */
 @media screen and (max-width: 768px) {
   body {
     overflow: auto;
